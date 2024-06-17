@@ -1,9 +1,20 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ProductListPage from "./components/ProductListPage";
+import ProductDetailPage from "./components/ProductDetailPage";
 
 function App() {
   return (
     <>
-    <ProductListPage/>
+    <BrowserRouter>
+      <Routes>
+        
+        <Route path="/" element={<ProductListPage />} />
+        <Route path="/product" element={<ProductDetailPage />} />
+        
+
+       
+  </Routes>
+  </BrowserRouter>
     </>
   );
 }

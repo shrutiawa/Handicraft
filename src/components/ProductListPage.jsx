@@ -5,61 +5,97 @@ import {
   Hits,
   Pagination,
   RefinementList,
+  Stats, SortBy, RangeInput,
+  ClearRefinements
 } from "react-instantsearch";
 import "../styles/productList.css"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const searchClient = algoliasearch(
   "LQ3AGF58XX",
   "6d50bab0ee0616f1d5994ba0dfa920f3"
 );
 
+function truncateText(text, limit) {
+  const words = text.split(' ');
+  if (words.length > limit) {
+    return words.slice(0, limit).join(' ') + '...';
+  }
+  return text;
+}
+
 function Hit({ hit }) {
-  console.log(hit);
+  console.log("hit",hit)
+  const navigate = useNavigate();
+  const truncatedName = truncateText(hit.name["en-US"], 3);
+  const truncatedDescription = truncateText(hit.description["en-US"], 7);
+  const handleClick = () => {
+    navigate(`/product/${hit.productID}`, { state: { hit } });
+  };
+
   return (<>
-    
-    <article className="search-panel_item">
-      <div>
-        <div>
-          <img src={hit.images} alt="images" />
-          <h1>{hit.name["en-US"]}</h1>
-          <p>{hit.description["en-US"]}</p>
-          <h4>{hit.productType}</h4>
-          <h3>Rs. {hit.prices['INR'].max}</h3>
-        </div>
-      </div>
+
+    <article className="search-panel_item" onClick={handleClick}>
+      <img src={hit.images} alt="images" />
+      <h3>{truncatedName}</h3>
+      <p>{truncatedDescription}</p>
+      <h4>{hit.productType}</h4>
+      <h3>Rs. {hit.prices['INR'].max}</h3>
     </article>
-    </>
+  </>
   );
 }
 
 
 function ProductListPage() {
+
+
   return (
     <div className="container">
       <InstantSearch searchClient={searchClient} indexName="Handicraft_Machathon" insights>
-      <div className="search-container">
-              <SearchBox placeholder="Search" />
-            </div>
+        <div className="search-container">
+          <SearchBox placeholder="Search" />
+        </div>
+
         <div className="output-result-and-filters">
           <div className="search-panel__filters">
+            <div className="filters">
+              <h4>FILTERS</h4>
+            <ClearRefinements translations={{
+              resetButtonText: 'Clear all',
+            }} />
+            </div>
+            
             <div className="filter_container">
-            <h4>Category</h4>
+              <h4>CATEGORY</h4>
               <RefinementList
                 attribute="categories.en-US.lvl0"
               />
-               <h4>Price</h4>
-              <RefinementList
-                attribute="prices.INR.max"
-              />
-
-</div>
+              <h4>Price</h4>
+              <RangeInput attribute="price.INR.value" />
+            </div>
           </div>
 
-           
+
           <div className="search-panel__results">
-            
-              <Hits hitComponent={Hit} />
-            
+
+            <div className="sort-by-wrapper">
+              <SortBy
+                items={[
+                  { label: 'Most relevant', value: 'Handicraft_Machathon' },
+                  { label: 'Lowest Price', value: 'Handicraft_Machathon_price_asc' },
+                  { label: 'Highest Price', value: 'Handicraft_Machathon_price_desc' },
+                ]}
+              />
+            </div>
+            <div className="stats">
+              <Stats />
+            </div>
+
+
+            <Hits hitComponent={Hit} />
+
 
             <div className="pagination">
               <Pagination />
