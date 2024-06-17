@@ -9,7 +9,6 @@ import {
   ClearRefinements
 } from "react-instantsearch";
 import "../styles/productList.css"
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const searchClient = algoliasearch(
@@ -26,12 +25,12 @@ function truncateText(text, limit) {
 }
 
 function Hit({ hit }) {
-  console.log("hit",hit)
+  // console.log("hit",hit)
   const navigate = useNavigate();
   const truncatedName = truncateText(hit.name["en-US"], 3);
   const truncatedDescription = truncateText(hit.description["en-US"], 7);
   const handleClick = () => {
-    navigate(`/product/${hit.productID}`, { state: { hit } });
+    navigate(`/product`, { state: { hit } });
   };
 
   return (<>
