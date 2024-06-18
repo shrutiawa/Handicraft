@@ -12,7 +12,7 @@ const productId=hit.productID
     return <div>Product details not available</div>;
   }
   const addToCart = async () => {
-    // const customerId = localStorage.getItem("customer");
+    const customerId = "d0e515a9-7da8-49f2-ae89-db5200127fb4"
 
     // if (!customerId) {
     //   alert("Customer not found . Please log in.");
@@ -20,7 +20,7 @@ const productId=hit.productID
     // }
     try {
       const response = await axios.post("http://localhost:5000/carts", {
-        
+        customerId,
         productId,
         
       });
