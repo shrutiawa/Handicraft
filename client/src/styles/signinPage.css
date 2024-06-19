@@ -1,0 +1,157 @@
+* {
+  box-sizing: border-box;
+  padding: 0%;
+  margin: 0%;
+}
+
+.loginMainContainer {
+  width: 1200px;
+  height: 100vh;
+  background-color: rgb(234, 234, 236);
+  padding: 10px;
+  margin: auto;
+}
+
+.loginPage {
+  width: 1000px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* border: 1px solid grey; */
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  margin: auto;
+  margin-top: 60px;
+}
+
+.loginPage img {
+  height: 70px;
+  width: 200px;
+  /* border: 1px solid red; */
+}
+
+.sections {
+  display: flex;
+  justify-content: center;
+}
+
+.loginPage .sections .section1,
+.loginPage .sections .section2 {
+  width: 50%;
+  /* border: 1px solid green; */
+  padding: 10px;
+  height: 100%;
+}
+
+.loginPage .sections .section1 h3 {
+  font-size: 30px;
+  font-weight: 400;
+}
+
+.loginPage .sections .section1 p {
+  font-size: 16px;
+  color: rgb(53, 53, 53);
+}
+
+.loginPage .sections .section2 input {
+  width: 100%;
+  font-size: 20px;
+  padding: 10px;
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+
+.loginPage .sections .section2 .emailInput {
+  margin-bottom: 20px;
+}
+
+.passwordInputContainer {
+  position: relative;
+}
+
+.passwordToggleIcon {
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+  cursor: pointer;
+}
+
+
+.loginPage .sections .section2 .forgotPasswordButton {
+  width: max-content;
+  color: blue;
+  margin-top: 2px;
+  margin-bottom: 10px;
+  border: none;
+  background-color: #fff;
+  text-align: left;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.loginPage .loginScreenButtons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 30px;
+  font-size: 20px;
+}
+
+.loginPage .loginScreenButtons .loginButton {
+  border: none;
+  background-color: rgb(71, 71, 253);
+  border-radius: 20px;
+  color: #fff;
+  padding: 10px;
+  font-size: 18px;
+}
+
+.loginPage .loginScreenButtons .registerButton {
+  width: max-content;
+  color: blue;
+  border: none;
+  background-color: #fff;
+  text-align: left;
+  padding: 5px;
+  border-radius: 2px;
+  font-size: 18px;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.loginPage .section2 .forgotPasswordButton:hover,
+.loginPage .loginScreenButtons .registerButton:hover {
+  cursor: pointer;
+  background-color: rgb(217, 217, 252);
+}
+
+.loginPage .section2 .forgotPasswordButton:hover {
+  text-decoration: underline;
+}
+
+.loginPage .loginScreenButtons .loginButton:hover {
+  cursor: pointer;
+  background-color: blue;
+}
+
+.languageSwitcher {
+  width: 1000px;
+  margin: auto;
+  margin-top: 5px;
+}
+
+.languageSwitcher select {
+  width: 100px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(234, 234, 236);
+}
+
+.languageSwitcher select:hover {
+  background-color: rgb(209, 209, 211);
+}
