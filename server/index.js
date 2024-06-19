@@ -67,7 +67,7 @@ app.post(
 app.post("/api/coupon", cartController.checkCoupon);
 
 // delete cart after successful order
-app.delete("/carts", cartController.deleteCartController);
+// app.delete("/carts", cartController.deleteCartController);
 
 
 // fetch all the categories of product
@@ -79,6 +79,9 @@ app.get('/product-types', productTypeController.getAllProductType);
 
 // Add product by users
 app.post('/products', addProductController.addProduct);
+
+//Add Shipping Address
+app.post('/shipping-address', cartController.shippingAddressController)
 
 // Start the server
 app.listen(PORT, () => {

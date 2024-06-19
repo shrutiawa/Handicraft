@@ -1,0 +1,124 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0
+  }
+  
+p{
+    font-size: 18px;
+}
+.card{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* column-gap: 5rem; */
+    place-items: center;
+    outline: 1px solid black;
+    padding:0px 20px;
+    margin:80px ;
+    margin-bottom: 10px;
+}
+.main-img {
+    height:450px;
+    width: 450px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: block;
+    margin: 10px auto;
+    transition: transform 0.3s ease-in-out;
+}
+.main-img:hover{
+    transform: scale(1.02);
+}
+.right-text{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+    width:90%;
+}
+.heading-secondary {
+    display: block;
+    color: hsl(26, 100%, 55%);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+.product-specification{
+    display: flex;
+    flex-direction: column;
+    gap:7px;
+    
+}
+.product-specification div{
+    display: flex;
+    align-items: center;
+    gap:5px;
+}
+.product-specification div>h4{
+    font-size: 18px;
+
+}
+.buttons{
+    /* outline:2px solid red; */
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+.cart-button{
+    display: flex;
+    justify-content: space-evenly;
+    place-items: center;
+    width:150px;
+    padding:10px ;
+    background-color:black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+.quantity-button-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .quantity-button {
+    border: none;
+    background-color: #f0f0f0;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .quantity-button:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+  }
+  
+  .quantity-button.minus {
+    color: #ff4d4d;
+  }
+  
+  .quantity-button.plus {
+    color: #4caf50;
+  }
+  
+  .quantity-button:hover:not(:disabled) {
+    background-color: #d0d0d0;
+  }
+  
+  .quantity-display {
+    font-size: 1.2em;
+    margin: 0 10px;
+    min-width: 40px;
+    text-align: center;
+  }
+  
