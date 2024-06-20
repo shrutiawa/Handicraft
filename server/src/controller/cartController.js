@@ -6,8 +6,8 @@ const createCart = require("../services/cartService");
 const { deleteCart } = require("../services/cartService");
 
 
-
-
+let storedCartId;
+let storedCartVersion;
 // get cart details of customer
 async function getCartDetails(req, res) {
   try {
@@ -23,16 +23,14 @@ async function getCartDetails(req, res) {
 
 // update cart details of customer
 async function updateCartDetails(req, res) {
-  const { customerId, productId } = req.body;
+  const { customerId, productId,quantity } = req.body;
   try {
     const cartData = await cartService.fetchCartDetails(customerId);
     const { id: cartId, version: cartVersion } = cartData;
 
-    await cartService.updateCart(cartId, cartVersion, productId);
+    await cartService.updateCart(cartId, cartVersion, productId,quantity);
     res.status(200).json({ message: "Item added to cart" });
   } catch (error) {
-    console.log("................");
-    console.log(error)
     if (error.statusCode === 404) {
       try {
         const newCart = await cartService.createCart(customerId);
@@ -41,7 +39,8 @@ async function updateCartDetails(req, res) {
           await cartService.updateCart(
             cartId,
             cartVersion,
-            productId
+            productId,
+            quantity
             
           );
           res.status(200).json({ message: "Item added to cart" });
@@ -102,10 +101,26 @@ const deleteCartController = async (req, res) => {
   }
 };
 
+const shippingAddressController = async (req,res)=>{
+  try{
+    console.log("shipping body",req.body);  // Console log the request body
+    const { address } = req.body;
+    console.log("id",storedCartId,storedCartVersion)
+    const result = await cartService.addShippingAddress(storedCartId, storedCartVersion,address);
+    res.status(200).json(result);
+
+  } catch (error) {
+    console.error("Error adding address:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+
 module.exports = {
   getCartDetails,
   updateCartDetails,
   checkCartExists,
   checkCoupon,
-  deleteCartController,
+  // deleteCartController,
+  shippingAddressController
 };

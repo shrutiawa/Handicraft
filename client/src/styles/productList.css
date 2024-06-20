@@ -45,7 +45,7 @@
 }
 
 .ais-RefinementList-item {
-
+ 
   margin-top: 16px;
   ;
 }
@@ -122,9 +122,15 @@
   display: flex;
   width: 30%;
   border-bottom: 1px solid black;
-  margin-bottom: 10px;
-  /* background: rgb(255, 251, 251); */
+  margin-bottom: 20px;
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
 }
+.ais-Hits-item:hover{
+  transform: scale(1.04);
+
+}
+
 .search-panel_item{
   display: flex;
   flex-direction: column;

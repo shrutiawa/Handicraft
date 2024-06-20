@@ -16,8 +16,7 @@ async function fetchCartDetails(customerId) {
 }
 
 // updating line items in customer carts- not complete
-async function updateCart(cartId, cartVersion, productId) {
-  // console.log("gggggggggg", cartId, cartVersion, productId, variantId);
+async function updateCart(cartId, cartVersion, productId,quantity) {
   try {
     const response = await client.execute({
       method: "POST",
@@ -28,11 +27,11 @@ async function updateCart(cartId, cartVersion, productId) {
           action : "addLineItem",
           productId : productId,
           variantId : 1,
-          quantity : 1
+          quantity : quantity
         } ]
       }
     });
-    console.log("service response from update cart", response);
+    // console.log("service response from update cart", response);
     return response;
   } catch (error) {
     console.error("Cart Error:", error);
@@ -47,11 +46,11 @@ async function createCart(customerId) {
       method: "POST",
       uri: "/handicraft/carts",
       body: {
-        currency: "USD",
+        currency: "INR",
         customerId,
       },
     });
-    console.log("new cart updated", newCart.body);
+    // console.log("new cart updated", newCart.body);
     return newCart;
   } catch (error) {
     console.log(error);
@@ -65,11 +64,45 @@ async function deleteCart(cartId, cartVersion) {
   try {
     const response = await client.execute({
       method: "DELETE",
-      uri: `/repurpose/carts/${cartId}?version=${cartVersion}`,
+      uri: `/handicraft/carts/${cartId}?version=${cartVersion}`,
     });
     return response;
   } catch (error) {
     console.error("Error deleting cart:", error);
+    throw error;
+  }
+}
+// add shipping address
+async function addShippingAddress(cartId, cartVersion,address) {
+  try {
+    console.log("data on address",cartId,cartVersion,address)
+    const addressPayload = {
+      title: address.title,
+                  firstName: address.firstName,
+                  lastName: address.lastName,
+                  streetName: address.address, 
+                  postalCode: address.zipcode,
+                  city: address.city, 
+                  state: address.state,
+                  country: address.country,
+                  
+    };
+    const response = await client.execute({
+      method: "POST",
+      uri: `/handicraft/carts/${cartId}`,
+      body: {
+        version:cartVersion,
+        actions: [
+          {
+            action: "setShippingAddress",
+            address: addressPayload
+          }
+        ]
+    },
+    });
+    return response;
+  } catch (error) {
+    console.error("Error in adding shipping address:", error);
     throw error;
   }
 }
@@ -79,7 +112,8 @@ module.exports = {
   fetchCartDetails,
   updateCart,
   createCart,
-  deleteCart
+  deleteCart,
+  addShippingAddress
 };
 
 // if (error.name === "NotFound") {
