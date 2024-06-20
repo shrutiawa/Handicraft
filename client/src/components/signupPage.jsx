@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import "../styles/signupPage.css";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
+import axios from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { handleError } from "@apollo/client/link/http/parseAndCheckHttpResponse";
 
 const GET_CONTENT = gql`
   query GetSignUpContent($locale: String!) {
@@ -23,11 +25,12 @@ const SignupContent = ({ locale }) => {
     variables: { locale },
   });
 
-  const [fullName, setFullName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("")
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -39,6 +42,42 @@ const SignupContent = ({ locale }) => {
   const { logo, signUp, signUpDescription, signUpData } =
     data.signUpCollection.items[0];
 
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    const formData = {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+    };
+
+    // // Check if passwords match
+    // if (formData.password !== formData.confirmPassword) {
+    //   setPasswordError("Passwords do not match");
+    //   return;
+    // } else {
+    //   setPasswordError(""); // Clear any existing error message
+    // }
+
+    try {
+      console.log("fomdata",formData)
+      const response = await axios.post(
+        "http://localhost:5000/customers",
+        formData
+      
+      );
+      console.log("......................",response)
+      const data = response;
+      // navigate("/login");
+      alert("Success");
+    } catch (error) {
+      console.error("Registration process failed");
+      console.error(error);
+      alert("Failed");
+    }
+  };
+
   return (
     <div className="signupPage">
       <img src={logo[0].url} alt="logo" />
@@ -48,53 +87,63 @@ const SignupContent = ({ locale }) => {
           <p>{signUpDescription}</p>
         </div>
         <div className="section2">
-            <div className="subsection1">
+          <div className="subsection1">
+            <input
+              className="firstNameInput"
+              name="firstname"
+              type="text"
+              placeholder={signUpData.namePlaceholder}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <input
+              className="lastNameInput"
+              name="lastname"
+              type="text"
+              placeholder={signUpData.namePlaceholder}
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+            <input
+              className="emailInput"
+              name="email"
+              type="email"
+              placeholder={signUpData.emailPlaceholder}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              className="passwordInpt"
+              name="password"
+              type="password"
+              value={password}
+              placeholder={signUpData.passwordPlaceholder}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <div className="confirmPasswordInputContainer">
               <input
-                className="nameInput"
-                name="fullname"
-                type="text"
-                placeholder={signUpData.namePlaceholder}
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                name="confirmpassword"
+                type={showPassword ? "text" : "password"}
+                placeholder={signUpData.confirmPasswordPlaceholder}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
-              <input
-                className="emailInput"
-                name="email"
-                type="email"
-                placeholder={signUpData.emailPlaceholder}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+              <FontAwesomeIcon
+                icon={showPassword ? faEye : faEyeSlash}
+                className="passwordToggleIcon"
+                onClick={() => setShowPassword(!showPassword)}
               />
-              <input
-                className="passwordInpt"
-                name="password"
-                type="password"
-                placeholder={signUpData.passwordPlaceholder}
-              />
-              <div className="confirmPasswordInputContainer">
-                <input
-                  name="confirmpassword"
-                  type={showPassword ? "text" : "password"}
-                  placeholder={signUpData.confirmPasswordPlaceholder}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                <FontAwesomeIcon
-                  icon={showPassword ? faEye : faEyeSlash}
-                  className="passwordToggleIcon"
-                  onClick={() => setShowPassword(!showPassword)}
-                />
-              </div>
-              <div className="signupScreenButtons">
-                <button className="alreadyregisteredBtn">
-                  {signUpData.alreadyHaveAccount}
-                </button>
-                <button className="cancelBtn">{signUpData.cancelBtn}</button>
-                <button className="signupBtn">
-                  {signUpData.signupBtn}
-                </button>
-              </div>
             </div>
+            <div className="signupScreenButtons">
+              <button className="alreadyregisteredBtn">
+                {signUpData.alreadyHaveAccount}
+              </button>
+              <button className="cancelBtn">{signUpData.cancelBtn}</button>
+              <button className="signupBtn" onClick={handleSignUp}>
+                {signUpData.signupBtn}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

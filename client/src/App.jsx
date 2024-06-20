@@ -3,6 +3,7 @@ import ProductListPage from "./components/ProductListPage";
 import ProductDetailPage from "./components/ProductDetailPage";
 import SigninPage from "./components/signinPage";
 import SignupPage from "./components/signupPage";
+import Header from "./components/header";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/product" element={<ProductDetailPage />} />
           <Route path="/signin" element={<SigninPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/header" element={<Header />} />
         </Routes>
       </BrowserRouter>
     </>

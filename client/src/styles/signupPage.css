@@ -63,11 +63,11 @@
   margin-bottom: 20px;
 }
 
-.confirmPasswordInputContainer {
+.signupPage .sections .section2 .subsection1 .confirmPasswordInputContainer {
   position: relative;
 }
 
-.passwordToggleIcon {
+.signupPage .sections .section2 .subsection1 .passwordToggleIcon {
   font-size: 20px;
   position: absolute;
   top: 50%;
@@ -117,7 +117,7 @@
   background-color: blue;
 }
 
-.languageSwitcher {
+.signupMainContainer .languageSwitcher {
   width: 1000px;
   margin: auto;
   display: flex;
@@ -127,7 +127,7 @@
   margin-top: 5px;
 }
 
-.languageSwitcher select {
+.signupMainContainer .languageSwitcher select {
   width: 130px;
   padding: 10px;
   border: none;
@@ -135,6 +135,6 @@
   background-color: rgb(234, 234, 236);
 }
 
-.languageSwitcher select:hover {
+.signupMainContainer .languageSwitcher select:hover {
   background-color: rgb(209, 209, 211);
 }

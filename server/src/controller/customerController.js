@@ -20,7 +20,7 @@ async function addCustomer(req, res) {
       password: req.body.password,
     };
     const newCustomer = await customerService.createCustomer(customerData);
-    // console.log("response from create customer", newCustomer.statusCode);
+    console.log("response from create customer", newCustomer.statusCode);
     if ((newCustomer.statusCode = 201)) {
       res.status(201).json({
         success: true,

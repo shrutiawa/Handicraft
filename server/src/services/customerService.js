@@ -19,13 +19,13 @@ async function createCustomer(customerData) {
   try {
     const response = await client.execute({
       method: "POST",
-      uri: "/repurpose/customers",
+      uri: "/handicraft/customers",
       body: customerData,
     });
-    // console.log(response);
+    console.log(response);
     return response;
   } catch (error) {
-    // console.error("Error Adding customer:", error);
+    console.error("Error Adding customer:", error);
     throw error;
   }
 }

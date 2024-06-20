@@ -5,13 +5,13 @@ async function authorizeLogin(email,password) {
   try {
     const response = await client.execute({
       method: "POST",
-      uri: "/repurpose/login",
+      uri: "/handicraft/login",
       body :{email,password}
     });
-    // console.log(response.body.customer.id)
+    console.log(response.body.customer.id)
     return response.body.customer.id;
   } catch (error) {
-    // console.error("Invalid Credentials:", error);
+    console.error("Invalid Credentials:", error);
     return false
   }
 }
