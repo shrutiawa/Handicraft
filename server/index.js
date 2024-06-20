@@ -67,7 +67,7 @@ app.post(
 app.post("/api/coupon", cartController.checkCoupon);
 
 // delete cart after successful order
-// app.delete("/carts", cartController.deleteCartController);
+app.delete("/carts", cartController.deleteCartController);
 
 
 // fetch all the categories of product

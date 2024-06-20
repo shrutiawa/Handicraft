@@ -15,7 +15,6 @@ function App() {
           <Route path="/product" element={<ProductDetailPage />} />
         <Route path="/cart" element={<ShoppingCart />} />
         <Route path="/delivery-address" element={<ShippingAddressForm />} />
-        
           <Route path="/signin" element={<SigninPage />} />
           <Route path="/signup" element={<SignupPage />} />
         </Routes>

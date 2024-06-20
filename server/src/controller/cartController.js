@@ -121,6 +121,6 @@ module.exports = {
   updateCartDetails,
   checkCartExists,
   checkCoupon,
-  // deleteCartController,
+  deleteCartController,
   shippingAddressController
 };
