@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios"
 import "../styles/signinPage.css";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
@@ -26,6 +27,73 @@ const SigninContent = ({ locale }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState(false);
+  const [errors, setErrors] = useState({ email: "", password: "" });
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const handleEmailBlur = () => {
+    if (!validateEmail(email)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        email: "Please enter a valid email address.",
+      }));
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, email: "" }));
+    }
+  };
+
+  const handleSignInClick = () => {
+    let valid = true;
+
+    if (!validateEmail(email)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        email: "Please enter a valid email address.",
+      }));
+      valid = false;
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, email: "" }));
+    }
+
+    if (password.trim() === "") {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        password: "Password cannot be empty.",
+      }));
+      valid = false;
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, password: "" }));
+    }
+
+    if (valid) {
+      // Handle the sign-in logic here
+      // console.log("Form is valid. Proceed with sign-in.");
+      handleSubmit();
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    // e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5000/login', { email, password }); // Adjust the URL if needed
+      const data = response.data;
+      console.log(data)
+      setMessage(data.message);
+      localStorage.setItem("customer",data.customerId)
+      if (data.token) {
+        // Redirect user to another page upon successful login
+        // window.location.href = '/'; // Adjust the URL as needed.
+      }
+    } catch (error) {
+      console.log("Login process failed")
+      setMessage('Login failed. Please try again.');
+      console.error(error);
+    }
+  };
 
   console.log(locale);
   if (loading) return <p>Loading...</p>;
@@ -54,7 +122,9 @@ const SigninContent = ({ locale }) => {
             placeholder={loginData.emailPlaceholder}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            onBlur={handleEmailBlur}
           />
+          {errors.email && <p className="error">{errors.email}</p>}
           <div className="passwordInputContainer">
             <input
               className="passwordInput"
@@ -70,12 +140,17 @@ const SigninContent = ({ locale }) => {
               onClick={() => setShowPassword(!showPassword)}
             />
           </div>
+          {errors.password && <p className="error">{errors.password}</p>}
           <button className="forgotPasswordButton">
             {loginData.forgotPasswordBtn}
           </button>
           <div className="loginScreenButtons">
             <button className="registerButton">{loginData.registerBtn}</button>
-            <button className="loginButton" type="submit">
+            <button
+              className="loginButton"
+              type="button"
+              onClick={handleSignInClick}
+            >
               {loginData.loginBtn}
             </button>
           </div>

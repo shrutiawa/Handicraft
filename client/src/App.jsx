@@ -5,6 +5,7 @@ import ShoppingCart from "./components/ShoppingCart";
 import ShippingAddressForm from "./components/ShippingAddressForm";
 import SigninPage from "./components/signinPage";
 import SignupPage from "./components/signupPage";
+import Header from "./components/header";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/delivery-address" element={<ShippingAddressForm />} />
           <Route path="/signin" element={<SigninPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/header" element={<Header />} />
         </Routes>
       </BrowserRouter>
     </>
