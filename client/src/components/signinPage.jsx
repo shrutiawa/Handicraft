@@ -5,6 +5,7 @@ import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const GET_CONTENT = gql`
   query GetLoginContent($locale: String!) {
@@ -23,6 +24,7 @@ const SigninContent = ({ locale }) => {
   const { loading, error, data } = useQuery(GET_CONTENT, {
     variables: { locale },
   });
+  const navigate =useNavigate()
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -83,10 +85,12 @@ const SigninContent = ({ locale }) => {
       const data = response.data;
       console.log(data)
       setMessage(data.message);
+      navigate("/product-list")
+
       localStorage.setItem("customer",data.customerId)
       if (data.token) {
         // Redirect user to another page upon successful login
-        // window.location.href = '/'; // Adjust the URL as needed.
+        window.location.href = '/'; // Adjust the URL as needed.
       }
     } catch (error) {
       console.log("Login process failed")
@@ -145,7 +149,7 @@ const SigninContent = ({ locale }) => {
             {loginData.forgotPasswordBtn}
           </button>
           <div className="loginScreenButtons">
-            <button className="registerButton">{loginData.registerBtn}</button>
+            <button className="registerButton" onClick={()=>navigate("/signup")}>{loginData.registerBtn}</button>
             <button
               className="loginButton"
               type="button"

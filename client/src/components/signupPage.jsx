@@ -6,6 +6,7 @@ import axios from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { handleError } from "@apollo/client/link/http/parseAndCheckHttpResponse";
+import { useNavigate } from "react-router-dom";
 
 const GET_CONTENT = gql`
   query GetSignUpContent($locale: String!) {
@@ -24,6 +25,7 @@ const SignupContent = ({ locale }) => {
   const { loading, error, data } = useQuery(GET_CONTENT, {
     variables: { locale },
   });
+  const navigate =useNavigate()
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -69,8 +71,8 @@ const SignupContent = ({ locale }) => {
       );
       console.log("......................",response)
       const data = response;
-      // navigate("/login");
-      alert("Success");
+      navigate("/");
+      // alert("Success");
     } catch (error) {
       console.error("Registration process failed");
       console.error(error);
@@ -135,7 +137,7 @@ const SignupContent = ({ locale }) => {
               />
             </div>
             <div className="signupScreenButtons">
-              <button className="alreadyregisteredBtn">
+              <button className="alreadyregisteredBtn" onClick={()=>navigate("/")}>
                 {signUpData.alreadyHaveAccount}
               </button>
               <button className="cancelBtn">{signUpData.cancelBtn}</button>

@@ -29,7 +29,7 @@
 
 .search-panel__filters {
   margin-right: 20px;
-  width: 35%;
+  width: 30%;
 }
 
 .filter_container {
@@ -121,8 +121,10 @@
 .ais-Hits-item {
   display: flex;
   width: 30%;
-  border-bottom: 1px solid black;
-  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 5px;
+  margin-bottom: 30px;
+  padding:5px;
   transition: transform 0.3s ease-in-out;
   cursor: pointer;
 }
