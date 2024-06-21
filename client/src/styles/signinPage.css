@@ -64,10 +64,14 @@
   border-radius: 5px;
 }
 
-/* .loginPage .sections .section2 input:focus {
+.loginPage .sections .section2 input:focus {
   border: 2px solid blue;
   outline: none;
-} */
+}
+
+.loginPage .sections .section2 .inputError {
+  border-color: red;
+}
 
 .loginPage .sections .section2 .emailInput {
   margin-bottom: 20px;

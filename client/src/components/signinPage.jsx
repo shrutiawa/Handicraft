@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import axios from "axios"
+import axios from "axios";
 import "../styles/signinPage.css";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const GET_CONTENT = gql`
   query GetLoginContent($locale: String!) {
@@ -27,75 +28,66 @@ const SigninContent = ({ locale }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [message, setMessage] = useState(false);
-  const [errors, setErrors] = useState({ email: "", password: "" });
+  const [message, setMessage] = useState("");
+  const [errors, setErrors] = useState({ email: false, password: false });
+  const navigate = useNavigate();
 
-  const validateEmail = (email) => {
+  const isValidEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
   };
 
-  const handleEmailBlur = () => {
-    if (!validateEmail(email)) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        email: "Please enter a valid email address.",
-      }));
-    } else {
-      setErrors((prevErrors) => ({ ...prevErrors, email: "" }));
+  const handleBlur = (field, value) => {
+    let errorData = { ...errors };
+
+    switch (field) {
+      case "email":
+        errorData.email = !isValidEmail(value);
+        break;
+      case "password":
+        errorData.password = !value;
+        break;
+      default:
+        break;
     }
+    setErrors(errorData);
   };
 
   const handleSignInClick = () => {
-    let valid = true;
+    const errorData = {
+      email: !isValidEmail(email),
+      password: !password,
+    };
 
-    if (!validateEmail(email)) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        email: "Please enter a valid email address.",
-      }));
-      valid = false;
-    } else {
-      setErrors((prevErrors) => ({ ...prevErrors, email: "" }));
+    setErrors(errorData);
+
+    if (Object.values(errorData).some((error) => error)) {
+      return;
     }
 
-    if (password.trim() === "") {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        password: "Password cannot be empty.",
-      }));
-      valid = false;
-    } else {
-      setErrors((prevErrors) => ({ ...prevErrors, password: "" }));
-    }
-
-    if (valid) {
-      // Handle the sign-in logic here
-      // console.log("Form is valid. Proceed with sign-in.");
-      handleSubmit();
-    }
+    handleSubmit();
   };
 
-  const handleSubmit = async (e) => {
-    // e.preventDefault();
+  const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/login', { email, password }); // Adjust the URL if needed
+      const response = await axios.post("http://localhost:5000/login", {
+        email,
+        password,
+      });
       const data = response.data;
-      console.log(data)
       setMessage(data.message);
-      localStorage.setItem("customer",data.customerId)
+      localStorage.setItem("customer", data.customerId);
       if (data.token) {
         // Redirect user to another page upon successful login
         // window.location.href = '/'; // Adjust the URL as needed.
+        console.log("Success Message", message);
       }
     } catch (error) {
-      console.log("Login process failed")
-      setMessage('Login failed. Please try again.');
+      setMessage("Login failed. Please try again.");
       console.error(error);
     }
   };
 
-  console.log(locale);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
@@ -116,23 +108,23 @@ const SigninContent = ({ locale }) => {
         </div>
         <div className="section2">
           <input
-            className="emailInput"
+            className={`emailInput ${errors.email ? "inputError" : ""}`}
             name="email"
             type="email"
             placeholder={loginData.emailPlaceholder}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            onBlur={handleEmailBlur}
+            onBlur={() => handleBlur("email", email)}
           />
-          {errors.email && <p className="error">{errors.email}</p>}
           <div className="passwordInputContainer">
             <input
-              className="passwordInput"
+              className={`passwordInput ${errors.password ? "inputError" : ""}`}
               name="password"
               type={showPassword ? "text" : "password"}
               placeholder={loginData.passwordPlaceholder}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onBlur={() => handleBlur("password", password)}
             />
             <FontAwesomeIcon
               icon={showPassword ? faEye : faEyeSlash}
@@ -140,15 +132,13 @@ const SigninContent = ({ locale }) => {
               onClick={() => setShowPassword(!showPassword)}
             />
           </div>
-          {errors.password && <p className="error">{errors.password}</p>}
           <button className="forgotPasswordButton">
             {loginData.forgotPasswordBtn}
           </button>
           <div className="loginScreenButtons">
-            <button className="registerButton">{loginData.registerBtn}</button>
+            <button className="registerButton" onClick={()=> navigate("/signup")}>{loginData.registerBtn}</button>
             <button
               className="loginButton"
-              type="button"
               onClick={handleSignInClick}
             >
               {loginData.loginBtn}
