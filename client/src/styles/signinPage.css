@@ -6,7 +6,7 @@
 
 .loginMainContainer {
   width: 1200px;
-  height: 100vh;
+  height: calc(100vh - 70px - 50px);
   background-color: rgb(234, 234, 236);
   padding: 10px;
   margin: auto;
@@ -14,7 +14,7 @@
 
 .loginPage {
   width: 1000px;
-  height: 400px;
+  /* height: 400px; */
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -22,8 +22,7 @@
   background-color: #fff;
   padding: 10px;
   border-radius: 10px;
-  margin: auto;
-  margin-top: 60px;
+  margin: 40px auto;
 }
 
 .loginPage img {
@@ -64,10 +63,14 @@
   border-radius: 5px;
 }
 
-/* .loginPage .sections .section2 input:focus {
+.loginPage .sections .section2 input:focus {
   border: 2px solid blue;
   outline: none;
-} */
+}
+
+.loginPage .sections .section2 .inputError {
+  border-color: red;
+}
 
 .loginPage .sections .section2 .emailInput {
   margin-bottom: 20px;

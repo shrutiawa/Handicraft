@@ -6,7 +6,7 @@
 
 .signupMainContainer {
   width: 1200px;
-  height: 100vh;
+  /* height: (100vh- 70px- 50px); */
   background-color: rgb(234, 234, 236);
   padding: 10px;
   margin: auto;
@@ -17,12 +17,11 @@
   height: 450px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   background-color: #fff;
   padding: 10px;
   border-radius: 10px;
-  margin: auto;
-  margin-top: 30px;
+  margin: 20px auto;
 }
 
 .signupPage img {
@@ -50,24 +49,44 @@
 }
 
 .signupPage .sections .section1 p {
-  font-size: 16px;
-  color: rgb(53, 53, 53);
+  font-size: 20px;
+  color: rgb(82, 82, 82);
 }
 
-.signupPage .sections .section2 .subsection1 input {
+.signupPage .sections .section2 .fullNameContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.signupPage .sections .section2 input {
   width: 100%;
   font-size: 20px;
   padding: 10px;
-  border: 1px solid grey;
+  border: 2px solid grey;
   border-radius: 5px;
   margin-bottom: 20px;
 }
 
-.signupPage .sections .section2 .subsection1 .confirmPasswordInputContainer {
+.signupPage .sections .section2 input:focus {
+  border: 2px solid blue;
+  outline: none;
+}
+
+.signupPage .sections .section2 .fullNameContainer input {
+  width: 48%;
+}
+
+.signupPage .sections .section2 .confirmPasswordInputContainer {
   position: relative;
 }
 
-.signupPage .sections .section2 .subsection1 .passwordToggleIcon {
+.signupPage .sections .section2 .inputError {
+  border-color: red;
+}
+
+.signupPage .sections .section2 .passwordToggleIcon {
   font-size: 20px;
   position: absolute;
   top: 50%;
