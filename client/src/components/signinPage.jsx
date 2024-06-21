@@ -26,7 +26,6 @@ const SigninContent = ({ locale }) => {
   const { loading, error, data } = useQuery(GET_CONTENT, {
     variables: { locale },
   });
-  const navigate =useNavigate()
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
