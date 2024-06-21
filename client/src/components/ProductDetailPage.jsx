@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/productDetail.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCartShopping, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import Header from "./header";
+import Footer from "./footer";
 
 function ProductDetailPage() {
   const location = useLocation();
@@ -46,6 +48,8 @@ function ProductDetailPage() {
   };
 
   return (
+    <>
+    <Header/>
     <div className="pdp-container">
       <div className="card">
         <div className="left-imgs">
@@ -91,6 +95,8 @@ function ProductDetailPage() {
         </div>
       </div>
     </div>
+    <Footer/>
+    </>
   );
 }
 

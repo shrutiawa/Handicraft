@@ -6,9 +6,14 @@
   
   .footerMainContainer {
     width: 1200px;
-    height: 150px;
+    height: 50px;
     margin: auto;
     /* border: 1px solid red; */
+    padding: 0px;
+  }
+
+  .footerMainContainer hr{
+    margin-bottom: 3px;
   }
   
   .footerContent {
@@ -16,8 +21,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid green;
-    padding: 0px 10px;
+    /* border: 1px solid green; */
+    /* padding: 0px 10px; */
     font-size: 20px;
   }
   

@@ -10,6 +10,8 @@ import {
 } from "react-instantsearch";
 import "../styles/productList.css"
 import { useNavigate } from "react-router-dom";
+import Header from "./header";
+import Footer from "./footer";
 
 const searchClient = algoliasearch(
   "LQ3AGF58XX",
@@ -51,6 +53,8 @@ function ProductListPage() {
 
 
   return (
+    <>
+    <Header/>
     <div className="container">
       <InstantSearch searchClient={searchClient} indexName="Handicraft_Machathon" insights>
         <div className="search-container">
@@ -103,6 +107,8 @@ function ProductListPage() {
         </div>
       </InstantSearch>
     </div>
+    <Footer/>
+    </>
   );
 }
 export default ProductListPage;

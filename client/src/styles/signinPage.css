@@ -6,7 +6,7 @@
 
 .loginMainContainer {
   width: 1200px;
-  height: 100vh;
+  height: calc(100vh - 70px - 50px);
   background-color: rgb(234, 234, 236);
   padding: 10px;
   margin: auto;
@@ -14,7 +14,7 @@
 
 .loginPage {
   width: 1000px;
-  height: 400px;
+  /* height: 400px; */
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -22,8 +22,7 @@
   background-color: #fff;
   padding: 10px;
   border-radius: 10px;
-  margin: auto;
-  margin-top: 60px;
+  margin: 40px auto;
 }
 
 .loginPage img {

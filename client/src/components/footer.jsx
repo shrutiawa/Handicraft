@@ -57,8 +57,9 @@ const Footer = () => {
   return (
     <ApolloProvider client={client}>
       <div className="footerMainContainer">
+        <hr />
         <FooterContent locale={locale} />
-        <div className="languageSwitcher">
+        {/* <div className="languageSwitcher">
           <select
             name="selectlanguage"
             id="selectlanguage"
@@ -67,7 +68,7 @@ const Footer = () => {
             <option value="en-US">English</option>
             <option value="hi-IN">Hindi</option>
           </select>
-        </div>
+        </div> */}
       </div>
     </ApolloProvider>
   );
