@@ -6,6 +6,7 @@ import ShippingAddressForm from "./components/ShippingAddressForm";
 import SigninPage from "./components/signinPage";
 import SignupPage from "./components/signupPage";
 import Header from "./components/header";
+import Footer from "./components/footer";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/signin" element={<SigninPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/header" element={<Header />} />
+          <Route path="/footer" element={<Footer />} />
         </Routes>
       </BrowserRouter>
     </>
