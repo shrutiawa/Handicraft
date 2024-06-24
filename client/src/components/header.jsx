@@ -41,7 +41,7 @@ const HeaderContent = ({ locale }) => {
       <div className="section2">
         <ul>
           <li onClick={() => navigate("/")}>About Us</li>
-          <li onClick={() => navigate("/")}>Buy Products</li>
+          <li onClick={() => navigate("/product-list")}>Buy Products</li>
           <li onClick={() => navigate("/tutorials")}>Tutorials</li>
           <li onClick={() => navigate("/")}>Blogs</li>
           <li onClick={() => navigate("/")}>Become a Seller &#x2192; </li>

@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { InstantSearch, SearchBox, Hits, connectScrollTo } from "react-instantsearch-dom";
+import {
+  InstantSearch,
+  SearchBox,
+  Hits,
+  connectScrollTo,
+} from "react-instantsearch-dom";
 import algoliasearch from "algoliasearch/lite";
 import "../styles/TutorialsDisplay.css";
 import VideoModal from "./VideoModal";
@@ -69,14 +74,16 @@ const TutorialsDisplay = () => {
         <SearchBox />
       </div>
 
-      <Hits
-        hitComponent={(hitProps) => (
-          <TutorialHit
-            {...hitProps}
-            openModal={() => openModalWithTutorial(hitProps.hit)}
-          />
-        )}
-      />
+      <div className="tutorials-section-box">
+        <Hits
+          hitComponent={(hitProps) => (
+            <TutorialHit
+              {...hitProps}
+              openModal={() => openModalWithTutorial(hitProps.hit)}
+            />
+          )}
+        />
+      </div>
 
       {/* Video Modal */}
       {selectedTutorial && (
