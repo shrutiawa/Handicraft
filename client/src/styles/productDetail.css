@@ -16,46 +16,47 @@ p{
     padding:0px 20px;
     margin:7px 80px 10px ;
 }
+
 .main-img {
-    height:450px;
-    width: 450px;
-    border-radius: 10px;
-    cursor: pointer;
-    display: block;
-    margin: 10px auto;
-    transition: transform 0.3s ease-in-out;
+  height: 400px;
+  width: 400px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: block;
+  /* margin: 10px auto; */
+  transition: transform 0.3s ease-in-out;
 }
-.main-img:hover{
-    transform: scale(1.02);
+
+.main-img:hover {
+  transform: scale(1.02);
 }
-.right-text{
-    display: flex;
-    flex-direction: column;
-    gap:20px;
-    width:90%;
+
+.right-text {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 90%;
 }
 .heading-secondary {
-    display: block;
-    color: hsl(26, 100%, 55%);
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 16px;
-    letter-spacing: 1px;
+  display: block;
+  color: hsl(26, 100%, 55%);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 16px;
+  letter-spacing: 1px;
 }
-.product-specification{
-    display: flex;
-    flex-direction: column;
-    gap:7px;
-    
+.product-specification {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
 }
-.product-specification div{
-    display: flex;
-    align-items: center;
-    gap:5px;
+.product-specification div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
-.product-specification div>h4{
-    font-size: 18px;
-
+.product-specification div > h4 {
+  font-size: 18px;
 }
 .buttons{
     /* outline:2px solid red; */
@@ -63,18 +64,17 @@ p{
     display: flex;
     justify-content: space-between;
 }
-.cart-button{
-    display: flex;
-    justify-content: space-evenly;
-    place-items: center;
-    width:150px;
-    padding:10px ;
-    background-color:black;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-
+.cart-button {
+  display: flex;
+  justify-content: space-evenly;
+  place-items: center;
+  width: 150px;
+  padding: 10px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .quantity-button-container {

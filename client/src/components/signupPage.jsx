@@ -153,9 +153,9 @@ const SignupContent = ({ locale }) => {
 
   return (
     <div className="signupPage">
-      <img src={logo[0].url} alt="logo" />
       <div className="sections">
         <div className="section1">
+          <img src={logo[0].url} alt="logo" />
           <h3>{signUp}</h3>
           <p>{signUpDescription}</p>
         </div>
@@ -217,7 +217,7 @@ const SignupContent = ({ locale }) => {
           <div className="signupScreenButtons">
             <button
               className="alreadyregisteredBtn"
-              onClick={() => navigate("/signin")}
+              onClick={() => navigate("/")}
             >
               {signUpData.alreadyHaveAccount}
             </button>
@@ -239,7 +239,7 @@ const SignupPage = () => {
 
   return (
     <ApolloProvider client={client}>
-      <Header/>
+      <Header />
       <div className="signupMainContainer">
         <SignupContent locale={locale} />
         {/* <div className="languageSwitcher">
@@ -253,7 +253,7 @@ const SignupPage = () => {
           </select>
         </div> */}
       </div>
-      <Footer/>
+      <Footer />
     </ApolloProvider>
   );
 };

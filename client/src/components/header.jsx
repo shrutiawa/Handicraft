@@ -36,14 +36,14 @@ const HeaderContent = ({ locale }) => {
   return (
     <div className="headerContent">
       <div className="section1">
-        <img src={logo[0].url} alt="logo" />
+        <img src={logo[0].url} alt="logo" onClick={() => navigate("/")} />
         {/* <p>{title}</p> */}
       </div>
       <div className="section2">
         <ul>
           <li onClick={() => navigate("/")}>About Us</li>
-          <li onClick={() => navigate("/")}>Buy Products</li>
-          <li onClick={() => navigate("/")}>Tutorials</li>
+          <li onClick={() => navigate("/product-list")}>Buy Products</li>
+          <li onClick={() => navigate("/tutorials")}>Tutorials</li>
           <li onClick={() => navigate("/")}>Blogs</li>
           <li onClick={() => navigate("/")}>Become a Seller &#x2192; </li>
         </ul>

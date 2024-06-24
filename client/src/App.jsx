@@ -8,6 +8,7 @@ import SignupPage from "./components/signupPage";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import OrderConformation from "./components/orderConfirmation";
+import TutorialsPage from "./components/TutorialsPage";
 import AddingProduct from "./components/AddingProduct";
 
 function App() {
@@ -19,10 +20,12 @@ function App() {
           <Route path="/product" element={<ProductDetailPage />} />
         <Route path="/cart" element={<ShoppingCart />} />
           <Route path="/" element={<SigninPage />} />
+          <Route path="/delivery-address" element={<ShippingAddressForm />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/header" element={<Header />} />
           <Route path="/order-confirm" element={<OrderConformation />} />
           <Route path="/footer" element={<Footer />} />
+          <Route path="/tutorials" element={<TutorialsPage />} />
           <Route path="/add-product" element={<AddingProduct />} />
         </Routes>
       </BrowserRouter>
