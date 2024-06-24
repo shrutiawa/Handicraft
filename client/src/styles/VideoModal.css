@@ -1,0 +1,87 @@
+.video-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10; /* Ensure modal is above all other content */
+  background-color: rgba(0, 0, 0, 0.6); /* Dimmed background */
+  overflow: auto; /* Enable scroll if needed */
+}
+
+.video-modal-content {
+  background-color: #fff;
+  margin: auto;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+  width: 80%;
+  max-width: 800px;
+
+  position: relative;
+  transition: transform 0.3s ease-out; /* Smooth transition for opening the modal */
+  transform-origin: center center; /* Ensures zoom effect originates from the center */
+}
+
+/* Animation when opening the modal */
+.video-modal.open .video-modal-content {
+  transform: scale(1);
+}
+
+.video-modal-close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+
+  color: #333;
+  font-size: 32px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.video-modal-close:hover,
+.video-modal-close:focus {
+  color: #000;
+
+  text-decoration: none;
+}
+
+/* Video styles */
+video {
+  width: 100%; /* Full width of the modal content */
+  height: auto; /* Maintain aspect ratio */
+
+  border-radius: 5px; /* Soften edges with a rounded border on the video element itself */
+
+  outline: none; /* Remove focus outline inside the modal as it's not visually appealing here */
+}
+
+/* Heading and paragraph styles for title and description within the modal content area*/
+.video-info h3,
+.video-info p {
+  margin-bottom: 0.75rem;
+
+  color: #333;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: normal;
+
+  padding-bottom: 0.75rem; /* Space between elements in info section */
+
+  border-bottom: solid thin #eaeaea; /* A subtle separator between elements if needed*/
+}
+.video-info p:last-child {
+  border-bottom: none; /* No border for last element in info section*/
+}
+/* If author information is present, style accordingly */
+.author-info {
+  font-style: italic;
+  color: #888;
+}

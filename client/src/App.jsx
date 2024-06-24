@@ -8,6 +8,7 @@ import SignupPage from "./components/signupPage";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import OrderConformation from "./components/orderConfirmation";
+import TutorialsPage from "./components/TutorialsPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/header" element={<Header />} />
           <Route path="/order-confirm" element={<OrderConformation />} />
           <Route path="/footer" element={<Footer />} />
+          <Route path="/tutorials" element={<TutorialsPage />} />
         </Routes>
       </BrowserRouter>
     </>
