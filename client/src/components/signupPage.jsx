@@ -27,7 +27,6 @@ const SignupContent = ({ locale }) => {
   const { loading, error, data } = useQuery(GET_CONTENT, {
     variables: { locale },
   });
-  const navigate =useNavigate()
 
   const [formData, setFormData] = useState({
     firstName: "",

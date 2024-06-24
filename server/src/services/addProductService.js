@@ -1,7 +1,7 @@
 const client = require('../middleware/commercetools');
 
 const createProduct = async (data) => {
-  const { categoryId, productTypeId, name, price, color, size, imageUrl, description } = data;
+  const { categoryId, productTypeId, name, price, color, size, imageUrl, description, material } = data;
 
   const productData = {
     productType: {
@@ -15,10 +15,13 @@ const createProduct = async (data) => {
       }
     ],
     name: {
-      en: name
+      "en-US": name
     },
     slug: {
-      en: `${name.toLowerCase().replace(/\s+/g, '-')}-product`
+      "en-US": `${name.toLowerCase().replace(/\s+/g, '-')}-product`
+    },
+    description: {
+      "en-US": description
     },
     masterVariant: {
       sku: `SKU-${Math.floor(Math.random() * 1000)}`,
@@ -26,7 +29,7 @@ const createProduct = async (data) => {
         {
           value: {
             currencyCode: "INR",
-            centAmount: price * 100
+            centAmount: price
           }
         }
       ],
@@ -42,28 +45,30 @@ const createProduct = async (data) => {
       ],
       attributes: [
         {
-          name: "imageURL",
-          value: imageUrl
-        },
-        {
-          name: "color",
-          value: color
+          name: "Color",
+          value: {
+            "en-US": color
+          }
         },
         {
           name: "Size",
-          value: size
+          value: {
+            "en-US": size
+          }
         },
         {
-          name: "Description",
-          value: description
-        }
+          name: "Material",
+          value: {
+            "en-US": material
+          }
+        },
       ]
     }
   };
 
   try {
     const response = await client.execute({
-      uri: '/repurpose/products',
+      uri: '/handicraft/products',
       method: 'POST',
       body: productData
     });

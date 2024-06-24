@@ -79,14 +79,14 @@ const SigninContent = ({ locale }) => {
       const data = response.data;
       setMessage(data.message);
       localStorage.setItem("customer", data.customerId);
-      if (data.token) {
-        // Redirect user to another page upon successful login
-        // window.location.href = '/'; // Adjust the URL as needed.
-        console.log("Success Message", message);
+      if (data.message==="Login success") {
+        navigate("/product-list")
       }
     } catch (error) {
+      if(error.response.data.error=="Login failed - Invalid Credentials"){
       setMessage("Login failed. Please try again.");
-      console.error(error);
+      }
+      console.error("hello error",error);
     }
   };
 

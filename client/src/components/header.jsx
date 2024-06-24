@@ -31,6 +31,7 @@ const HeaderContent = ({ locale }) => {
   }
 
   const { logo, title } = data.headerCollection.items[0];
+  
 
   return (
     <div className="headerContent">

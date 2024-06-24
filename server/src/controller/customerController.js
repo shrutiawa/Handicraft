@@ -12,13 +12,15 @@ async function getCustomers(req, res) {
 
 // Adding customers to commercetools
 async function addCustomer(req, res) {
+  console.log("request of customer",req.body.firstName)
   try {
     const customerData = {
       email: req.body.email,
-      firstName: req.body.firstname,
-      lastName: req.body.lastname,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       password: req.body.password,
     };
+    console.log("before sending customer",customerData)
     const newCustomer = await customerService.createCustomer(customerData);
     console.log("response from create customer", newCustomer.statusCode);
     if ((newCustomer.statusCode = 201)) {

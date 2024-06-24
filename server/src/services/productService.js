@@ -5,7 +5,7 @@ async function fetchProducts() {
   try {
     const response = await client.execute({
       method: "GET",
-      uri: "/repurpose/products",
+      uri: "/handicraft/products",
     });
     return response.body.results;
   } catch (error) {

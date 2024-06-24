@@ -8,7 +8,7 @@ async function authorizeLogin(email,password) {
       uri: "/handicraft/login",
       body :{email,password}
     });
-    console.log(response.body.customer.id)
+    // console.log(response.body.customer.id)
     return response.body.customer.id;
   } catch (error) {
     console.error("Invalid Credentials:", error);

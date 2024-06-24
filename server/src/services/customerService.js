@@ -16,13 +16,14 @@ async function fetchCustomers() {
 
 // creating Customers
 async function createCustomer(customerData) {
+  console.log("customer",customerData)
   try {
     const response = await client.execute({
       method: "POST",
       uri: "/handicraft/customers",
       body: customerData,
     });
-    console.log(response);
+    console.log("after adding customr",response);
     return response;
   } catch (error) {
     console.error("Error Adding customer:", error);
