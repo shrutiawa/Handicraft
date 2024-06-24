@@ -1,11 +1,12 @@
 const stripe = require("stripe")("sk_test_51PJr9WSFTGzovtjLlmIlzOd6qec8FN49zBRylj51LUYxOkpnY4vE9gBP2Qr9Ee2mE6yKldRlh2gsYWFO1Tzhq52000ndogEHwv")
 
-const createCheckoutSession = async (carts,totalAmount) => {
-  const totalInCents = Math.round(totalAmount * 100);
+const createCheckoutSession = async (carts) => {
+  // const totalInCents = Math.round(totalAmount * 100);
+  console.log("hello carts",carts)
   const lineItems = carts.map((product) => ({
     
     price_data: {
-      currency: 'usd',
+      currency: 'inr',
       product_data: {
         name: product.name,
         description: product.description,
@@ -21,7 +22,7 @@ const createCheckoutSession = async (carts,totalAmount) => {
     line_items: lineItems,
     mode: 'payment',
     success_url: 'http://localhost:3000/order-confirm',
-    cancel_url: 'http://localhost:3000/cancel'
+    cancel_url: 'http://localhost:3000'
   });
 
   return session.id;

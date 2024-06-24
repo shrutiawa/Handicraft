@@ -6,7 +6,7 @@
 
 .signupMainContainer {
   width: 1200px;
-  height: (100vh- 70px- 50px);
+  /* height: (100vh- 70px- 50px); */
   background-color: rgb(234, 234, 236);
   padding: 10px;
   margin: auto;

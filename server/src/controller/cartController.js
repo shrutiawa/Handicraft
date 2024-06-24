@@ -67,27 +67,6 @@ async function checkCartExists(req, res) {
 }
 
 
-// Check coupon code
-async function checkCoupon(req, res) {
-  const { coupon: couponCode, customerId, grandTotal: total } = req.body;
-
-  try {
-    // const voucher = await voucherifyClient.vouchers.get(couponCode);
-    const response = await voucherifyClient.redemptions.redeem(couponCode, {
-      customer: { id: customerId },
-      order: { amount: parseInt(total) * 100 }, //converting into cents
-    });
-    const orderData = response.order;
-    // const { total_applied_discount_amount: discountedAmount, total_amount: totalAmountToBePaid } = orderData;
-    const discountedAmount = response.order.total_applied_discount_amount / 100; // Convert from cents to dollars
-    const totalAmountToBePaid = response.order.total_amount / 100;
-    res.json({ discountedAmount, totalAmountToBePaid });
-  } catch (error) {
-    res.status(500).json(error);
-    console.log(error);
-  }
-}
-
 // delete the cart
 const deleteCartController = async (req, res) => {
   try {
@@ -104,7 +83,7 @@ const deleteCartController = async (req, res) => {
 const shippingAddressController = async (req,res)=>{
   try{
     console.log("shipping body",req.body);  // Console log the request body
-    const { address } = req.body;
+    const  address  = req.body;
     console.log("id",storedCartId,storedCartVersion)
     const result = await cartService.addShippingAddress(storedCartId, storedCartVersion,address);
     res.status(200).json(result);
@@ -116,11 +95,24 @@ const shippingAddressController = async (req,res)=>{
 }
 
 
+const orderController = async (req,res) =>{
+  try{
+    console.log("id",storedCartId,storedCartVersion)
+    const result = await cartService.addOrder(storedCartId, storedCartVersion);
+    res.status(200).json(result);
+
+  } catch (error) {
+    console.error("Error adding order:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+
+}
+
 module.exports = {
   getCartDetails,
   updateCartDetails,
   checkCartExists,
-  checkCoupon,
-  // deleteCartController,
-  shippingAddressController
+  deleteCartController,
+  shippingAddressController,
+  orderController
 };

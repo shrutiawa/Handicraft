@@ -3,13 +3,16 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/shoppingCart.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faArrowDown, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import ShippingAddressForm from "./ShippingAddressForm";
+import { ToastContainer, toast } from "react-toastify";
 
 function ShoppingCart() {
-  const customerId = "d0e515a9-7da8-49f2-ae89-db5200127fb4";
+  const customerId = localStorage.getItem("customer");
   const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
+  const [showShippingAddress, setShowShippingAddress] = useState(false);
 
   useEffect(() => {
     const getAllEntries = async () => {
@@ -18,13 +21,11 @@ function ShoppingCart() {
           `http://localhost:5000/carts?customerId=${customerId}`
         );
         const productsInCart = response.data.lineItems;
-
-        // Map over each product in the cart and extract necessary details
         const updatedProducts = productsInCart.map((item) => {
           const productId = item.productId;
           const productName = item.name["en-US"];
-          const productPrice = item.price.value.centAmount; // Convert price from cents to dollars
-          const productImage = item.variant.images[0]?.url; // Add a null check for the image
+          const productPrice = item.price.value.centAmount; 
+          const productImage = item.variant.images[0]?.url; 
           const quantity = item.quantity;
 
           // Extracting attributes
@@ -94,6 +95,16 @@ function ShoppingCart() {
         0
       )
       .toFixed(2);
+  };
+
+  const toggleShippingAddress = () => {
+    setShowShippingAddress((prev) => !prev);
+  };
+  const handleCheckout = () => {
+    if (!showShippingAddress) {
+      toast.info("Please add the shipping address.");
+      setShowShippingAddress(true);
+    } 
   };
 
   return (
@@ -166,37 +177,24 @@ function ShoppingCart() {
                   <div className="totals-value">{calculateSubtotal()}</div>
                 </div>
 
-                <div className="payment-methods">
-                  <h3>Payment Methods</h3>
-                  <label>
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="cod"
-                      //   onChange={handlePaymentMethodChange}
-                      //   checked={paymentMethod === "cod"}
-                    />
-                    &nbsp; Cash on Delivery (COD)
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="card"
-                      //   onChange={handlePaymentMethodChange}
-                      //   checked={paymentMethod === "card"}
-                    />
-                    &nbsp; Card
-                  </label>
-                </div>
               </div>
-              <button className="checkout" onClick={() => navigate("/delivery-address")}>
+              <button className="checkout" onClick={handleCheckout}>
                 Checkout
               </button>
             </section>
           </div>
+            <div className="shipping-address">
+            <button className="toggle-address" onClick={toggleShippingAddress}>
+            Shipping Address <FontAwesomeIcon icon={faAngleDown} /> 
+            </button>
+        
+            {showShippingAddress && (
+              <ShippingAddressForm products={products}/>
+            )}
+              </div>
         </>
       )}
+      <ToastContainer />
     </div>
   );
 }

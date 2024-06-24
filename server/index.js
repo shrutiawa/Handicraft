@@ -63,11 +63,8 @@ app.post(
   paymentController.createCheckoutSession
 );
 
-// Coupon
-app.post("/api/coupon", cartController.checkCoupon);
-
 // delete cart after successful order
-// app.delete("/carts", cartController.deleteCartController);
+app.delete("/carts", cartController.deleteCartController);
 
 
 // fetch all the categories of product
@@ -82,6 +79,10 @@ app.post('/products', addProductController.addProduct);
 
 //Add Shipping Address
 app.post('/shipping-address', cartController.shippingAddressController)
+
+// Add order after payment
+app.post('/create-order', cartController.orderController)
+
 
 // Start the server
 app.listen(PORT, () => {

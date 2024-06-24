@@ -138,11 +138,13 @@ const SigninContent = ({ locale }) => {
             {loginData.forgotPasswordBtn}
           </button>
           <div className="loginScreenButtons">
-            <button className="registerButton" onClick={()=> navigate("/signup")}>{loginData.registerBtn}</button>
             <button
-              className="loginButton"
-              onClick={handleSignInClick}
+              className="registerButton"
+              onClick={() => navigate("/signup")}
             >
+              {loginData.registerBtn}
+            </button>
+            <button className="loginButton" onClick={handleSignInClick}>
               {loginData.loginBtn}
             </button>
           </div>
@@ -157,7 +159,7 @@ const SigninPage = () => {
 
   return (
     <ApolloProvider client={client}>
-      <Header/>
+      <Header />
       <div className="loginMainContainer">
         <SigninContent locale={locale} />
         {/* <div className="languageSwitcher">
@@ -171,7 +173,7 @@ const SigninPage = () => {
           </select>
         </div> */}
       </div>
-      <Footer/>
+      <Footer />
     </ApolloProvider>
   );
 };
