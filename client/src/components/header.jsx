@@ -35,7 +35,7 @@ const HeaderContent = ({ locale }) => {
   return (
     <div className="headerContent">
       <div className="section1">
-        <img src={logo[0].url} alt="logo" />
+        <img src={logo[0].url} alt="logo" onClick={() => navigate("/")} />
         {/* <p>{title}</p> */}
       </div>
       <div className="section2">

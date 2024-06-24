@@ -6,7 +6,7 @@
 
 .signupMainContainer {
   width: 1200px;
-  /* height: (100vh- 70px- 50px); */
+  height: (100vh- 70px- 50px);
   background-color: rgb(234, 234, 236);
   padding: 10px;
   margin: auto;
@@ -14,33 +14,27 @@
 
 .signupPage {
   width: 1000px;
-  height: 450px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
   background-color: #fff;
   padding: 10px;
   border-radius: 10px;
   margin: 20px auto;
 }
 
-.signupPage img {
-  height: 100px;
-  width: 250px;
-}
-
 .signupPage .sections {
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .signupPage .sections .section1,
 .signupPage .sections .section2 {
   width: 50%;
-  /* border: 1px solid green; */
   padding: 10px;
   height: 100%;
+}
+
+.signupPage .sections .section1 img{
+  width: 250px;
+  height: 100px;
 }
 
 .signupPage .sections .section1 h3 {
@@ -66,7 +60,7 @@
   padding: 10px;
   border: 2px solid grey;
   border-radius: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .signupPage .sections .section2 input:focus {
