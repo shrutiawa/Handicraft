@@ -14,10 +14,11 @@
 
 .signupPage {
   width: 1000px;
+  height: 400px;
   background-color: #fff;
   padding: 10px;
   border-radius: 10px;
-  margin: 20px auto;
+  margin: 5px auto;
 }
 
 .signupPage .sections {
@@ -98,7 +99,7 @@
 
 .signupPage .signupScreenButtons .signupBtn {
   border: none;
-  background-color: rgb(71, 71, 253);
+  background-color: #7F5539;
   border-radius: 20px;
   color: #fff;
   padding: 10px;
@@ -108,7 +109,7 @@
 .signupPage .signupScreenButtons .alreadyregisteredBtn,
 .signupPage .signupScreenButtons .cancelBtn {
   width: max-content;
-  color: blue;
+  color: #7F5539;
   border: none;
   background-color: #fff;
   text-align: left;
@@ -122,32 +123,11 @@
 .signupPage .signupScreenButtons .alreadyregisteredBtn:hover,
 .signupPage .section2 .cancelBtn:hover {
   cursor: pointer;
-  background-color: rgb(217, 217, 252);
+  background-color: #E6CCB2;
 }
 
 .signupPage .signupScreenButtons .signupBtn:hover {
   cursor: pointer;
-  background-color: blue;
-}
-
-.signupMainContainer .languageSwitcher {
-  width: 1000px;
-  margin: auto;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding-right: 5px;
-  margin-top: 5px;
-}
-
-.signupMainContainer .languageSwitcher select {
-  width: 130px;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  background-color: rgb(234, 234, 236);
-}
-
-.signupMainContainer .languageSwitcher select:hover {
-  background-color: rgb(209, 209, 211);
+  background-color: #E6CCB2;
+  color: #7F5539;
 }

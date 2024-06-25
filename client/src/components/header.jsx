@@ -4,7 +4,7 @@ import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faUser } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const GET_CONTENT = gql`
   query GetHeaderContent($locale: String!) {
@@ -22,7 +22,10 @@ const HeaderContent = ({ locale }) => {
     variables: { locale },
   });
   const navigate = useNavigate();
-  console.log(data);
+  const location = useLocation();
+  const { pathname } = location;
+  const [showDropdown, setShowDropdown] = useState(false);
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
@@ -36,20 +39,70 @@ const HeaderContent = ({ locale }) => {
     <div className="headerContent">
       <div className="section1">
         <img src={logo[0].url} alt="logo" onClick={() => navigate("/")} />
-        {/* <p>{title}</p> */}
       </div>
       <div className="section2">
         <ul>
-          <li onClick={() => navigate("/")}>About Us</li>
-          <li onClick={() => navigate("/product-list")}>Buy Products</li>
-          <li onClick={() => navigate("/tutorials")}>Tutorials</li>
-          <li onClick={() => navigate("/")}>Blogs</li>
-          <li onClick={() => navigate("/")}>Become a Seller &#x2192; </li>
+          <li
+            className={pathname === "/aboutus" ? "active" : "navLinkBar"}
+            onClick={() => navigate("/aboutus")}
+          >
+            About Us
+          </li>
+          <li
+            className={pathname === "/product-list" ? "active" : "navLinkBar"}
+            onClick={() => navigate("/product-list")}
+          >
+            Buy Products
+          </li>
+          <li
+            className={pathname === "/tutorials" ? "active" : "navLinkBar"}
+            onClick={() => navigate("/tutorials")}
+          >
+            Tutorials
+          </li>
+          <li
+            className={pathname === "/blogs" ? "active" : "navLinkBar"}
+            onClick={() => navigate("/blogs")}
+          >
+            Blogs
+          </li>
+          <li className="navLinkBar" onClick={() => navigate("/")}>
+            Become a<br />
+            Seller &#x2192;
+          </li>
         </ul>
       </div>
       <div className="section3">
         <FontAwesomeIcon className="cartIcon" icon={faShoppingCart} />
-        <FontAwesomeIcon className="userIcon" icon={faUser} />
+
+        <div
+          className="userIconContainer"
+          onMouseEnter={() => setShowDropdown(true)}
+          onMouseLeave={() => setShowDropdown(false)}
+        >
+          <FontAwesomeIcon className="userIcon" icon={faUser} />
+          {showDropdown && (
+            <>
+              <div className="caret-up"></div> {/* Triangular shape */}
+              <div className="userDropdown">
+                <div className="dropdownContent">
+                  <div
+                    className="dropdownItem"
+                    onClick={() => navigate("/")}
+                  >
+                    SignIn
+                  </div>
+                  <div
+                    className="dropdownItem"
+                    onClick={() => navigate("/signup")}
+                  >
+                    SignUp
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -62,17 +115,6 @@ const Header = () => {
     <ApolloProvider client={client}>
       <div className="headerMainContainer">
         <HeaderContent locale={locale} />
-        {/* <div className="languageSwitcher">
-          <select
-            name="selectlanguage"
-            id="selectlanguage"
-            onChange={(event) => setLocale(event.target.value)}
-          >
-            <option value="en-US">English</option>
-            <option value="hi-IN">Hindi</option>
-          </select>
-        </div> */}
-        <hr />
       </div>
     </ApolloProvider>
   );

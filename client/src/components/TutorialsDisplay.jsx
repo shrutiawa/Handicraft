@@ -15,19 +15,6 @@ const searchClient = algoliasearch(
   process.env.REACT_APP_ALGOLIA_SEARCH_ONLY_KEY
 );
 
-// Hit component for each tutorial video
-// const TutorialHit = ({ hit }) => {
-//     console.log("ttt", hit.fields)
-//     return (
-//         <div className="tutorial-hit">
-//             <video className='video' controls>
-//                 <source src={hit.fields.video["en-US"].original_url} type="video/mp4" />
-//                  Your browser does not support the video tag.
-//             </video>
-//             <p>{hit.fields.title["en-US"]}</p>
-//         </div>
-//     );
-// };
 
 const TutorialHit = ({ hit, openModal }) => {
   console.log("ttt", hit);

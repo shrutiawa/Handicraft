@@ -8,6 +8,7 @@
   width: 1200px;
   /* height: calc(100vh - 70px - 50px); */
   background-color: rgb(234, 234, 236);
+  /* box-shadow: 0px 0px 4px 4px #7f5539; */
   padding: 10px;
   margin: auto;
 }
@@ -101,7 +102,7 @@
 
 .loginPage .sections .section2 .forgotPasswordButton {
   width: max-content;
-  color: blue;
+  color: #7f5539;
   margin-top: 2px;
   margin-bottom: 10px;
   border: none;
@@ -121,7 +122,7 @@
 
 .loginPage .loginScreenButtons .loginButton {
   border: none;
-  background-color: rgb(71, 71, 253);
+  background-color: #7f5539;
   border-radius: 20px;
   color: #fff;
   padding: 10px;
@@ -130,7 +131,7 @@
 
 .loginPage .loginScreenButtons .registerButton {
   width: max-content;
-  color: blue;
+  color: #7f5539;
   border: none;
   background-color: #fff;
   text-align: left;
@@ -144,16 +145,13 @@
 .loginPage .section2 .forgotPasswordButton:hover,
 .loginPage .loginScreenButtons .registerButton:hover {
   cursor: pointer;
-  background-color: rgb(217, 217, 252);
-}
-
-.loginPage .section2 .forgotPasswordButton:hover {
-  text-decoration: underline;
+  background-color: #e6ccb2;
 }
 
 .loginPage .loginScreenButtons .loginButton:hover {
   cursor: pointer;
-  background-color: blue;
+  color: #7f5539;
+  background-color: #e6ccb2;
 }
 
 .loginMainContainer .languageSwitcher {
