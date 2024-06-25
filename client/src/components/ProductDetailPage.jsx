@@ -2,12 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/productDetail.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCartShopping,
-  faMinus,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faCartShopping, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 function ProductDetailPage() {
   const location = useLocation();
@@ -16,7 +12,9 @@ function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
 
   const handleIncrease = () => {
-    setQuantity(quantity + 1);
+    if (quantity < 5) {
+      setQuantity(quantity + 1);
+    }
   };
 
   const handleDecrease = () => {
@@ -24,17 +22,20 @@ function ProductDetailPage() {
       setQuantity(quantity - 1);
     }
   };
+
   const productId = hit.productID;
   if (!hit) {
     return <div>Product details not available</div>;
   }
+
   const addToCart = async () => {
     const customerId = localStorage.getItem("customer");
 
     if (!customerId) {
-      alert("Customer not found . Please log in.");
+      alert("Customer not found. Please log in.");
       return;
     }
+
     try {
       console.log("data", customerId, productId, quantity);
       const response = await axios.post("http://localhost:5000/carts", {
@@ -52,6 +53,9 @@ function ProductDetailPage() {
   return (
     <>
       <div className="pdp-container">
+        <button className="back-button" onClick={() => navigate("/product-list")}>
+          <FontAwesomeIcon icon={faArrowLeft} /> Continue shopping
+        </button>
         <div className="card">
           <div className="left-imgs">
             <img src={hit.images} alt="product images" className="main-img" />
@@ -81,16 +85,17 @@ function ProductDetailPage() {
               <p style={{ color: "green" }}>inclusive of all taxes</p>
               <div className="buttons">
                 <div className="quantity-button-container">
-                  <button
-                    className="quantity-button minus"
-                    onClick={handleDecrease}
-                  >
+                  <button className="quantity-button minus" onClick={handleDecrease}
+                   disabled={quantity <=1}
+                   style={{ backgroundColor: quantity <=1 ? "grey" : "" }}>
                     <FontAwesomeIcon icon={faMinus} />
                   </button>
                   <span className="quantity-display">{quantity}</span>
                   <button
                     className="quantity-button plus"
                     onClick={handleIncrease}
+                    disabled={quantity >= 5}
+                    style={{ backgroundColor: quantity >= 5 ? "grey" : "" }}
                   >
                     <FontAwesomeIcon icon={faPlus} />
                   </button>

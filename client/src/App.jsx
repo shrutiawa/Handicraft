@@ -11,6 +11,7 @@ import OrderConformation from "./components/orderConfirmation";
 import TutorialsPage from "./components/TutorialsPage";
 import FullBlogPost from "./components/FullBlogPost";
 import BlogPage from "./components/BlogPage";
+import AddingProduct from "./components/AddingProduct";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/tutorials" element={<TutorialsPage />} />
           <Route path="/blogs" element={<BlogPage />} />
           <Route path="/blogcontent/:id" element={<FullBlogPost />} />
+          <Route path="/add-product" element={<AddingProduct />} />
         </Routes>
     <Footer/>
       </BrowserRouter>

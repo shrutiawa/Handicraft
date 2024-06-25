@@ -2,13 +2,13 @@ const client = require("../middleware/commercetools");
 
 // fetching carts by customerId -complete
 async function fetchCartDetails(customerId) {
-  console.log("customer-id",customerId)
+  // console.log("customer-id",customerId)
   try {
     const response = await client.execute({
       method: "GET",
       uri: `/handicraft/carts/customer-id=${customerId}`,
     });
-    console.log("cart detail", response);
+    // console.log("cart detail", response);
     return response.body;
   } catch (error) {
     // console.error("Error fetching customers cart details:", error);
@@ -63,7 +63,7 @@ async function createCart(customerId) {
 // delete cart
 async function deleteCart(cartId, cartVersion) {
   try {
-    console.log("delete cart",cartId,cartVersion)
+    // console.log("delete cart",cartId,cartVersion)
     const response = await client.execute({
       method: "DELETE",
       uri: `/handicraft/carts/${cartId}?version=${cartVersion}`,
@@ -77,7 +77,7 @@ async function deleteCart(cartId, cartVersion) {
 // add shipping address
 async function addShippingAddress(cartId, cartVersion, address) {
   try {
-    console.log("data on address", cartId, cartVersion, address)
+    // console.log("data on address", cartId, cartVersion, address)
     const addressPayload = {
       title: address.title,
       firstName: address.firstName,
@@ -102,7 +102,7 @@ async function addShippingAddress(cartId, cartVersion, address) {
         ]
       },
     });
-    console.log("hello shipping",response)
+    // console.log("hello shipping",response)
     return response;
   } catch (error) {
     console.error("Error in adding shipping address:", error);
@@ -113,7 +113,7 @@ async function addShippingAddress(cartId, cartVersion, address) {
 // add order
 async function addOrder(cartId, cartVersion) {
   try {
-    console.log("order manage", cartId, cartVersion)
+    // console.log("order manage", cartId, cartVersion)
     
     const response = await client.execute({
       method: "POST",

@@ -3,7 +3,7 @@ const loginService = require("../services/loginService");
 // login Controller
 async function authenticateUser(req, res) {
   const { email, password } = req.body;
-  console.log("email and password",req.body);
+  // console.log("email and password",req.body);
   try {
     const loginResult = await loginService.authorizeLogin(email, password);
     if (loginResult) {

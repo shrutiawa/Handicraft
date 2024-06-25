@@ -2,6 +2,7 @@
   width: 1200px;
   margin:60px 40px 0px;
   }
+
   
   .shipping-address{
     margin: 40px 0px;
@@ -43,54 +44,29 @@
   }
   
   
-  h1 {
-    font-weight: 100;
-  }
-  /* 
-  label {
-    color: $color-label;
-  } */
-  
   .shopping-cart {
-    margin-top: 20px;
+    margin-top: 40px;
     display: flex;
     justify-content: space-evenly;
     padding: 0px 30px;
   }
-  
+ 
   .itemsInCart{
     width: 60%;
   }
+  .itemsInCart h1, .summary h1{
+    margin-bottom: 30px;
+    font-weight: 500;
+    font-size: 30px;
+  }
   .summary{
     width: 25%;
-    border: 1px solid black;
-    height: fit-content;
-    padding : 30px;
-    margin: auto 5px;
-  }
-  .couponForm{
-    border-bottom: 1px solid black;
-    margin: 5px 0;
-  }
-  .couponForm > input{
-    border: none;
-    height: 30px;
-    
-  }
-  .couponForm> input:focus{
-    outline: none;
-  }
-  .couponForm>button{
-    border: none;
-    font-weight: bold;
-    background: none;
-    float: right;
-  }
-  .couponForm > button:hover{
-    color: green;
+    padding : 0px 30px 10px;
+    margin:  5px;
+    /* background: rgb(209, 205, 205); */
   }
   
-  /* Column headers */
+
   .column-labels {
     label {
       padding-bottom: 15px;
@@ -161,7 +137,7 @@
         width: 79%;
       }
       
-      .totals-value {
+      .totals-value, .totals-item-value {
         float: right;
         width: 21%;
         text-align: right;
@@ -178,13 +154,13 @@
   }
   
   .checkout {
-    float: right;
+    width: 100%;
     border: 0;
     margin-top: 20px;
-    padding: 6px 25px;
+    padding: 6px 9px;
     background-color: #6b6;
     color: #fff;
-    font-size: 25px;
+    font-size: 22px;
     border-radius: 3px;
   }
   

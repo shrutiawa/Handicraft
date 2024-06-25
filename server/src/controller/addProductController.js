@@ -3,9 +3,10 @@
 const productService = require('../services/addProductService');
 
 const addProduct = (req, res) => {
+  console.log("product request",req.body)
   try {
     const productData = productService.createProduct(req.body);
-    // console.log("Product saved:", productData);
+    console.log("Product saved:", productData);
     // console.log("Shruti response ", res.status());
     
     res.status(201).json({ message: 'Product added successfully!', product: productData });

@@ -20,6 +20,7 @@ const createCheckoutSession = async (carts) => {
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     line_items: lineItems,
+    billing_address_collection: 'required',
     mode: 'payment',
     success_url: 'http://localhost:3000/order-confirm',
     cancel_url: 'http://localhost:3000'

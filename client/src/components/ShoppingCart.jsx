@@ -18,8 +18,11 @@ function ShoppingCart() {
 
   const [products, setProducts] = useState([]);
   const [showShippingAddress, setShowShippingAddress] = useState(false);
+  const [totalItems, setTotalItems] = useState(0); 
 
   useEffect(() => {
+    const customerId = localStorage.getItem("customer");
+
     const getAllEntries = async () => {
       try {
         const response = await axios.get(
@@ -34,14 +37,12 @@ function ShoppingCart() {
           const quantity = item.quantity;
 
           // Extracting attributes
-          const attributes = item.variant.attributes.reduce((acc, attr) => {
-            acc[attr.name] = attr.value["en-US"];
-            return acc;
-          }, {});
+          const attributes = {};
+          item.variant.attributes.forEach((attr) => {
+            attributes[attr.name] = attr.value["en-US"];
+          });
 
-          const color = attributes["Color"] || "N/A";
-          const size = attributes["Size"] || "N/A";
-          const material = attributes["Material"] || "N/A";
+          const { Color: color = "N/A", Size: size = "N/A", Material: material = "N/A" } = attributes;
 
           return {
             id: productId,
@@ -56,13 +57,25 @@ function ShoppingCart() {
         });
 
         setProducts(updatedProducts);
+       
+
+        // Calculate total number of items in cart
+        const productsCart = response.data.lineItems;
+
+        // Extract unique product IDs
+        const uniqueProductIds = [...new Set(productsCart.map(item => item.productId))];
+        setTotalItems(uniqueProductIds.length);
+
       } catch (error) {
         console.error("Error fetching entries:", error);
+        
       }
     };
 
-    getAllEntries();
-  }, [customerId]);
+    if (customerId) {
+      getAllEntries();
+    } 
+  }, []);
 
   const handleIncrease = (productId) => {
     const updatedProducts = products.map((product) => {
@@ -94,8 +107,11 @@ function ShoppingCart() {
 
   const calculateSubtotal = () => {
     return products
-      .reduce((sum, product) => sum + product.price * product.quantity, 0)
-      .toFixed(2);
+      .reduce(
+        (sum, product) => sum + product.price * product.quantity,
+        0
+      )
+      
   };
 
   const toggleShippingAddress = () => {
@@ -110,13 +126,18 @@ function ShoppingCart() {
 
   return (
     <div className="cartMainContainer">
-      <h1>Shopping Cart</h1>
+      <div className="shopping-cart-title">
+      
+    
+      </div>
       {products.length === 0 ? (
         <p>Your shopping cart is empty.</p>
       ) : (
         <>
           <div className="shopping-cart">
+          
             <section className="itemsInCart">
+            <h1>Shopping Cart</h1>
               <div className="column-labels">
                 <label className="product-image">Image</label>
                 <label className="product-details">Product</label>
@@ -159,8 +180,14 @@ function ShoppingCart() {
               ))}
             </section>
 
+              
             <section className="summary">
+            <h1>Order Summary</h1>
               <div className="totals">
+                <div className="totals-item">
+                  <label>Items</label>
+                  <div className="totals-item-value">{totalItems}</div>
+                </div>
                 <div className="totals-item">
                   <label>Subtotal</label>
                   <div className="totals-value">{calculateSubtotal()}</div>
@@ -179,7 +206,7 @@ function ShoppingCart() {
                 </div>
               </div>
               <button className="checkout" onClick={handleCheckout}>
-                Checkout
+                Proceed to Checkout
               </button>
             </section>
           </div>

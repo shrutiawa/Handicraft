@@ -1,8 +1,4 @@
 const cartService = require("../services/cartService");
-
-const updateCartItems = require("../services/cartService");
-
-const createCart = require("../services/cartService");
 const { deleteCart } = require("../services/cartService");
 
 
@@ -58,7 +54,7 @@ async function updateCartDetails(req, res) {
   }
 }
 
-// check for existing cart - not in action
+// check for existing cart 
 async function checkCartExists(req, res) {
   const customerId = req.body.customerId;
   try {

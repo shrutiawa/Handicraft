@@ -35,16 +35,16 @@ function Hit({ hit }) {
     navigate(`/product`, { state: { hit } });
   };
 
-  return (
-    <>
-      <article className="search-panel_item" onClick={handleClick}>
-        <img src={hit.images} alt="images" />
-        <h3>{truncatedName}</h3>
-        <p>{truncatedDescription}</p>
-        <h4>{hit.productType}</h4>
-        <h3>₹ {hit.prices["INR"].max}</h3>
-      </article>
-    </>
+  return (<>
+
+    <article className="search-panel_item" onClick={handleClick}>
+      <img src={hit.images} alt="images" />
+      <span className="heading-secondary">{hit.productType}</span>
+      <h3>{truncatedName}</h3>
+      <p>{truncatedDescription}</p>
+      <h3>₹ {hit.prices['INR'].max}</h3>
+    </article>
+  </>
   );
 }
 
