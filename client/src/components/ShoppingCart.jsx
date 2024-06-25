@@ -3,7 +3,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/shoppingCart.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown, faArrowDown, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleDown,
+  faArrowDown,
+  faMinus,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import ShippingAddressForm from "./ShippingAddressForm";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -100,7 +105,6 @@ function ShoppingCart() {
     setProducts(updatedProducts);
   };
 
-
   const calculateSubtotal = () => {
     return products
       .reduce(
@@ -117,7 +121,7 @@ function ShoppingCart() {
     if (!showShippingAddress) {
       toast.info("Please add the shipping address.");
       setShowShippingAddress(true);
-    } 
+    }
   };
 
   return (
@@ -161,7 +165,7 @@ function ShoppingCart() {
                     >
                       <FontAwesomeIcon icon={faMinus} />
                     </button>
-                    <span >{product.quantity}</span>
+                    <span>{product.quantity}</span>
                     <button
                       className="quantity-button1 plus"
                       onClick={() => handleIncrease(product.id)}
@@ -200,22 +204,19 @@ function ShoppingCart() {
                   <label>Grand Total</label>
                   <div className="totals-value">{calculateSubtotal()}</div>
                 </div>
-
               </div>
               <button className="checkout" onClick={handleCheckout}>
                 Proceed to Checkout
               </button>
             </section>
           </div>
-            <div className="shipping-address">
+          <div className="shipping-address">
             <button className="toggle-address" onClick={toggleShippingAddress}>
-            Shipping Address <FontAwesomeIcon icon={faAngleDown} /> 
+              Shipping Address <FontAwesomeIcon icon={faAngleDown} />
             </button>
-        
-            {showShippingAddress && (
-              <ShippingAddressForm products={products}/>
-            )}
-              </div>
+
+            {showShippingAddress && <ShippingAddressForm products={products} />}
+          </div>
         </>
       )}
       <ToastContainer />

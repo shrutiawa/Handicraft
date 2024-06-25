@@ -57,7 +57,6 @@ const Footer = () => {
   return (
     <ApolloProvider client={client}>
       <div className="footerMainContainer">
-        <hr />
         <FooterContent locale={locale} />
         {/* <div className="languageSwitcher">
           <select

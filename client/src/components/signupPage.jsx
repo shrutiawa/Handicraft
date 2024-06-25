@@ -6,8 +6,6 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import Header from "./header";
-import Footer from "./footer";
 
 const GET_CONTENT = gql`
   query GetSignUpContent($locale: String!) {
@@ -239,7 +237,6 @@ const SignupPage = () => {
 
   return (
     <ApolloProvider client={client}>
-      <Header />
       <div className="signupMainContainer">
         <SignupContent locale={locale} />
         {/* <div className="languageSwitcher">
@@ -253,7 +250,6 @@ const SignupPage = () => {
           </select>
         </div> */}
       </div>
-      <Footer />
     </ApolloProvider>
   );
 };

@@ -4,8 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/productDetail.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faCartShopping, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
-import Header from "./header";
-import Footer from "./footer";
 
 function ProductDetailPage() {
   const location = useLocation();
@@ -43,7 +41,7 @@ function ProductDetailPage() {
       const response = await axios.post("http://localhost:5000/carts", {
         customerId,
         productId,
-        quantity
+        quantity,
       });
       console.log(response.data);
       navigate("/cart");
@@ -54,7 +52,6 @@ function ProductDetailPage() {
 
   return (
     <>
-      <Header />
       <div className="pdp-container">
         <button className="back-button" onClick={() => navigate("/product-list")}>
           <FontAwesomeIcon icon={faArrowLeft} /> Continue shopping
@@ -111,7 +108,6 @@ function ProductDetailPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

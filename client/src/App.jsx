@@ -9,12 +9,15 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import OrderConformation from "./components/orderConfirmation";
 import TutorialsPage from "./components/TutorialsPage";
+import FullBlogPost from "./components/FullBlogPost";
+import BlogPage from "./components/BlogPage";
 import AddingProduct from "./components/AddingProduct";
 
 function App() {
   return (
     <>
       <BrowserRouter>
+    <Header/>
         <Routes>
           <Route path="/product-list" element={<ProductListPage />} />
           <Route path="/product" element={<ProductDetailPage />} />
@@ -26,9 +29,13 @@ function App() {
           <Route path="/order-confirm" element={<OrderConformation />} />
           <Route path="/footer" element={<Footer />} />
           <Route path="/tutorials" element={<TutorialsPage />} />
+          <Route path="/blogs" element={<BlogPage />} />
+          <Route path="/blogcontent/:id" element={<FullBlogPost />} />
           <Route path="/add-product" element={<AddingProduct />} />
         </Routes>
+    <Footer/>
       </BrowserRouter>
+
     </>
   );
 }

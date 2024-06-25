@@ -159,7 +159,7 @@ const SigninPage = () => {
 
   return (
     <ApolloProvider client={client}>
-      <Header />
+      {/* <Header /> */}
       <div className="loginMainContainer">
         <SigninContent locale={locale} />
         {/* <div className="languageSwitcher">
@@ -173,7 +173,7 @@ const SigninPage = () => {
           </select>
         </div> */}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </ApolloProvider>
   );
 };
