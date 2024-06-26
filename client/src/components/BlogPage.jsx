@@ -35,7 +35,7 @@ const BlogPage = () => {
       <div className="search-container">
         <input
           type="text"
-          placeholder="Search blog posts..."
+          placeholder="Search here..."
           onChange={handleSearchChange}
           value={searchTerm}
         />

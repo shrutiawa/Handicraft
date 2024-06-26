@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import "../styles/footer.css";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
@@ -8,13 +8,14 @@ import {
   faTwitter,
   faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
+import LocaleContext from "./localeContextProvider";
 
 const GET_CONTENT = gql`
-  query GetHeaderContent($locale: String!) {
-    headerCollection {
+  query GetFooterContent($locale: String!) {
+    footerCollection {
       items {
-        logo
-        title(locale: $locale)
+        footerHeading(locale: $locale)
+        socialMedia(locale: $locale)
       }
     }
   }
@@ -28,19 +29,19 @@ const FooterContent = ({ locale }) => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  if (!data || !data.headerCollection || !data.headerCollection.items.length) {
+  if (!data || !data.footerCollection || !data.footerCollection.items.length) {
     return <p>No data available</p>;
   }
 
-  const { logo, title } = data.headerCollection.items[0];
+  const { footerHeading, socialMedia } = data.footerCollection.items[0];
 
   return (
     <div className="footerContent">
       <div className="section1">
-        &copy; HandiCraft 2024, All Rights Reserved.
+        &copy; {footerHeading}
       </div>
       <div className="section2">
-        <p>Connect with us on</p>
+        <p>{socialMedia}</p>
         <div className="socialIcons">
           <FontAwesomeIcon className="icons" icon={faFacebook} />
           <FontAwesomeIcon className="icons" icon={faInstagram} />
@@ -52,7 +53,7 @@ const FooterContent = ({ locale }) => {
 };
 
 const Footer = () => {
-  const [locale, setLocale] = useState("en-US");
+  const { locale } = useContext(LocaleContext);
 
   return (
     <ApolloProvider client={client}>

@@ -12,30 +12,34 @@ import TutorialsPage from "./components/TutorialsPage";
 import FullBlogPost from "./components/FullBlogPost";
 import BlogPage from "./components/BlogPage";
 import AddingProduct from "./components/AddingProduct";
+import AboutUs from "./components/aboutusPage";
+import { LocaleProvider } from "./components/localeContextProvider";
 
 function App() {
   return (
     <>
-      <BrowserRouter>
-    <Header/>
-        <Routes>
-          <Route path="/product-list" element={<ProductListPage />} />
-          <Route path="/product" element={<ProductDetailPage />} />
-        <Route path="/cart" element={<ShoppingCart />} />
-          <Route path="/" element={<SigninPage />} />
-          <Route path="/delivery-address" element={<ShippingAddressForm />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/header" element={<Header />} />
-          <Route path="/order-confirm" element={<OrderConformation />} />
-          <Route path="/footer" element={<Footer />} />
-          <Route path="/tutorials" element={<TutorialsPage />} />
-          <Route path="/blogs" element={<BlogPage />} />
-          <Route path="/blogcontent/:id" element={<FullBlogPost />} />
-          <Route path="/add-product" element={<AddingProduct />} />
-        </Routes>
-    <Footer/>
-      </BrowserRouter>
-
+      <LocaleProvider>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path="/product-list" element={<ProductListPage />} />
+            <Route path="/product" element={<ProductDetailPage />} />
+            <Route path="/cart" element={<ShoppingCart />} />
+            <Route path="/" element={<SigninPage />} />
+            <Route path="/delivery-address" element={<ShippingAddressForm />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/header" element={<Header />} />
+            <Route path="/order-confirm" element={<OrderConformation />} />
+            <Route path="/footer" element={<Footer />} />
+            <Route path="/tutorials" element={<TutorialsPage />} />
+            <Route path="/blogs" element={<BlogPage />} />
+            <Route path="/blogcontent/:id" element={<FullBlogPost />} />
+            <Route path="/add-product" element={<AddingProduct />} />
+            <Route path="/aboutus" element={<AboutUs />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </LocaleProvider>
     </>
   );
 }

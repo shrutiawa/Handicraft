@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import "../styles/signinPage.css";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
@@ -6,8 +6,7 @@ import client from "./apolloClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import Header from "./header";
-import Footer from "./footer";
+import LocaleContext from "./localeContextProvider";
 
 const GET_CONTENT = gql`
   query GetLoginContent($locale: String!) {
@@ -79,14 +78,14 @@ const SigninContent = ({ locale }) => {
       const data = response.data;
       setMessage(data.message);
       localStorage.setItem("customer", data.customerId);
-      if (data.message==="Login success") {
-        navigate("/product-list")
+      if (data.message === "Login success") {
+        navigate("/product-list");
       }
     } catch (error) {
-      if(error.response.data.error=="Login failed - Invalid Credentials"){
-      setMessage("Login failed. Please try again.");
+      if (error.response.data.error == "Login failed - Invalid Credentials") {
+        setMessage("Login failed. Please try again.");
       }
-      console.error("hello error",error);
+      console.error("hello error", error);
     }
   };
 
@@ -155,25 +154,13 @@ const SigninContent = ({ locale }) => {
 };
 
 const SigninPage = () => {
-  const [locale, setLocale] = useState("en-US");
+  const { locale } = useContext(LocaleContext);
 
   return (
     <ApolloProvider client={client}>
-      {/* <Header /> */}
       <div className="loginMainContainer">
         <SigninContent locale={locale} />
-        {/* <div className="languageSwitcher">
-          <select
-            name="selectlanguage"
-            id="selectlanguage"
-            onChange={(event) => setLocale(event.target.value)}
-          >
-            <option value="en-US">English</option>
-            <option value="hi-IN">Hindi</option>
-          </select>
-        </div> */}
       </div>
-      {/* <Footer /> */}
     </ApolloProvider>
   );
 };

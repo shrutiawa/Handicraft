@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../styles/signupPage.css";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
@@ -6,6 +6,7 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import LocaleContext from "./localeContextProvider";
 
 const GET_CONTENT = gql`
   query GetSignUpContent($locale: String!) {
@@ -233,22 +234,12 @@ const SignupContent = ({ locale }) => {
 };
 
 const SignupPage = () => {
-  const [locale, setLocale] = useState("en-US");
+  const { locale } = useContext(LocaleContext);
 
   return (
     <ApolloProvider client={client}>
       <div className="signupMainContainer">
         <SignupContent locale={locale} />
-        {/* <div className="languageSwitcher">
-          <select
-            name="selectlanguage"
-            id="selectlanguage"
-            onChange={(event) => setLocale(event.target.value)}
-          >
-            <option value="en-US">English</option>
-            <option value="hi-IN">Hindi</option>
-          </select>
-        </div> */}
       </div>
     </ApolloProvider>
   );

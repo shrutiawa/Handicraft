@@ -1,23 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../styles/header.css";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
+import LocaleContext from "./localeContextProvider";
 
 const GET_CONTENT = gql`
   query GetHeaderContent($locale: String!) {
     headerCollection {
       items {
         logo
-        title(locale: $locale)
+        links(locale: $locale)
       }
     }
   }
 `;
 
-const HeaderContent = ({ locale }) => {
+const HeaderContent = ({ locale, setLocale }) => {
   const { loading, error, data } = useQuery(GET_CONTENT, {
     variables: { locale },
   });
@@ -33,8 +34,25 @@ const HeaderContent = ({ locale }) => {
     return <p>No data available</p>;
   }
 
-  const { logo, title } = data.headerCollection.items[0];
-  
+  const switchLang = () =>{
+    if(locale === "en-US"){
+      setLocale("hi-IN")
+    }
+    else{
+      setLocale("en-US")
+    }
+  }
+
+  const { logo, links } = data.headerCollection.items[0];
+  const {
+    aboutUs,
+    buyProduct,
+    tutorials,
+    blogs,
+    becomeSeller,
+    signIn,
+    signUp,
+  } = links;
 
   return (
     <div className="headerContent">
@@ -47,33 +65,33 @@ const HeaderContent = ({ locale }) => {
             className={pathname === "/aboutus" ? "active" : "navLinkBar"}
             onClick={() => navigate("/aboutus")}
           >
-            About Us
+            {aboutUs}
           </li>
           <li
             className={pathname === "/product-list" ? "active" : "navLinkBar"}
             onClick={() => navigate("/product-list")}
           >
-            Buy Products
+            {buyProduct}
           </li>
           <li
             className={pathname === "/tutorials" ? "active" : "navLinkBar"}
             onClick={() => navigate("/tutorials")}
           >
-            Tutorials
+            {tutorials}
           </li>
           <li
             className={pathname === "/blogs" ? "active" : "navLinkBar"}
             onClick={() => navigate("/blogs")}
           >
-            Blogs
+            {blogs}
           </li>
           <li className="navLinkBar" onClick={() => navigate("/")}>
-            Become a<br />
-            Seller &#x2192;
+            {becomeSeller} &#x2192;
           </li>
         </ul>
       </div>
       <div className="section3">
+        <button onClick={() => switchLang()}>Switch Language</button>
         <FontAwesomeIcon className="cartIcon" icon={faShoppingCart} />
 
         <div
@@ -84,20 +102,17 @@ const HeaderContent = ({ locale }) => {
           <FontAwesomeIcon className="userIcon" icon={faUser} />
           {showDropdown && (
             <>
-              <div className="caret-up"></div> {/* Triangular shape */}
+              <div className="caret-up"></div>
               <div className="userDropdown">
                 <div className="dropdownContent">
-                  <div
-                    className="dropdownItem"
-                    onClick={() => navigate("/")}
-                  >
-                    SignIn
+                  <div className="dropdownItem" onClick={() => navigate("/")}>
+                    {signIn}
                   </div>
                   <div
                     className="dropdownItem"
                     onClick={() => navigate("/signup")}
                   >
-                    SignUp
+                    {signUp}
                   </div>
                 </div>
               </div>
@@ -110,12 +125,12 @@ const HeaderContent = ({ locale }) => {
 };
 
 const Header = () => {
-  const [locale, setLocale] = useState("en-US");
+  const { locale, setLocale } = useContext(LocaleContext);
 
   return (
     <ApolloProvider client={client}>
       <div className="headerMainContainer">
-        <HeaderContent locale={locale} />
+        <HeaderContent locale={locale} setLocale={setLocale} />
       </div>
     </ApolloProvider>
   );

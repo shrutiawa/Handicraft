@@ -5,7 +5,7 @@
 }
 
 .headerMainContainer {
-  width: 1200px;
+  /* width: 1200px; */
   height: 70px;
   margin: auto;
   /* border: 1px solid red; */
@@ -17,9 +17,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* border: 1px solid green; */
-  /* padding: 0px 10px; */
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #E6CCB2;
 }
 
 .headerContent .section1,
@@ -30,12 +30,13 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
-  /* border: 1px solid red; */
+
 }
 
 .headerContent .section1 img {
-  width: 70px;
+  width: 170px;
   height: 70px;
+  object-fit: cover;
 }
 
 .headerContent .section2 {
@@ -52,14 +53,14 @@
 }
 
 .headerContent .section2 .navLinkBar {
-  /* border: 1px solid red; */
-  height: 100%;
+  height: 70%;
   width: 25%;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #e6ccb2;
-  border-right: 1px solid #7f5539;
+  border-right: 2px solid #7f5539;
+  transition: transform 0.3s ease-in-out;
 }
 
 .headerContent .section2 .navLinkBar:last-child {
@@ -67,7 +68,7 @@
 }
 
 .headerContent .section2 .active {
-  height: 100%;
+  height: 70%;
   width: 25%;
   display: flex;
   justify-content: center;
@@ -82,7 +83,8 @@
 .headerContent .section2 .active:hover {
   background-color: #7f5539;
   color: #e6ccb2;
-  /* box-shadow: 0 4px 5px #e6ccb2; */
+  box-shadow: 0px 4px 8px #7f5539;
+  transform: scale(1.04);
 }
 
 .headerContent .section2 ul li:hover {
@@ -132,6 +134,7 @@
   top: calc(100% + 20px); /* Adjust as needed */
   right: 20px;
   background-color: #e6ccb2;
+  box-shadow: 0px 4px 8px #7f5539;
   /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
   /* z-index: 10; */
   /* border: 1px solid #ddd; */
@@ -143,14 +146,18 @@
   padding: 10px 20px;
   cursor: pointer;
   color: #333;
+  transition: transform 0.3s ease-in-out;
+  font-size: 18px;
 }
 
 .dropdownItem:first-child{
-  border-top: 1px solid #7f5539;
-  border-bottom: 1px solid #7f5539;
+  border-top: 2px solid #7f5539;
+  border-bottom: 2px solid #7f5539;
 }
 
 .dropdownItem:hover {
   background-color: #7f5539;
   color: #e6ccb2;
+  box-shadow: 0px 4px 8px #7f5539;
+  transform: scale(1.04);
 }

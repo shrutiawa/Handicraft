@@ -6,10 +6,7 @@
 
 .loginMainContainer {
   width: 1200px;
-  /* height: calc(100vh - 70px - 50px); */
-  background-color: rgb(234, 234, 236);
-  /* box-shadow: 0px 0px 4px 4px #7f5539; */
-  padding: 10px;
+  /* padding: 10px; */
   margin: auto;
 }
 
@@ -19,17 +16,18 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  /* border: 1px solid grey; */
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
   background-color: #fff;
   padding: 10px;
   border-radius: 10px;
-  margin: 5px auto;
+  margin: 15px auto;
 }
 
 .loginPage img {
   height: 70px;
-  width: 200px;
+  width: 170px;
   /* border: 1px solid red; */
+  object-fit: cover;
 }
 
 .sections {
@@ -162,16 +160,4 @@
   justify-content: flex-end;
   align-items: center;
   padding-right: 5px;
-}
-
-.loginMainContainer .languageSwitcher select {
-  width: 130px;
-  padding: 10px;
-  border: none;
-  border-radius: 10px;
-  background-color: rgb(234, 234, 236);
-}
-
-.loginMainContainer .languageSwitcher select:hover {
-  background-color: rgb(209, 209, 211);
 }
