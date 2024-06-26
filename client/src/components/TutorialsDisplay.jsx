@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  InstantSearch,
-  SearchBox,
-  Hits,
-  connectScrollTo,
-} from "react-instantsearch-dom";
+import { InstantSearch, SearchBox, Hits } from "react-instantsearch-dom";
 import algoliasearch from "algoliasearch/lite";
 import "../styles/TutorialsDisplay.css";
 import VideoModal from "./VideoModal";
@@ -15,12 +10,13 @@ const searchClient = algoliasearch(
   process.env.REACT_APP_ALGOLIA_SEARCH_ONLY_KEY
 );
 
-
-const TutorialHit = ({ hit, openModal }) => {
-  console.log("ttt", hit);
-  const thumbnailUrl = hit.fields.images["en-US"][0].url;
-  const title = hit.fields.title["en-US"];
-  const videoUrl = hit.fields.video["en-US"].original_url;
+const TutorialHit = ({ hit, openModal, locale }) => {
+  // console.log("ttt", hit);
+  // console.log("locale: ", locale)
+  const thumbnailUrl = hit.fields.images[locale][0].url;
+  // console.log("thumbnailUrl: ", thumbnailUrl);
+  const title = hit.fields.title[locale];
+  const videoUrl = hit.fields.video[locale].original_url;
 
   return (
     <div className="tutorial-hit">
@@ -38,11 +34,12 @@ const TutorialHit = ({ hit, openModal }) => {
   );
 };
 
-const TutorialsDisplay = () => {
+const TutorialsDisplay = ({ locale }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedTutorial, setSelectedTutorial] = useState(null);
 
   const openModalWithTutorial = (tutorial) => {
+    console.log("tutorial: ", tutorial);
     setSelectedTutorial(tutorial);
     setModalOpen(true);
   };
@@ -67,6 +64,7 @@ const TutorialsDisplay = () => {
             <TutorialHit
               {...hitProps}
               openModal={() => openModalWithTutorial(hitProps.hit)}
+              locale={locale}
             />
           )}
         />
@@ -77,9 +75,9 @@ const TutorialsDisplay = () => {
         <VideoModal
           isOpen={isModalOpen}
           close={closeModal}
-          videoUrl={selectedTutorial.fields.video["en-US"][0].original_url}
-          title={selectedTutorial.fields.title["en-US"]}
-          description={selectedTutorial.fields.shortDescription["en-US"]}
+          videoUrl={selectedTutorial.fields.video[locale][0].original_url}
+          title={selectedTutorial.fields.title[locale]}
+          description={selectedTutorial.fields.shortDescription[locale]}
           // author={selectedTutorial.fields.author["en-US"]}
         />
       )}
