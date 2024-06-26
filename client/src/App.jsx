@@ -37,6 +37,7 @@ function App() {
             <Route path="/blogcontent/:id" element={<FullBlogPost />} />
             <Route path="/add-product" element={<AddingProduct />} />
             <Route path="/aboutus" element={<AboutUs />} />
+            <Route path="/order-history" element={<OrderHistoryPage />} />
           </Routes>
           <Footer />
         </BrowserRouter>
