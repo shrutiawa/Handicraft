@@ -12,6 +12,7 @@ import TutorialsPage from "./components/TutorialsPage";
 import FullBlogPost from "./components/FullBlogPost";
 import BlogPage from "./components/BlogPage";
 import AddingProduct from "./components/AddingProduct";
+import OrderHistoryPage from "./components/OrderHistory";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="/blogs" element={<BlogPage />} />
           <Route path="/blogcontent/:id" element={<FullBlogPost />} />
           <Route path="/add-product" element={<AddingProduct />} />
+          <Route path="/order-history" element={<OrderHistoryPage />} />
         </Routes>
     <Footer/>
       </BrowserRouter>
