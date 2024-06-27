@@ -32,7 +32,7 @@ const GET_CONTENT = gql`
 export const getHTMLData = (rawData) => {
   const htmlString = marked(rawData);
   const sanitizedHTMLString = DOMPurify.sanitize(htmlString);
-  console.log("sanitizedHTMLString: " ,sanitizedHTMLString);
+  console.log("sanitizedHTMLString: ", sanitizedHTMLString);
   return sanitizedHTMLString;
 };
 
@@ -70,19 +70,19 @@ const AboutUsContent = ({ locale }) => {
         <img src={image[0].url} alt="image" />
         <div>
           <h3>{title}</h3>
-          <p dangerouslySetInnerHTML={{__html: getHTMLData(value)}}></p>
+          <p dangerouslySetInnerHTML={{ __html: getHTMLData(value) }}></p>
         </div>
       </div>
       <div className="section2">
         <p>What We Provide?</p>
         <div className="facilityItems">
-        {facilitiesLinkCollection.items.map((item, idx) => (
-          <div key={idx} className="facilityCard">
-            <img src={item.icon[0].url} alt="img" />
-            <p className="facilityHeading">{item.heading}</p>
-            <p className="facilityDesc">{item.facilityDesc}</p>
-          </div>
-        ))}
+          {facilitiesLinkCollection.items.map((item, idx) => (
+            <div key={idx} className="facilityCard">
+              <img src={item.icon[0].url} alt="img" />
+              <p className="facilityHeading">{item.heading}</p>
+              <p className="facilityDesc">{item.facilityDesc}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -90,7 +90,7 @@ const AboutUsContent = ({ locale }) => {
 };
 
 const AboutUs = () => {
-  const {locale} = useContext(LocaleContext);
+  const { locale } = useContext(LocaleContext);
 
   return (
     <ApolloProvider client={client}>

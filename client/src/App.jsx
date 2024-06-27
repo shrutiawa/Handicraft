@@ -34,7 +34,7 @@ function App() {
             <Route path="/footer" element={<Footer />} />
             <Route path="/tutorials" element={<TutorialsPage />} />
             <Route path="/blogs" element={<BlogPage />} />
-            <Route path="/blogcontent/:id" element={<FullBlogPost />} />
+            <Route path="/blogcontent/:index" element={<FullBlogPost />} />
             <Route path="/add-product" element={<AddingProduct />} />
             <Route path="/aboutus" element={<AboutUs />} />
             <Route path="/order-history" element={<OrderHistoryPage />} />

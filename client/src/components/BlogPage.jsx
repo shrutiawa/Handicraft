@@ -1,34 +1,51 @@
-import React, { useState, useEffect } from "react";
-import * as contentful from "contentful";
+import React, { useState, useContext } from "react";
 import "../styles/BlogPage.css";
 import { Link } from "react-router-dom";
+import { useQuery, gql, ApolloProvider } from "@apollo/client";
+import client from "./apolloClient";
+import LocaleContext from "./localeContextProvider";
 
-const client = contentful.createClient({
-  space: process.env.REACT_APP_CONTENTFUL_SPACE_ID,
-  accessToken: process.env.REACT_APP_CONTENTFUL_ACCESS_TOKEN,
-});
+const GET_CONTENT = gql`
+  query GetBlogContent($locale: String!) {
+    blogCollection(locale: $locale) {
+      items {
+        heading
+        shortDescription
+        longDescription {
+          json
+        }
+        blogImages
+        authorLink {
+          name
+        }
+      }
+    }
+  }
+`;
 
-const BlogPage = () => {
-  const [blogPosts, setBlogPosts] = useState([]);
+const BlogPageContent = ({ locale }) => {
+  const { loading, error, data } = useQuery(GET_CONTENT, {
+    variables: { locale },
+  });
+
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    client
-      .getEntries({ content_type: "blog" })
-      .then((response) => {
-        console.log(response.items);
-        setBlogPosts(response.items);
-      })
-      .catch(console.error);
-  }, []);
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  if (!data?.blogCollection?.items.length) {
+    return <p>No data available</p>;
+  }
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredPosts = blogPosts.filter((post) =>
-    post.fields.heading.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredPosts = data.blogCollection.items.filter((post) =>
+    post.heading.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  console.log("Filtered Posts: ", filteredPosts);
 
   return (
     <div>
@@ -41,29 +58,39 @@ const BlogPage = () => {
         />
       </div>
       <div className="blog-container">
-        {filteredPosts.map((post) => (
+        {filteredPosts.map((post, index) => (
           <Link
-            key={post.sys.id}
-            to={`/blogcontent/${post.sys.id}`}
+            key={index}
+            to={`/blogcontent/${index}`}
             className="blog-card"
             style={{ textDecoration: "none" }}
           >
-            {post.fields.blogImages && (
+            {post.blogImages && post.blogImages.length > 0 && (
               <img
-                src={post.fields.blogImages[0].url}
-                alt={post.fields.heading}
+                src={post.blogImages[0].url}
+                alt={post.heading}
               />
             )}
             <div className="blog-card-content">
-              <h2>{post.fields.heading}</h2>
-              {post.fields.shortDescription && (
-                <p>{post.fields.shortDescription}</p>
+              <h2>{post.heading}</h2>
+              {post.shortDescription && (
+                <p>{post.shortDescription}</p>
               )}
             </div>
           </Link>
         ))}
       </div>
     </div>
+  );
+};
+
+const BlogPage = () => {
+  const { locale } = useContext(LocaleContext);
+
+  return (
+    <ApolloProvider client={client}>
+      <BlogPageContent locale={locale} />
+    </ApolloProvider>
   );
 };
 

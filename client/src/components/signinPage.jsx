@@ -79,6 +79,7 @@ const SigninContent = ({ locale }) => {
       setMessage(data.message);
       localStorage.setItem("customer", data.customerId);
       if (data.message === "Login success") {
+        localStorage.setItem("loggedIn", "true");
         navigate("/product-list");
       }
     } catch (error) {

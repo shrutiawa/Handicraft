@@ -1,9 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "../styles/header.css";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon, faShoppingCart, faSun, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMoon,
+  faShoppingCart,
+  faSun,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import LocaleContext from "./localeContextProvider";
 
@@ -18,7 +23,7 @@ const GET_CONTENT = gql`
   }
 `;
 
-const HeaderContent = ({ locale, setLocale }) => {
+const HeaderContent = ({ locale, setLocale, loggedIn }) => {
   const { loading, error, data } = useQuery(GET_CONTENT, {
     variables: { locale },
   });
@@ -43,6 +48,7 @@ const HeaderContent = ({ locale, setLocale }) => {
   };
 
   const { logo, links } = data.headerCollection.items[0];
+  // console.log("links: ", links);
   const {
     aboutUs,
     buyProduct,
@@ -51,6 +57,8 @@ const HeaderContent = ({ locale, setLocale }) => {
     becomeSeller,
     signIn,
     signUp,
+    signOut,
+    orderHistory,
   } = links;
 
   return (
@@ -125,15 +133,40 @@ const HeaderContent = ({ locale, setLocale }) => {
               <div className="caret-up"></div>
               <div className="userDropdown">
                 <div className="dropdownContent">
-                  <div className="dropdownItem" onClick={() => navigate("/")}>
-                    {signIn}
-                  </div>
-                  <div
-                    className="dropdownItem"
-                    onClick={() => navigate("/signup")}
-                  >
-                    {signUp}
-                  </div>
+                  {loggedIn === "true" ? (
+                    <>
+                      <div
+                        className="dropdownItem"
+                        onClick={() => navigate("/order-history")}
+                      >
+                        {orderHistory}
+                      </div>
+                      <div
+                        className="dropdownItem"
+                        onClick={() => {
+                          localStorage.setItem("loggedIn", "false");
+                          navigate("/");
+                        }}
+                      >
+                        {signOut}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div
+                        className="dropdownItem"
+                        onClick={() => navigate("/")}
+                      >
+                        {signIn}
+                      </div>
+                      <div
+                        className="dropdownItem"
+                        onClick={() => navigate("/signup")}
+                      >
+                        {signUp}
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </>
@@ -146,11 +179,19 @@ const HeaderContent = ({ locale, setLocale }) => {
 
 const Header = () => {
   const { locale, setLocale } = useContext(LocaleContext);
-
+  const [loggedIn, setLoggedIn] = useState("false");
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("loggedIn");
+    setLoggedIn(isLoggedIn);
+  });
   return (
     <ApolloProvider client={client}>
       <div className="headerMainContainer">
-        <HeaderContent locale={locale} setLocale={setLocale} />
+        <HeaderContent
+          locale={locale}
+          setLocale={setLocale}
+          loggedIn={loggedIn}
+        />
       </div>
     </ApolloProvider>
   );

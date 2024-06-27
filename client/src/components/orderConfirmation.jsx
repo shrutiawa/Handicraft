@@ -93,7 +93,7 @@ const OrderConfirmation = () => {
             <p className="order-text">Order Confirmed</p>
             <h2>Thank you Sir</h2>
           </div>
-          
+
           <div className="clear"></div>
 
           <div className="orderUpdates">
@@ -102,7 +102,6 @@ const OrderConfirmation = () => {
               You will receive order and shipping updates via email
             </p>
           </div>
-          {/* <div className="blank-space"></div> */}
           <div className="table-content">
             <div className="inside-content">
               <p className="info-q">
