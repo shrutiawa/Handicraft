@@ -90,7 +90,7 @@
   width:90%
 }
 
-.submitted-address h3, h2, .payment-methods h3 {
+.submitted-address h3, .submitted-address h2, .payment-methods h3 {
   margin-bottom: 10px;
 }
 .card-logo {

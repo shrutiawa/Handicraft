@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import "../styles/aboutusPage.css";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
+import LocaleContext from "./localeContextProvider";
 
 const GET_CONTENT = gql`
   query GetAboutUsContent($locale: String!) {
@@ -9,10 +12,10 @@ const GET_CONTENT = gql`
       items {
         title(locale: $locale)
         image
-        description {
+        description(locale: $locale) {
           json
         }
-        facilitiesLinkCollection {
+        facilitiesLinkCollection(locale: $locale) {
           items {
             ... on Facilities {
               heading
@@ -25,6 +28,13 @@ const GET_CONTENT = gql`
     }
   }
 `;
+
+export const getHTMLData = (rawData) => {
+  const htmlString = marked(rawData);
+  const sanitizedHTMLString = DOMPurify.sanitize(htmlString);
+  console.log("sanitizedHTMLString: " ,sanitizedHTMLString);
+  return sanitizedHTMLString;
+};
 
 const AboutUsContent = ({ locale }) => {
   const { loading, error, data } = useQuery(GET_CONTENT, {
@@ -60,25 +70,27 @@ const AboutUsContent = ({ locale }) => {
         <img src={image[0].url} alt="image" />
         <div>
           <h3>{title}</h3>
-          <pre>{value}</pre>
+          <p dangerouslySetInnerHTML={{__html: getHTMLData(value)}}></p>
         </div>
       </div>
       <div className="section2">
         <p>What We Provide?</p>
+        <div className="facilityItems">
         {facilitiesLinkCollection.items.map((item, idx) => (
           <div key={idx} className="facilityCard">
             <img src={item.icon[0].url} alt="img" />
-            <p>{item.heading}</p>
-            <p>{item.facilityDesc}</p>
+            <p className="facilityHeading">{item.heading}</p>
+            <p className="facilityDesc">{item.facilityDesc}</p>
           </div>
         ))}
+        </div>
       </div>
     </div>
   );
 };
 
 const AboutUs = () => {
-  const [locale, setLocale] = useState("en-US");
+  const {locale} = useContext(LocaleContext);
 
   return (
     <ApolloProvider client={client}>
