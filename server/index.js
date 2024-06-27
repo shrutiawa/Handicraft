@@ -18,6 +18,7 @@ const paymentController = require("./src/controller/paymentController");
 const categoryController = require("./src/controller/categoryContoller");
 const productTypeController = require("./src/controller/productTypeController");
 const addProductController = require("./src/controller/addProductController");
+const orderHistoryController = require("./src/controller/orderHistoryController")
 
 const app = express();
 const PORT = 5000;
@@ -82,6 +83,9 @@ app.post('/shipping-address', cartController.shippingAddressController)
 
 // Add order after payment
 app.post('/create-order', cartController.orderController)
+
+//See order history
+app.get('/orders/:customerId', orderHistoryController.orderHistory)
 
 
 // Start the server

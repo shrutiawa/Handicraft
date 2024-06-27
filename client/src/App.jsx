@@ -14,6 +14,7 @@ import AddingProduct from "./components/AddingProduct";
 import AboutUs from "./components/aboutusPage";
 import { LocaleProvider } from "./components/localeContextProvider";
 import OrderConfirmation from "./components/orderConfirmation";
+import OrderHistoryPage from "./components/OrderHistory";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path="/blogcontent/:id" element={<FullBlogPost />} />
             <Route path="/add-product" element={<AddingProduct />} />
             <Route path="/aboutus" element={<AboutUs />} />
+            <Route path="/order-history" element={<OrderHistoryPage />} />
           </Routes>
           <Footer />
         </BrowserRouter>
