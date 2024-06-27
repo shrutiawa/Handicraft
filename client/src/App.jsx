@@ -7,13 +7,13 @@ import SigninPage from "./components/signinPage";
 import SignupPage from "./components/signupPage";
 import Header from "./components/header";
 import Footer from "./components/footer";
-import OrderConformation from "./components/orderConfirmation";
 import TutorialsPage from "./components/TutorialsPage";
 import FullBlogPost from "./components/FullBlogPost";
 import BlogPage from "./components/BlogPage";
 import AddingProduct from "./components/AddingProduct";
 import AboutUs from "./components/aboutusPage";
 import { LocaleProvider } from "./components/localeContextProvider";
+import OrderConfirmation from "./components/orderConfirmation";
 
 function App() {
   return (
@@ -29,7 +29,7 @@ function App() {
             <Route path="/delivery-address" element={<ShippingAddressForm />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/header" element={<Header />} />
-            <Route path="/order-confirm" element={<OrderConformation />} />
+            <Route path="/order-confirm" element={<OrderConfirmation />} />
             <Route path="/footer" element={<Footer />} />
             <Route path="/tutorials" element={<TutorialsPage />} />
             <Route path="/blogs" element={<BlogPage />} />

@@ -26,7 +26,7 @@ const TutorialHit = ({ hit, openModal, locale }) => {
           <h3>{title}</h3>
           {/* Optional: If you want to link to a modal or dedicated page for viewing */}
           <button className="watch-video-button" onClick={() => openModal()}>
-            Watch Video
+          {hit.fields.watchVideo[locale]}
           </button>
         </div>
       </div>

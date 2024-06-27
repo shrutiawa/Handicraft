@@ -3,7 +3,7 @@ import "../styles/header.css";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faMoon, faShoppingCart, faSun, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import LocaleContext from "./localeContextProvider";
 
@@ -34,14 +34,13 @@ const HeaderContent = ({ locale, setLocale }) => {
     return <p>No data available</p>;
   }
 
-  const switchLang = () =>{
-    if(locale === "en-US"){
-      setLocale("hi-IN")
+  const switchLang = () => {
+    if (locale === "en-US") {
+      setLocale("hi-IN");
+    } else {
+      setLocale("en-US");
     }
-    else{
-      setLocale("en-US")
-    }
-  }
+  };
 
   const { logo, links } = data.headerCollection.items[0];
   const {
@@ -91,7 +90,28 @@ const HeaderContent = ({ locale, setLocale }) => {
         </ul>
       </div>
       <div className="section3">
-        <button onClick={() => switchLang()}>Switch Language</button>
+        <div className="button-container">
+          <label className="switch">
+            <input type="checkbox" onChange={switchLang} />
+            <span className="slider"></span>
+
+            <FontAwesomeIcon
+              id="sun-icon"
+              icon={faSun}
+              // style={{
+              //   color: theme == "dark" ? "#000" : "#fff",
+              // }}
+            />
+            <FontAwesomeIcon
+              id="moon-icon"
+              icon={faMoon}
+              // style={{
+              //   color: theme == "light" ? "#000" : "#fff",
+              // }}
+            />
+          </label>
+        </div>
+
         <FontAwesomeIcon className="cartIcon" icon={faShoppingCart} />
 
         <div

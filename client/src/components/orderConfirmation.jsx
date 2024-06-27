@@ -1,8 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/orderConfirmation.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
 
-const OrderConformation = () => {
+const OrderConfirmation = () => {
   const navigate = useNavigate();
 
   const handleGoToHomePage = () => {
@@ -44,6 +47,7 @@ const OrderConformation = () => {
       console.error("Error placing order:", error);
     }
   };
+
   const deleteCart = async () => {
     try {
       const response = await fetch("http://localhost:5000/carts", {
@@ -74,22 +78,60 @@ const OrderConformation = () => {
         console.error("Error in processOrder:", error);
       }
     };
-
     processOrder();
   }, []);
 
   return (
     <>
-      <div className="confirm-container">
-        <h2 className="confirm">Order Confirmed!</h2>
-        <p className="confirm-para">Your order is placed!</p>
-        <p className="confirm-para">Thank You for shopping with Us</p>
-        <button className="home-button" onClick={handleGoToHomePage}>
-          OK
-        </button>
+      <div className="OrderConfirmationPage">
+        <h1>Checkout</h1>
+        <div className="mainbox">
+          <span>
+            <FontAwesomeIcon className="fa-icon" icon={faCheckCircle} />
+          </span>
+          <div className="firstbox">
+            <p className="order-text">Order Confirmed</p>
+            <h2>Thank you Sir</h2>
+          </div>
+          
+          <div className="clear"></div>
+
+          <div className="orderUpdates">
+            <h2>Order Updates</h2>
+            <p className="text-style">
+              You will receive order and shipping updates via email
+            </p>
+          </div>
+          {/* <div className="blank-space"></div> */}
+          <div className="table-content">
+            <div className="inside-content">
+              <p className="info-q">
+                <strong>Contact</strong>
+              </p>
+              <p>ykphogat21@gmail.com</p>
+            </div>
+            <div className="inside-content">
+              <p className="info-q">
+                <strong>Address</strong>
+              </p>
+              <div className="paras-for-add">
+                <p>Address </p>
+                {/* <p> {address2} </p> */}
+              </div>
+            </div>
+            <div className="inside-content">
+              <p className="info-q">
+                <strong>Payment</strong>
+              </p>
+              <p>Check Payments</p>
+            </div>
+
+            {/* <button onClick={pushValueIntoArray}>Submit</button> */}
+          </div>
+        </div>
       </div>
     </>
   );
 };
 
-export default OrderConformation;
+export default OrderConfirmation;
