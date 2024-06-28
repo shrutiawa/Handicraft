@@ -73,7 +73,7 @@ const BlogPageContent = ({ locale }) => {
             key={index}
             className="blog-card"
             style={{ textDecoration: "none" }}
-            onClick={()=>navigate("/blogcontent", {state: {post}})}
+            onClick={()=>navigate("/blogcontent", {state: {id:post.sys.id}})}
           >
             {post.blogImages && post.blogImages.length > 0 && (
               <img

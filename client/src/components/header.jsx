@@ -93,30 +93,32 @@ const HeaderContent = ({ locale, setLocale, loggedIn }) => {
             {blogs}
           </li>
           <li className="navLinkBar" onClick={() => navigate("/")}>
-            {becomeSeller} &#x2192;
+            {becomeSeller}
           </li>
         </ul>
       </div>
       <div className="section3">
         <div className="button-container">
           <label className="switch">
-            <input type="checkbox" onChange={switchLang} />
+            <input type="checkbox" onChange={switchLang} checked={locale === "hi-IN"}/>
             <span className="slider"></span>
 
-            <FontAwesomeIcon
+            {/* <FontAwesomeIcon
               id="sun-icon"
               icon={faSun}
               // style={{
               //   color: theme == "dark" ? "#000" : "#fff",
               // }}
-            />
-            <FontAwesomeIcon
+            /> */}
+            <span id="hi-icon">अ</span>
+            <span id="eng-icon">A</span>
+            {/* <FontAwesomeIcon
               id="moon-icon"
               icon={faMoon}
               // style={{
               //   color: theme == "light" ? "#000" : "#fff",
               // }}
-            />
+            /> */}
           </label>
         </div>
 

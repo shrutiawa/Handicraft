@@ -1,16 +1,19 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
-import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import "../styles/FullBlogPost.css";
+import React, { useContext } from "react";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import LocaleContext from "./localeContextProvider";
 import { useLocation } from "react-router-dom";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import "../styles/FullBlogPost.css";
 
 const GET_CONTENT = gql`
-  query GetBlogContent($locale: String!) {
-    blogCollection(locale: $locale) {
+  query GetBlogContent($id: String!, $locale: String!) {
+    blogCollection(where: { sys: { id: $id } }, locale: $locale) {
       items {
+        sys {
+          id
+          publishedAt
+        }
         heading
         shortDescription
         longDescription {
@@ -26,16 +29,17 @@ const GET_CONTENT = gql`
 `;
 
 const FullBlogContent = ({ locale }) => {
-  const { loading, error, data } = useQuery(GET_CONTENT, {
-    variables: { locale },
-  });
-
   const location = useLocation();
   console.log("Location state: ", location.state);
-  const { post } = location.state;
+  const { id } = location.state;
 
-  console.log("id", post);
-  console.log("data: ", data);
+  const { loading, error, data } = useQuery(GET_CONTENT, {
+    variables: { id, locale },
+  });
+
+  console.log("id: ", id);
+  console.log("locale: ", locale);
+  // console.log("data: ", data);
   // console.log("post: ", post);
 
   if (loading) return <p>Loading...</p>;
@@ -45,9 +49,9 @@ const FullBlogContent = ({ locale }) => {
     return <p>No data available</p>;
   }
 
-  // console.log("Blog Post: ", post);
+  console.log("Blog Post: ", data.blogCollection.items[0]);
   // console.log("post: ", data.blogCollection.items[index]);
-  // const post = data.blogCollection.items[index];
+  const post = data.blogCollection.items[0];
 
   const {
     heading,
@@ -58,7 +62,7 @@ const FullBlogContent = ({ locale }) => {
     sys,
   } = post;
 
-  console.log("Longdescription: ", longDescription.json.content);
+  // console.log("Longdescription: ", longDescription.json.content);
   // const { value } = longDescription.json.content[0].content[0];
   // console.log(value);
 
@@ -82,10 +86,6 @@ const FullBlogContent = ({ locale }) => {
       <section className="full-blog-post-description">
         {shortDescription}
       </section>
-
-      {/* <article className="rich-text-body full-blog-post-body">
-            <section>{fields.longDescription.content[0].content[0].value}</section>
-        </article> */}
 
       <article className="rich-text-body full-blog-post-body">
         {longDescription && documentToReactComponents(longDescription.json)}
