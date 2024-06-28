@@ -12,10 +12,10 @@ import LocaleContext from "./localeContextProvider";
 
 const GET_CONTENT = gql`
   query GetFooterContent($locale: String!) {
-    footerCollection {
+    footerCollection(locale: $locale) {
       items {
-        footerHeading(locale: $locale)
-        socialMedia(locale: $locale)
+        footerHeading
+        socialMedia
       }
     }
   }

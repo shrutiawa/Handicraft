@@ -42,13 +42,6 @@
   color: gray;
 }
 
-/* .OrderConfirmationPage .mainbox .blank-space {
-  margin-top: 1%;
-  height: 300px;
-  box-shadow: 3px 8px 24px rgba(149, 157, 165, 0.2);
-  margin-bottom: 3%;
-} */
-
 .OrderConfirmationPage .table-content .inside-content {
   display: flex;
   flex-direction: row;

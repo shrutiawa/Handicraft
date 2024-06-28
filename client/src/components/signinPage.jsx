@@ -10,12 +10,12 @@ import LocaleContext from "./localeContextProvider";
 
 const GET_CONTENT = gql`
   query GetLoginContent($locale: String!) {
-    loginCollection {
+    loginCollection(locale: $locale) {
       items {
         logo
-        signIn(locale: $locale)
-        signInDescription(locale: $locale)
-        loginData(locale: $locale)
+        signIn
+        signInDescription
+        loginData
       }
     }
   }
@@ -79,6 +79,7 @@ const SigninContent = ({ locale }) => {
       setMessage(data.message);
       localStorage.setItem("customer", data.customerId);
       if (data.message === "Login success") {
+        localStorage.setItem("loggedIn", "true");
         navigate("/product-list");
       }
     } catch (error) {

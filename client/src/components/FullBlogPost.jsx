@@ -1,59 +1,106 @@
-import React, { useState, useEffect } from "react";
-import * as contentful from "contentful";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import "../styles/FullBlogPost.css";
+import { useQuery, gql, ApolloProvider } from "@apollo/client";
+import client from "./apolloClient";
+import LocaleContext from "./localeContextProvider";
+import { useLocation } from "react-router-dom";
 
-const client = contentful.createClient({
-  space: process.env.REACT_APP_CONTENTFUL_SPACE_ID,
-  accessToken: process.env.REACT_APP_CONTENTFUL_ACCESS_TOKEN,
-});
+const GET_CONTENT = gql`
+  query GetBlogContent($locale: String!) {
+    blogCollection(locale: $locale) {
+      items {
+        heading
+        shortDescription
+        longDescription {
+          json
+        }
+        blogImages
+        authorLink {
+          name
+        }
+      }
+    }
+  }
+`;
 
-const FullBlogPost = () => {
-  const [post, setPost] = useState(null);
-  const { id } = useParams();
-  console.log("id", id);
-  useEffect(() => {
-    client
-      .getEntry(id) // Fetching entry by its ID
-      .then((entry) => {
-        setPost(entry);
-      })
-      .catch(console.error);
-  }, [id]);
+const FullBlogContent = ({ locale }) => {
+  const { loading, error, data } = useQuery(GET_CONTENT, {
+    variables: { locale },
+  });
 
-  if (!post) return <div>Loading...</div>; // Show loading state or spinner
-  console.log("Blog Post: ", post);
+  const location = useLocation();
+  console.log("Location state: ", location.state);
+  const { post } = location.state;
+
+  console.log("id", post);
+  console.log("data: ", data);
+  // console.log("post: ", post);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  if (!data?.blogCollection?.items.length) {
+    return <p>No data available</p>;
+  }
+
+  // console.log("Blog Post: ", post);
+  // console.log("post: ", data.blogCollection.items[index]);
+  // const post = data.blogCollection.items[index];
+
+  const {
+    heading,
+    blogImages,
+    shortDescription,
+    longDescription,
+    authorLink,
+    sys,
+  } = post;
+
+  console.log("Longdescription: ", longDescription.json.content);
+  // const { value } = longDescription.json.content[0].content[0];
+  // console.log(value);
 
   return (
     <div className="full-blog-post">
       <header className="full-blog-post-header">
-        <h1 className="full-blog-post-title">{post.fields.heading}</h1>
-        {post.fields.blogImages && (
+        <h1 className="full-blog-post-title">{heading}</h1>
+        {blogImages && (
           <img
-            src={post.fields.blogImages[0].url}
-            alt={post.fields.heading}
+            src={blogImages[0].url}
+            alt={heading}
             className="full-blog-post-image"
           />
         )}
         <div className="full-blog-post-meta">
-          <span>By {post.fields.authorLink.fields.name}</span>
-          <span>{new Date(post.sys.createdAt).toLocaleDateString()}</span>
+          <span>By {authorLink.name}</span>
+          <span>{new Date(sys.publishedAt).toLocaleDateString()}</span>
         </div>
       </header>
 
       <section className="full-blog-post-description">
-        {post.fields.shortDescription}
+        {shortDescription}
       </section>
 
       {/* <article className="rich-text-body full-blog-post-body">
-            <section>{post.fields.longDescription.content[0].content[0].value}</section>
+            <section>{fields.longDescription.content[0].content[0].value}</section>
         </article> */}
 
       <article className="rich-text-body full-blog-post-body">
-        {documentToReactComponents(post.fields.longDescription)}
+        {longDescription && documentToReactComponents(longDescription.json)}
       </article>
     </div>
+  );
+};
+
+const FullBlogPost = () => {
+  const { locale } = useContext(LocaleContext);
+
+  return (
+    <ApolloProvider client={client}>
+      <FullBlogContent locale={locale} />
+    </ApolloProvider>
   );
 };
 

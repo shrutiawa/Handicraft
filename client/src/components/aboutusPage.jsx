@@ -8,14 +8,15 @@ import LocaleContext from "./localeContextProvider";
 
 const GET_CONTENT = gql`
   query GetAboutUsContent($locale: String!) {
-    aboutUsCollection {
+    aboutUsCollection(locale: $locale) {
       items {
-        title(locale: $locale)
+        title
         image
-        description(locale: $locale) {
+        description {
           json
         }
-        facilitiesLinkCollection(locale: $locale) {
+        facilityHeading
+        facilitiesLinkCollection {
           items {
             ... on Facilities {
               heading
@@ -32,7 +33,7 @@ const GET_CONTENT = gql`
 export const getHTMLData = (rawData) => {
   const htmlString = marked(rawData);
   const sanitizedHTMLString = DOMPurify.sanitize(htmlString);
-  console.log("sanitizedHTMLString: " ,sanitizedHTMLString);
+  console.log("sanitizedHTMLString: ", sanitizedHTMLString);
   return sanitizedHTMLString;
 };
 
@@ -55,8 +56,13 @@ const AboutUsContent = ({ locale }) => {
     return <p>No data available</p>;
   }
 
-  const { title, image, description, facilitiesLinkCollection } =
-    data.aboutUsCollection.items[0];
+  const {
+    title,
+    image,
+    description,
+    facilitiesLinkCollection,
+    facilityHeading,
+  } = data.aboutUsCollection.items[0];
 
   // console.log("description", description.json.content[0].content[0].value);
   const { value } = description.json.content[0].content[0];
@@ -70,19 +76,19 @@ const AboutUsContent = ({ locale }) => {
         <img src={image[0].url} alt="image" />
         <div>
           <h3>{title}</h3>
-          <p dangerouslySetInnerHTML={{__html: getHTMLData(value)}}></p>
+          <p dangerouslySetInnerHTML={{ __html: getHTMLData(value) }}></p>
         </div>
       </div>
       <div className="section2">
-        <p>What We Provide?</p>
+        <p>{facilityHeading}</p>
         <div className="facilityItems">
-        {facilitiesLinkCollection.items.map((item, idx) => (
-          <div key={idx} className="facilityCard">
-            <img src={item.icon[0].url} alt="img" />
-            <p className="facilityHeading">{item.heading}</p>
-            <p className="facilityDesc">{item.facilityDesc}</p>
-          </div>
-        ))}
+          {facilitiesLinkCollection.items.map((item, idx) => (
+            <div key={idx} className="facilityCard">
+              <img src={item.icon[0].url} alt="img" />
+              <p className="facilityHeading">{item.heading}</p>
+              <p className="facilityDesc">{item.facilityDesc}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
@@ -90,7 +96,7 @@ const AboutUsContent = ({ locale }) => {
 };
 
 const AboutUs = () => {
-  const {locale} = useContext(LocaleContext);
+  const { locale } = useContext(LocaleContext);
 
   return (
     <ApolloProvider client={client}>
