@@ -27,7 +27,7 @@ function truncateText(text, limit) {
 }
 
 function Hit({ hit }) {
-  // console.log("hit",hit)
+  console.log("hit",hit)
   const navigate = useNavigate();
   const truncatedName = truncateText(hit.name["en-US"], 3);
   const truncatedDescription = truncateText(hit.description["en-US"], 7);

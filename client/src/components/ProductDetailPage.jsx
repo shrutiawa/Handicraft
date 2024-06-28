@@ -11,6 +11,7 @@ function ProductDetailPage() {
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
 
+  console.log("hello",location.state)
   const handleIncrease = () => {
     if (quantity < 5) {
       setQuantity(quantity + 1);
@@ -54,7 +55,7 @@ function ProductDetailPage() {
     <>
       <div className="pdp-container">
         <button className="back-button" onClick={() => navigate("/product-list")}>
-          <FontAwesomeIcon icon={faArrowLeft} /> Continue shopping
+          <FontAwesomeIcon icon={faArrowLeft} /> 
         </button>
         <div className="card">
           <div className="left-imgs">
@@ -87,7 +88,7 @@ function ProductDetailPage() {
                 <div className="quantity-button-container">
                   <button className="quantity-button minus" onClick={handleDecrease}
                    disabled={quantity <=1}
-                   style={{ backgroundColor: quantity <=1 ? "grey" : "" }}>
+                   style={{ color: quantity <=1 ? "#6f6b6b" : "" }}>
                     <FontAwesomeIcon icon={faMinus} />
                   </button>
                   <span className="quantity-display">{quantity}</span>
@@ -95,7 +96,7 @@ function ProductDetailPage() {
                     className="quantity-button plus"
                     onClick={handleIncrease}
                     disabled={quantity >= 5}
-                    style={{ backgroundColor: quantity >= 5 ? "grey" : "" }}
+                    style={{ color: quantity >= 5 ? "#6f6b6b" : "" }}
                   >
                     <FontAwesomeIcon icon={faPlus} />
                   </button>

@@ -24,8 +24,7 @@
   
   
   /* This is used as the traditional .clearfix class */
-  .group:before,
-  .group:after {
+  .group:before, .group:after {
       content: '';
       display: table;
   } 
@@ -67,11 +66,10 @@
   }
   
 
-  .column-labels {
-    label {
+  .column-labels label{
       padding-bottom: 15px;
       margin-bottom: 15px;
-    }
+    
     
   }
   .column-labels{
@@ -89,12 +87,12 @@
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 1px solid;
-    
-    .product-image {
-      img {
+  }
+    .product-image img{
+       
         width: 100px;
         height: 100px;
-      }
+      
     }
     
     .product-details {
@@ -120,38 +118,32 @@
     .remove-product:hover {
       background-color: #a44;
     }
-  }
+  
   
   
   /* Totals section */
-  .totals {
-    .totals-item {
+  .totals .totals-item{
+     
       float: right;
       clear: both;
       width: 100%;
       margin-bottom: 10px;
-      
-      label {
-        float: left;
-        clear: both;
-        width: 79%;
-      }
-      
-      .totals-value, .totals-item-value {
-        float: right;
-        width: 21%;
-        text-align: right;
-      }
+  }
+    .totals-item label {
+      float: left;
+      clear: both;
+      width: 79%;
+    }
+    .totals-value, .totals-item-value {
+      float: right;
+      width: 21%;
+      text-align: right;
     }
     .discountAmount{
       color: #494;
       font-weight: bold;
     }
-    
-    /* .totals-item-total {
-      font-family: $font-bold;
-    } */
-  }
+
   
   .checkout {
     width: 100%;
@@ -215,7 +207,23 @@
     border-color: #007bff;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   }
-  
+  .backButton{
+    width: 100%;
+    font-size: 17px;
+    background: none;
+    border: none;
+    padding:10px;
+    color: #7f5539;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  .backButton:hover {
+    border-radius: 5px;
+    background-color: #7f5539;
+    color: white;
+  }
+
   /* Make adjustments for tablet */
   @media screen and (max-width: 650px) {
     
@@ -277,12 +285,11 @@
     border-bottom: 1px solid #ddd;
   }
   
-  .product-info {
-    /* Add styles for product information */
-  }
+ 
   
   .product-quantity {
     display: flex;
+    justify-content: center;
     align-items: center;
   }
   

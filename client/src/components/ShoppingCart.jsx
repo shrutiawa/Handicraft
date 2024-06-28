@@ -1,24 +1,24 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/shoppingCart.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleDown,
-  faArrowDown,
-  faMinus,
-  faPlus,
+  faArrowLeft,
+  
 } from "@fortawesome/free-solid-svg-icons";
 import ShippingAddressForm from "./ShippingAddressForm";
 import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function ShoppingCart() {
-  const customerId = localStorage.getItem("customer");
   const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
   const [showShippingAddress, setShowShippingAddress] = useState(false);
-  const [totalItems, setTotalItems] = useState(0); 
+  const [totalItems, setTotalItems] = useState(0);
+  const shippingAddressRef = useRef(null);
 
   useEffect(() => {
     const customerId = localStorage.getItem("customer");
@@ -57,7 +57,7 @@ function ShoppingCart() {
         });
 
         setProducts(updatedProducts);
-       
+
 
         // Calculate total number of items in cart
         const productsCart = response.data.lineItems;
@@ -68,76 +68,61 @@ function ShoppingCart() {
 
       } catch (error) {
         console.error("Error fetching entries:", error);
-        
+
       }
     };
 
     if (customerId) {
       getAllEntries();
-    } 
+    }
   }, []);
 
-  const handleIncrease = (productId) => {
-    const updatedProducts = products.map((product) => {
-      if (product.id === productId && product.quantity < 5) {
-        return {
-          ...product,
-          quantity: product.quantity + 1,
-        };
-      }
-      return product;
-    });
+ 
 
-    setProducts(updatedProducts);
-  };
-
-  const handleDecrease = (productId) => {
-    const updatedProducts = products.map((product) => {
-      if (product.id === productId && product.quantity > 1) {
-        return {
-          ...product,
-          quantity: product.quantity - 1,
-        };
-      }
-      return product;
-    });
-
-    setProducts(updatedProducts);
-  };
-
+  
   const calculateSubtotal = () => {
     return products
       .reduce(
         (sum, product) => sum + product.price * product.quantity,
         0
       )
-      
+
   };
 
   const toggleShippingAddress = () => {
-    setShowShippingAddress((prev) => !prev);
+    console.log("toggle change",showShippingAddress)
+    if (showShippingAddress == true) {
+      
+      setShowShippingAddress(false);
+      console.log("again changed",showShippingAddress)
+      
+    }
   };
   const handleCheckout = () => {
+    console.log("checkout click",showShippingAddress)
     if (!showShippingAddress) {
-      toast.info("Please add the shipping address.");
       setShowShippingAddress(true);
+      console.log("after change",showShippingAddress)
+      setTimeout(() => {
+        shippingAddressRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      }, 100);
     }
   };
 
   return (
     <div className="cartMainContainer">
       <div className="shopping-cart-title">
-      
-    
+
+
       </div>
       {products.length === 0 ? (
         <p>Your shopping cart is empty.</p>
       ) : (
         <>
           <div className="shopping-cart">
-          
+
             <section className="itemsInCart">
-            <h1>Shopping Cart</h1>
+              <h1>Shopping Cart</h1>
               <div className="column-labels">
                 <label className="product-image">Image</label>
                 <label className="product-details">Product</label>
@@ -159,30 +144,21 @@ function ShoppingCart() {
                   </div>
                   <div className="product-price">{product.price}</div>
                   <div className="product-quantity">
-                    <button
-                      className="quantity-button1 minus"
-                      onClick={() => handleDecrease(product.id)}
-                    >
-                      <FontAwesomeIcon icon={faMinus} />
-                    </button>
+                    
                     <span>{product.quantity}</span>
-                    <button
-                      className="quantity-button1 plus"
-                      onClick={() => handleIncrease(product.id)}
-                    >
-                      <FontAwesomeIcon icon={faPlus} />
-                    </button>
+                    
                   </div>
                   <div className="product-line-price">
                     {(product.price * product.quantity).toFixed(2)}
                   </div>
+                  <button>Remove </button>
                 </div>
               ))}
             </section>
 
-              
+
             <section className="summary">
-            <h1>Order Summary</h1>
+              <h1>Order Summary</h1>
               <div className="totals">
                 <div className="totals-item">
                   <label>Items</label>
@@ -194,11 +170,11 @@ function ShoppingCart() {
                 </div>
                 <div className="totals-item">
                   <label>Tax (0%)</label>
-                  <div className="totals-value">00.00</div>
+                  <div className="totals-value">0</div>
                 </div>
                 <div className="totals-item">
                   <label>Shipping</label>
-                  <div className="totals-value">00.00</div>
+                  <div className="totals-value">0</div>
                 </div>
                 <div className="totals-item totals-item-total">
                   <label>Grand Total</label>
@@ -208,9 +184,12 @@ function ShoppingCart() {
               <button className="checkout" onClick={handleCheckout}>
                 Proceed to Checkout
               </button>
+              <button className=" backButton" onClick={() => navigate("/product-list")}>
+                <FontAwesomeIcon icon={faArrowLeft} /> Continue Shopping
+              </button>
             </section>
           </div>
-          <div className="shipping-address">
+          <div className="shipping-address" ref={shippingAddressRef}>
             <button className="toggle-address" onClick={toggleShippingAddress}>
               Shipping Address <FontAwesomeIcon icon={faAngleDown} />
             </button>

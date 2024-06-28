@@ -62,6 +62,19 @@ async function checkCartExists(req, res) {
   } catch (error) {}
 }
 
+// Remove Line Item
+const removeLineItem = async(req,res) => {
+  try{
+    console.log("id",storedCartId,storedCartVersion)
+    const result = await cartService.removeLineItemService(storedCartId, storedCartVersion,address);
+    res.status(200).json(result);
+
+  } catch (error) {
+    console.error("Error adding address:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+}
+
 
 // delete the cart
 const deleteCartController = async (req, res) => {
@@ -110,5 +123,6 @@ module.exports = {
   checkCartExists,
   deleteCartController,
   shippingAddressController,
-  orderController
+  orderController,
+  removeLineItem
 };
