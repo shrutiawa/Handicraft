@@ -120,7 +120,7 @@ const HeaderContent = ({ locale, setLocale, loggedIn }) => {
           </label>
         </div>
 
-        <FontAwesomeIcon className="cartIcon" icon={faShoppingCart} />
+        <FontAwesomeIcon className="cartIcon" icon={faShoppingCart} onClick={() => navigate("/cart")}/>
 
         <div
           className="userIconContainer"

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleDown,
   faArrowLeft,
-  
+
 } from "@fortawesome/free-solid-svg-icons";
 import ShippingAddressForm from "./ShippingAddressForm";
 import { ToastContainer, toast } from "react-toastify";
@@ -15,13 +15,14 @@ import 'react-toastify/dist/ReactToastify.css';
 function ShoppingCart() {
   const navigate = useNavigate();
 
+  const customerId = localStorage.getItem("customer");
   const [products, setProducts] = useState([]);
   const [showShippingAddress, setShowShippingAddress] = useState(false);
   const [totalItems, setTotalItems] = useState(0);
   const shippingAddressRef = useRef(null);
 
   useEffect(() => {
-    const customerId = localStorage.getItem("customer");
+
 
     const getAllEntries = async () => {
       try {
@@ -30,6 +31,7 @@ function ShoppingCart() {
         );
         const productsInCart = response.data.lineItems;
         const updatedProducts = productsInCart.map((item) => {
+          const lineItemId = item.id;
           const productId = item.productId;
           const productName = item.name["en-US"];
           const productPrice = item.price.value.centAmount;
@@ -45,6 +47,7 @@ function ShoppingCart() {
           const { Color: color = "N/A", Size: size = "N/A", Material: material = "N/A" } = attributes;
 
           return {
+            lineItemId: lineItemId,
             id: productId,
             name: productName,
             price: productPrice,
@@ -75,11 +78,11 @@ function ShoppingCart() {
     if (customerId) {
       getAllEntries();
     }
-  }, []);
+  }, [products]);
 
- 
 
-  
+
+
   const calculateSubtotal = () => {
     return products
       .reduce(
@@ -90,25 +93,37 @@ function ShoppingCart() {
   };
 
   const toggleShippingAddress = () => {
-    console.log("toggle change",showShippingAddress)
-    if (showShippingAddress == true) {
-      
-      setShowShippingAddress(false);
-      console.log("again changed",showShippingAddress)
-      
-    }
+
+
+    setShowShippingAddress((prev) => !prev);
+
   };
   const handleCheckout = () => {
-    console.log("checkout click",showShippingAddress)
+    console.log("checkout click", showShippingAddress)
     if (!showShippingAddress) {
       setShowShippingAddress(true);
-      console.log("after change",showShippingAddress)
+      console.log("after change", showShippingAddress)
       setTimeout(() => {
         shippingAddressRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
       }, 100);
     }
   };
+  const handleRemoveItem = (id) => {
+    console.log(id)
+    try {
+      const response = axios.post(
+        `http://localhost:5000/removecart`, {
+        id,
+        customerId
+      }
+      );
+      console.log("frontend", response)
 
+    } catch (error) {
+      console.error("Error fetching entries:", error);
+
+    }
+  }
   return (
     <div className="cartMainContainer">
       <div className="shopping-cart-title">
@@ -144,14 +159,14 @@ function ShoppingCart() {
                   </div>
                   <div className="product-price">{product.price}</div>
                   <div className="product-quantity">
-                    
                     <span>{product.quantity}</span>
-                    
                   </div>
                   <div className="product-line-price">
                     {(product.price * product.quantity).toFixed(2)}
                   </div>
-                  <button>Remove </button>
+                  <button className="remove-product" onClick={() => handleRemoveItem(product.lineItemId)}>
+                    Remove
+                  </button>
                 </div>
               ))}
             </section>
@@ -161,7 +176,7 @@ function ShoppingCart() {
               <h1>Order Summary</h1>
               <div className="totals">
                 <div className="totals-item">
-                  <label>Items</label>
+                  <label>Total Items</label>
                   <div className="totals-item-value">{totalItems}</div>
                 </div>
                 <div className="totals-item">

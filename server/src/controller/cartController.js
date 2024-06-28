@@ -12,6 +12,7 @@ async function getCartDetails(req, res) {
     res.json(cartdetails);
     storedCartId = cartdetails.id;
     storedCartVersion = cartdetails.version;
+    // console.log("controller cart",cartdetails)
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -63,14 +64,22 @@ async function checkCartExists(req, res) {
 }
 
 // Remove Line Item
-const removeLineItem = async(req,res) => {
+const removeLineItem = async (req,res) => {
   try{
-    console.log("id",storedCartId,storedCartVersion)
-    const result = await cartService.removeLineItemService(storedCartId, storedCartVersion,address);
+    const customerId = req.body.customerId
+    const cartdetails = await cartService.fetchCartDetails(customerId);
+    console.log("from remove item",cartdetails)
+    const cartId = cartdetails.id;
+    const cartVersion = cartdetails.version;
+    const lineItemId = req.body.id;
+    console.log("cartid",cartId)
+    console.log("cartversion",cartVersion)
+    console.log("lineItemId",lineItemId)
+    const result = await cartService.removeLineItemService(cartId,cartVersion,lineItemId);
     res.status(200).json(result);
 
   } catch (error) {
-    console.error("Error adding address:", error);
+    console.error("Error remove item:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 }
