@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 // route handler for login - authenticate customer
 app.post("/login", loginController.authenticateUser);
 
-// Route handler for fetching products - not in use in this project
+// Route handler for fetching products 
 app.get("/products", productController.getProducts);
 
 // Route handler for fetching customers
@@ -52,17 +52,16 @@ app.post("/customers", customerController.addCustomer);
 // Checking if cart for customer exist or not
 app.head("/carts", cartController.checkCartExists);
 
-// Route handler for fetching cart details - not complete
+// Route handler for fetching cart details
 app.get("/carts", cartController.getCartDetails);
 
-// Route handler for updating items cart details - not complete
+// Route handler for updating items cart details 
 app.post("/carts", cartController.updateCartDetails);
+// Remove line items from cart
+app.post("/removecart", cartController.removeLineItem)
 
 // Route to stripe payment
-app.post(
-  "/api/create-checkout-session",
-  paymentController.createCheckoutSession
-);
+app.post( "/api/create-checkout-session", paymentController.createCheckoutSession);
 
 // delete cart after successful order
 app.delete("/carts", cartController.deleteCartController);
