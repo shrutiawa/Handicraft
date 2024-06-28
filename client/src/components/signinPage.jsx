@@ -10,12 +10,12 @@ import LocaleContext from "./localeContextProvider";
 
 const GET_CONTENT = gql`
   query GetLoginContent($locale: String!) {
-    loginCollection {
+    loginCollection(locale: $locale) {
       items {
         logo
-        signIn(locale: $locale)
-        signInDescription(locale: $locale)
-        loginData(locale: $locale)
+        signIn
+        signInDescription
+        loginData
       }
     }
   }

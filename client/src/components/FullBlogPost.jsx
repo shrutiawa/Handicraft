@@ -5,6 +5,7 @@ import "../styles/FullBlogPost.css";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import LocaleContext from "./localeContextProvider";
+import { useLocation } from "react-router-dom";
 
 const GET_CONTENT = gql`
   query GetBlogContent($locale: String!) {
@@ -29,9 +30,11 @@ const FullBlogContent = ({ locale }) => {
     variables: { locale },
   });
 
-  const { index } = useParams();
+  const location = useLocation();
+  console.log("Location state: ", location.state);
+  const { post } = location.state;
 
-  console.log("index", index);
+  console.log("id", post);
   console.log("data: ", data);
   // console.log("post: ", post);
 
@@ -43,36 +46,49 @@ const FullBlogContent = ({ locale }) => {
   }
 
   // console.log("Blog Post: ", post);
-  console.log("post: ", data.blogCollection.items[index]);
-  const post = data.blogCollection.items[index];
+  // console.log("post: ", data.blogCollection.items[index]);
+  // const post = data.blogCollection.items[index];
+
+  const {
+    heading,
+    blogImages,
+    shortDescription,
+    longDescription,
+    authorLink,
+    sys,
+  } = post;
+
+  console.log("Longdescription: ", longDescription.json.content);
+  // const { value } = longDescription.json.content[0].content[0];
+  // console.log(value);
 
   return (
     <div className="full-blog-post">
       <header className="full-blog-post-header">
-        <h1 className="full-blog-post-title">{post.heading}</h1>
-        {post.blogImages && (
+        <h1 className="full-blog-post-title">{heading}</h1>
+        {blogImages && (
           <img
-            src={post.blogImages[0].url}
-            alt={post.heading}
+            src={blogImages[0].url}
+            alt={heading}
             className="full-blog-post-image"
           />
         )}
         <div className="full-blog-post-meta">
-          <span>By {post.authorLink.name}</span>
-          {/* <span>{new Date(post.sys.createdAt).toLocaleDateString()}</span> */}
+          <span>By {authorLink.name}</span>
+          <span>{new Date(sys.publishedAt).toLocaleDateString()}</span>
         </div>
       </header>
 
       <section className="full-blog-post-description">
-        {post.shortDescription}
+        {shortDescription}
       </section>
 
       {/* <article className="rich-text-body full-blog-post-body">
-            <section>{post.fields.longDescription.content[0].content[0].value}</section>
+            <section>{fields.longDescription.content[0].content[0].value}</section>
         </article> */}
 
       <article className="rich-text-body full-blog-post-body">
-        {/* {documentToReactComponents(post.longDescription)} */}
+        {longDescription && documentToReactComponents(longDescription.json)}
       </article>
     </div>
   );

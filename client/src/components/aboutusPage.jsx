@@ -8,14 +8,15 @@ import LocaleContext from "./localeContextProvider";
 
 const GET_CONTENT = gql`
   query GetAboutUsContent($locale: String!) {
-    aboutUsCollection {
+    aboutUsCollection(locale: $locale) {
       items {
-        title(locale: $locale)
+        title
         image
-        description(locale: $locale) {
+        description {
           json
         }
-        facilitiesLinkCollection(locale: $locale) {
+        facilityHeading
+        facilitiesLinkCollection {
           items {
             ... on Facilities {
               heading
@@ -55,8 +56,13 @@ const AboutUsContent = ({ locale }) => {
     return <p>No data available</p>;
   }
 
-  const { title, image, description, facilitiesLinkCollection } =
-    data.aboutUsCollection.items[0];
+  const {
+    title,
+    image,
+    description,
+    facilitiesLinkCollection,
+    facilityHeading,
+  } = data.aboutUsCollection.items[0];
 
   // console.log("description", description.json.content[0].content[0].value);
   const { value } = description.json.content[0].content[0];
@@ -74,7 +80,7 @@ const AboutUsContent = ({ locale }) => {
         </div>
       </div>
       <div className="section2">
-        <p>What We Provide?</p>
+        <p>{facilityHeading}</p>
         <div className="facilityItems">
           {facilitiesLinkCollection.items.map((item, idx) => (
             <div key={idx} className="facilityCard">

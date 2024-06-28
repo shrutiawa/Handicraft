@@ -7,26 +7,25 @@
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: 10; /* Ensure modal is above all other content */
-  background-color: rgba(0, 0, 0, 0.6); /* Dimmed background */
-  overflow: auto; /* Enable scroll if needed */
+  z-index: 10; 
+  background-color: rgba(0, 0, 0, 0.6); 
+  overflow: auto; 
 }
-
 .video-modal-content {
   background-color: #fff;
   margin: auto;
   padding: 1.5rem;
   border-radius: 10px;
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5); 
   width: 80%;
   max-width: 800px;
 
   position: relative;
-  transition: transform 0.3s ease-out; /* Smooth transition for opening the modal */
-  transform-origin: center center; /* Ensures zoom effect originates from the center */
+  transition: transform 0.3s ease-out;
+  transform-origin: center center; 
 }
 
-/* Animation when opening the modal */
+
 .video-modal.open .video-modal-content {
   transform: scale(1);
 }
@@ -54,17 +53,16 @@
   text-decoration: none;
 }
 
-/* Video styles */
+
 video {
-  width: 100%; /* Full width of the modal content */
-  height: auto; /* Maintain aspect ratio */
-
-  border-radius: 5px; /* Soften edges with a rounded border on the video element itself */
-
-  outline: none; /* Remove focus outline inside the modal as it's not visually appealing here */
+  width: 100%; 
+  height: 400px; 
+  border-radius: 5px; 
+  margin-top: 20px;
+  outline: none;
 }
 
-/* Heading and paragraph styles for title and description within the modal content area*/
+
 .video-info h3,
 .video-info p {
   margin-bottom: 0.75rem;
@@ -73,14 +71,17 @@ video {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   line-height: normal;
 
-  padding-bottom: 0.75rem; /* Space between elements in info section */
+  padding-bottom: 0.75rem; 
 
-  border-bottom: solid thin #eaeaea; /* A subtle separator between elements if needed*/
+  border-bottom: solid thin #eaeaea; 
 }
 .video-info p:last-child {
-  border-bottom: none; /* No border for last element in info section*/
+  border-bottom: none; 
 }
-/* If author information is present, style accordingly */
+
+.video-modal-description p{
+  margin-top: 10px;
+}
 .author-info {
   font-style: italic;
   color: #888;

@@ -10,11 +10,14 @@ const VideoModal = ({ isOpen, close, videoUrl, title, description }) => {
           &times;
         </span>
         <h3>{title}</h3>
-        <video controls src={videoUrl} height={300} width={"100%"}>
+        <video controls src={videoUrl} >
           Your browser does not support the video tag.
         </video>
-        <p>{description}</p>
-        <p>By author</p>
+        <div className="video-modal-description">
+          <p>{description}</p>
+          <p>By author</p>
+        </div>
+        
       </div>
     </div>
   );

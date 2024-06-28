@@ -4,11 +4,17 @@ import { Link } from "react-router-dom";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import LocaleContext from "./localeContextProvider";
+import { useNavigate } from "react-router-dom";
+
 
 const GET_CONTENT = gql`
   query GetBlogContent($locale: String!) {
     blogCollection(locale: $locale) {
       items {
+        sys{
+          id
+          publishedAt
+        }
         heading
         shortDescription
         longDescription {
@@ -27,6 +33,10 @@ const BlogPageContent = ({ locale }) => {
   const { loading, error, data } = useQuery(GET_CONTENT, {
     variables: { locale },
   });
+
+  const navigate = useNavigate();
+
+  console.log("Data: ", data);
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -59,11 +69,11 @@ const BlogPageContent = ({ locale }) => {
       </div>
       <div className="blog-container">
         {filteredPosts.map((post, index) => (
-          <Link
+          <div
             key={index}
-            to={`/blogcontent/${index}`}
             className="blog-card"
             style={{ textDecoration: "none" }}
+            onClick={()=>navigate("/blogcontent", {state: {post}})}
           >
             {post.blogImages && post.blogImages.length > 0 && (
               <img
@@ -77,7 +87,7 @@ const BlogPageContent = ({ locale }) => {
                 <p>{post.shortDescription}</p>
               )}
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </div>

@@ -14,10 +14,10 @@ import LocaleContext from "./localeContextProvider";
 
 const GET_CONTENT = gql`
   query GetHeaderContent($locale: String!) {
-    headerCollection {
+    headerCollection(locale: $locale) {
       items {
         logo
-        links(locale: $locale)
+        links
       }
     }
   }
