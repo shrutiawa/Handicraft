@@ -83,49 +83,30 @@ const OrderConfirmation = () => {
 
   return (
     <>
-      <div className="OrderConfirmationPage">
-        <h1>Checkout</h1>
-        <div className="mainbox">
+      <div className="orderConfirmationContainer">
+        <div className="orderConfirmationContent">
           <span>
             <FontAwesomeIcon className="fa-icon" icon={faCheckCircle} />
+            <h1>Order Confirmed!</h1>
           </span>
-          <div className="firstbox">
-            <p className="order-text">Order Confirmed</p>
-            <h2>Thank you Sir</h2>
-          </div>
 
-          <div className="clear"></div>
+          <div className="orderContent">
+            <div className="confirmationHeading">
+              <h2>Thank you for placing order with us.</h2>
+            </div>
 
-          <div className="orderUpdates">
-            <h2>Order Updates</h2>
-            <p className="text-style">
-              You will receive order and shipping updates via email
+            <p className="updateTextMessage">
+              You will receive order and shipping updates via email on your
+              registered mail account.
             </p>
-          </div>
-          <div className="table-content">
-            <div className="inside-content">
-              <p className="info-q">
-                <strong>Contact</strong>
-              </p>
-              <p>ykphogat21@gmail.com</p>
+            <div className="orderButtons">
+              <button onClick={() => navigate("/order-history")}>
+                Order History
+              </button>
+              <button onClick={() => navigate("/product-list")}>
+                Continue Shopping
+              </button>
             </div>
-            <div className="inside-content">
-              <p className="info-q">
-                <strong>Address</strong>
-              </p>
-              <div className="paras-for-add">
-                <p>Address </p>
-                {/* <p> {address2} </p> */}
-              </div>
-            </div>
-            <div className="inside-content">
-              <p className="info-q">
-                <strong>Payment</strong>
-              </p>
-              <p>Check Payments</p>
-            </div>
-
-            {/* <button onClick={pushValueIntoArray}>Submit</button> */}
           </div>
         </div>
       </div>

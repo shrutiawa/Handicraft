@@ -6,7 +6,10 @@
 
 .signupMainContainer {
   width: 1200px;
-  /* padding: 10px; */
+  min-height: calc(100vh - 70px - 50px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: auto;
 }
 
@@ -17,7 +20,7 @@
   padding: 10px;
   border-radius: 10px;
   margin: 15px auto;
-  box-shadow: 4px 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .signupPage .sections {
@@ -32,7 +35,7 @@
   height: 100%;
 }
 
-.signupPage .sections .section1 img{
+.signupPage .sections .section1 img {
   width: 250px;
   height: 100px;
 }
@@ -98,7 +101,7 @@
 
 .signupPage .signupScreenButtons .signupBtn {
   border: none;
-  background-color: #7F5539;
+  background-color: #7f5539;
   border-radius: 20px;
   color: #fff;
   padding: 10px;
@@ -108,7 +111,7 @@
 .signupPage .signupScreenButtons .alreadyregisteredBtn,
 .signupPage .signupScreenButtons .cancelBtn {
   width: max-content;
-  color: #7F5539;
+  color: #7f5539;
   border: none;
   background-color: #fff;
   text-align: left;
@@ -122,11 +125,11 @@
 .signupPage .signupScreenButtons .alreadyregisteredBtn:hover,
 .signupPage .section2 .cancelBtn:hover {
   cursor: pointer;
-  background-color: #E6CCB2;
+  background-color: #e6ccb2;
 }
 
 .signupPage .signupScreenButtons .signupBtn:hover {
   cursor: pointer;
-  background-color: #E6CCB2;
-  color: #7F5539;
+  background-color: #e6ccb2;
+  color: #7f5539;
 }
