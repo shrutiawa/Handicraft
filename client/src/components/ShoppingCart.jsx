@@ -3,14 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/shoppingCart.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAngleDown,
-  faArrowLeft,
-  
-} from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import ShippingAddressForm from "./ShippingAddressForm";
 import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 function ShoppingCart() {
   const navigate = useNavigate();
@@ -42,7 +38,11 @@ function ShoppingCart() {
             attributes[attr.name] = attr.value["en-US"];
           });
 
-          const { Color: color = "N/A", Size: size = "N/A", Material: material = "N/A" } = attributes;
+          const {
+            Color: color = "N/A",
+            Size: size = "N/A",
+            Material: material = "N/A",
+          } = attributes;
 
           return {
             id: productId,
@@ -58,17 +58,16 @@ function ShoppingCart() {
 
         setProducts(updatedProducts);
 
-
         // Calculate total number of items in cart
         const productsCart = response.data.lineItems;
 
         // Extract unique product IDs
-        const uniqueProductIds = [...new Set(productsCart.map(item => item.productId))];
+        const uniqueProductIds = [
+          ...new Set(productsCart.map((item) => item.productId)),
+        ];
         setTotalItems(uniqueProductIds.length);
-
       } catch (error) {
         console.error("Error fetching entries:", error);
-
       }
     };
 
@@ -77,50 +76,45 @@ function ShoppingCart() {
     }
   }, []);
 
- 
-
-  
   const calculateSubtotal = () => {
-    return products
-      .reduce(
-        (sum, product) => sum + product.price * product.quantity,
-        0
-      )
-
+    return products.reduce(
+      (sum, product) => sum + product.price * product.quantity,
+      0
+    );
   };
 
   const toggleShippingAddress = () => {
-    console.log("toggle change",showShippingAddress)
+    console.log("toggle change", showShippingAddress);
     if (showShippingAddress == true) {
-      
       setShowShippingAddress(false);
-      console.log("again changed",showShippingAddress)
-      
+      console.log("again changed", showShippingAddress);
     }
   };
   const handleCheckout = () => {
-    console.log("checkout click",showShippingAddress)
+    console.log("checkout click", showShippingAddress);
     if (!showShippingAddress) {
       setShowShippingAddress(true);
-      console.log("after change",showShippingAddress)
+      console.log("after change", showShippingAddress);
       setTimeout(() => {
-        shippingAddressRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+        shippingAddressRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+        });
       }, 100);
     }
   };
 
   return (
     <div className="cartMainContainer">
-      <div className="shopping-cart-title">
-
-
-      </div>
+      <div className="shopping-cart-title"></div>
       {products.length === 0 ? (
-        <p>Your shopping cart is empty.</p>
+        <div className="emptyCartContainer">
+          <p>Your shopping cart is empty. Add some item and visit us back.</p>
+          <button onClick={() => navigate("/product-list")}>Shop Now &rarr;</button>
+        </div>
       ) : (
         <>
           <div className="shopping-cart">
-
             <section className="itemsInCart">
               <h1>Shopping Cart</h1>
               <div className="column-labels">
@@ -144,9 +138,7 @@ function ShoppingCart() {
                   </div>
                   <div className="product-price">{product.price}</div>
                   <div className="product-quantity">
-                    
                     <span>{product.quantity}</span>
-                    
                   </div>
                   <div className="product-line-price">
                     {(product.price * product.quantity).toFixed(2)}
@@ -155,7 +147,6 @@ function ShoppingCart() {
                 </div>
               ))}
             </section>
-
 
             <section className="summary">
               <h1>Order Summary</h1>
@@ -184,7 +175,10 @@ function ShoppingCart() {
               <button className="checkout" onClick={handleCheckout}>
                 Proceed to Checkout
               </button>
-              <button className=" backButton" onClick={() => navigate("/product-list")}>
+              <button
+                className=" backButton"
+                onClick={() => navigate("/product-list")}
+              >
                 <FontAwesomeIcon icon={faArrowLeft} /> Continue Shopping
               </button>
             </section>

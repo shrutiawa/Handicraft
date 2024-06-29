@@ -103,6 +103,7 @@
 
 .headerContent .section3 {
   position: relative;
+  padding-right: 10px;
 }
 
 .headerContent .section3 .cartIcon,
@@ -110,6 +111,12 @@
   background-color: #e6ccb2;
   padding: 15px;
   border-radius: 50%;
+}
+
+.headerContent .section3 .cartIcon:hover,
+.headerContent .section3 .userIcon:hover{
+  cursor: pointer;
+  background-color: #ad744e;
 }
 
 .userIconContainer {
