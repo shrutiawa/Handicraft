@@ -132,6 +132,32 @@ async function addOrder(cartId, cartVersion) {
     throw error;
   }
 }
+// add order
+async function removeLineItemService(cartId, cartVersion,lineItemId) {
+  try {
+    // console.log("order manage", cartId, cartVersion)
+    
+    const response = await client.execute({
+      method: "POST",
+      uri: `/handicraft/carts/${cartId}`,
+      body:{
+        version: cartVersion,
+        actions: [
+            {
+                action : "removeLineItem",
+                lineItemId :lineItemId,
+                
+                
+              }
+        ]
+    },
+    });
+    return response;
+  } catch (error) {
+    console.error("Error in order:", error);
+    throw error;
+  }
+}
 
 
 module.exports = {
@@ -140,5 +166,6 @@ module.exports = {
   createCart,
   deleteCart,
   addShippingAddress,
-  addOrder
+  addOrder,
+  removeLineItemService
 };

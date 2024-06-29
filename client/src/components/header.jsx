@@ -146,7 +146,7 @@ const HeaderContent = ({ locale, setLocale, loggedIn }) => {
                       <div
                         className="dropdownItem"
                         onClick={() => {
-                          localStorage.setItem("loggedIn", "false");
+                          localStorage.clear();
                           navigate("/");
                         }}
                       >
