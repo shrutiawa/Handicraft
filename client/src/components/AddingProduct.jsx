@@ -19,6 +19,8 @@ const AddingProduct = () => {
   const [imageUrl, setImageUrl] = useState('');
   const [description, setDescription] = useState('');
 
+  const imgbbAPIKey = '61661e84f61a7128cb6ab2b7700043cb'; 
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -42,18 +44,43 @@ const AddingProduct = () => {
     fetchProductTypes();
   }, []);
 
-  const handleImageUpload = (e) => {
+  const uploadImageToImgBB = async (base64Image) => {
+    const formData = new FormData();
+    formData.append('key', imgbbAPIKey);
+    formData.append('image', base64Image);
+
+    try {
+     
+      const response = await axios.post('https://api.imgbb.com/1/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log("form data",response.data.data.url)
+      return response.data.data.url;
+    } catch (error) {
+      console.error('Error uploading image to ImgBB:', error);
+      throw error;
+    }
+  };
+
+  const handleImageUpload = async (e) => {
+    console.log("image upload",e.target.files[0])
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        // Extract base64 data without data URL prefix
-        let base64String = reader.result.split(',')[1];
-        console.log(base64String)
-        setImageUrl(base64String);
+      reader.onloadend = async () => {
+        const base64String = reader.result.split(',')[1];
+        const uploadedImageUrl = await uploadImageToImgBB(base64String);
+        setImageUrl(uploadedImageUrl);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleImageUrlChange = (e) => {
+    console.log("image url",e.target.value)
+    setImageUrl(e.target.value);
   };
 
   const stripHtmlTags = (html) => {
@@ -66,25 +93,30 @@ const AddingProduct = () => {
     setDescription(stripHtmlTags(value));
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const productData = {
-      categoryId: selectedCategory,
-      productTypeId: selectedProductType,
-      name: productName,
-      price: parseFloat(price),
-      color,
-      size,
-      material,
-      imageUrl,
-      description
-    };
-    console.log("product", productData)
-
     try {
+      let imageUploadUrl = imageUrl;
+      if (imageUrl.startsWith('data:')) {
+        imageUploadUrl = await uploadImageToImgBB(imageUrl);
+      }
+
+      const productData = {
+        categoryId: selectedCategory,
+        productTypeId: selectedProductType,
+        name: productName,
+        price: parseFloat(price),
+        color,
+        size,
+        material,
+        imageUrl: imageUploadUrl,
+        description
+      };
+      console.log("product", productData);
+
       await axios.post('http://localhost:5000/products', productData);
+
       // Reset form after successful submission
       setSelectedCategory('');
       setSelectedProductType('');
@@ -99,6 +131,7 @@ const AddingProduct = () => {
       console.error('Error adding product:', error);
     }
   };
+
 
   return (
     <div className='add-product-container'>
@@ -238,14 +271,12 @@ const AddingProduct = () => {
                     id="imageUrl"
                     name="imageUrl"
                     value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
+                    onChange={handleImageUrlChange}
                   placeholder="Enter Image url"
 
                   />
                   </div>
-                  {imageUrl && (
-                    <img src={imageUrl} alt="Product" style={{ width: '100px', height: '100px' }} />
-                  )}
+                  
                 </div>
               </div>
             </div>
