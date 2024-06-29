@@ -7,11 +7,13 @@ import {
   RefinementList,
   Stats,
   SortBy,
+  
   RangeInput,
   ClearRefinements,
 } from "react-instantsearch";
 import "../styles/productList.css";
 import { useNavigate } from "react-router-dom";
+import { RangeSlider } from './RangeSlider';
 
 const searchClient = algoliasearch(
   "LQ3AGF58XX",
@@ -27,7 +29,7 @@ function truncateText(text, limit) {
 }
 
 function Hit({ hit }) {
-  console.log("hit",hit)
+  // console.log("hit", hit)
   const navigate = useNavigate();
   const truncatedName = truncateText(hit.name["en-US"], 3);
   const truncatedDescription = truncateText(hit.description["en-US"], 7);
@@ -57,7 +59,7 @@ function ProductListPage() {
           indexName="Handicraft_Machathon"
           insights
         >
-          <div className="search-container">
+          <div className="search-bar-container">
             <SearchBox placeholder="Search" />
           </div>
 
@@ -74,9 +76,21 @@ function ProductListPage() {
 
               <div className="filter_container">
                 <h4>CATEGORY</h4>
-                <RefinementList attribute="categories.en-US.lvl0" />
+                <RefinementList attribute="categories.en-US.lvl0" showMore
+                  limit={5}
+                  showMoreLimit={10} />
+                  <hr />
+                  <br /><br />
+                <h4>Product Type</h4>
+                <RefinementList attribute="productType" showMore
+                  limit={5}
+                  showMoreLimit={10} />
+                   <hr />
+                  <br /><br />
+
                 <h4>Price</h4>
-                <RangeInput attribute="price.INR.value" />
+                <RangeSlider attribute="prices.INR.priceValues.value" 
+                />
               </div>
             </div>
 
