@@ -1,0 +1,56 @@
+
+.BTW8mG_spectrum-Slider-labelContainer {
+    margin: 20px 0px;
+  }
+  
+  .BTW8mG_spectrum-Slider-controls {
+    /* outline:1px solid red;
+  height:20px */
+  }
+  
+  .BTW8mG_spectrum-Slider_ {
+    width: 100% !important;
+    /* outline:1px solid red */
+  }
+  
+  .BTW8mG_spectrum-Slider-labelContainer {
+    margin-bottom: 1rem;
+    /* outline:1px solid red */
+  }
+  
+  .BTW8mG_spectrum-Slider-value {
+    width: auto !important;
+    min-width: 0 !important;
+  }
+  
+  .BTW8mG_spectrum-Slider-track {
+    /* outline: 1px solid green; */
+    height: 30px;
+    /* background-color: #dfe2ee;
+      height: 3px;
+      border-radius: 9999px; */
+  }
+  
+  .BTW8mG_spectrum-Slider-track:last-of-type {
+    right: 0;
+  }
+  
+  .BTW8mG_spectrum-Slider-track:nth-of-type(3) {
+    background-color: #3a4570;
+  }
+  
+  .BTW8mG_spectrum-Slider-handle div {
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    background-color: #fff;
+    border: 1px solid #c4c8d8;
+    box-shadow: 0 2px 5px 0 #e3e5ec;
+    border-radius: 9999px;
+    outline: 1px solid green;
+  }
+  .BTW8mG_spectrum-Slider-input {
+    outline: 1px solid green;
+  }
+  
