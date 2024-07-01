@@ -103,6 +103,11 @@
     border-radius: 4px;
   }
   
+  .btn-container{
+    display: flex;
+    justify-content: center;
+    gap:20px
+  }
   .btn-submit {
     display: block;
     padding: 10px;
@@ -113,6 +118,7 @@
     cursor: pointer;
     font-size: 16px;
     margin-top: 20px;
+    width: 16%;
   }
 
  .product-media{

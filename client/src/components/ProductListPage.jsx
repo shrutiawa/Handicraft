@@ -11,7 +11,6 @@ import {
 } from "react-instantsearch";
 import "../styles/productList.css";
 import { useNavigate } from "react-router-dom";
-// import { RangeSlider } from "./RangeSlider";
 import RangeSlider from "./RangeSlider";
 import LocaleContext from "./localeContextProvider";
 import { useContext } from "react";

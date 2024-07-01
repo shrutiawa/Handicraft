@@ -158,6 +158,21 @@ const AddingProductContent = ({ locale }) => {
     }
   };
 
+  const handleCancel = async (e) => {
+    e.preventDefault();
+
+      setSelectedCategory('');
+      setSelectedProductType('');
+      setProductName('');
+      setPrice('');
+      setColor('');
+      setSize('');
+      setMaterial('');
+      setImageUrl('');
+      setDescription('');
+   
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
@@ -315,9 +330,12 @@ const AddingProductContent = ({ locale }) => {
             </div>
           </div>
         </form>
+        <div className='btn-container'>
         <button className="btn-submit" onClick={handleSubmit} type="submit">
           {buttons.submitBtn}
         </button>
+        <button className="btn-submit" onClick={handleCancel} type="submit">Cancel</button>
+        </div>
       </div>
     </div>
   );

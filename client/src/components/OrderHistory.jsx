@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import '../styles/orderHistory.css'; // Import CSS file for styles
+import '../styles/orderHistory.css';
+import LocaleContext from "./localeContextProvider";
+
 
 const OrderHistoryPage = () => {
     const [customerId, setCustomerId] = useState('');
     const [orderHistory, setOrderHistory] = useState([]);
+    const { locale } = useContext(LocaleContext);
+    console.log("order history",orderHistory)
 
     useEffect(() => {
         const storedCustomerId = localStorage.getItem('customer');
@@ -18,8 +22,8 @@ const OrderHistoryPage = () => {
         axios.get(`http://localhost:5000/orders/${customerId}`)
             .then((response) => {
                 const orderData = response.data.order;
-                console.log("Response:", orderData);
-                setOrderHistory(orderData); 
+                // console.log("Response:", orderData);
+                setOrderHistory(orderData);
             })
             .catch((error) => {
                 console.error("Error fetching order history:", error);
@@ -36,7 +40,7 @@ const OrderHistoryPage = () => {
         return lineItems.reduce((total, item) => total + item.totalPrice.centAmount, 0);
     };
     const getOrderStatusClass = (status) => {
-        console.log("hello",status)
+        // console.log("hello", status)
         switch (status.toLowerCase()) {
             case 'ready':
                 return 'status-blue';
@@ -62,38 +66,38 @@ const OrderHistoryPage = () => {
                             <div className="order-summary">
                                 <p><strong>Order ID:</strong> {order.id}</p>
                                 <p><strong>Total: ₹{calculateTotal(order.lineItems)}</strong></p>
-                                
-                               
+
+
                             </div>
                             <div className="order-details">
                                 <div className="line-items">
                                     {order.lineItems.length > 0 ? (
                                         order.lineItems.map((lineItem, lineIndex) => {
-                                            
+
 
                                             return (
                                                 <>
-                                                <div key={lineIndex} className="line-item-card">
-                                                    {lineItem.variant.images && (
-                                                        <img src={lineItem.variant.images[0].url} alt={lineItem.name["en-US"]} className="line-item-image" />
-                                                    )}
-                                                    <div className="line-item-details">
-                                                        <h3>{lineItem.name["en-US"]}</h3>
-                                                        <p>Quantity: {lineItem.quantity}</p>
-                                                        <p> Price: ₹{lineItem.totalPrice.centAmount} </p>
+                                                    <div key={lineIndex} className="line-item-card">
+                                                        {lineItem.variant.images && (
+                                                            <img src={lineItem.variant.images[0].url} alt={lineItem.name[locale]} className="line-item-image" />
+                                                        )}
+                                                        <div className="line-item-details">
+                                                            <h3>{lineItem.name[locale]}</h3>
+                                                            <p>Quantity: {lineItem.quantity}</p>
+                                                            <p> Price: ₹{lineItem.totalPrice.centAmount} </p>
+                                                        </div>
+                                                        <div className="line-item-status">
+                                                            <span className="ordered-on">Ordered On: <strong>{formatDate(order.createdAt)}</strong> </span>
+                                                            <p className='shipment-status'> <strong>Status:   </strong>
+                                                                <button className={`shipment-status-btn ${getOrderStatusClass(order.shipmentState || "Ready")}`}>
+                                                                    {order.shipmentState || "Ready"}
+                                                                </button>
+                                                            </p>
+                                                            <p className="paid-status">Paid</p>
+                                                        </div>
+
                                                     </div>
-                                                    <div className="line-item-status">
-                                                    <span className="ordered-on">Ordered On: <strong>{formatDate(order.createdAt)}</strong> </span>
-                                                   <p className='shipment-status'> <strong>Status:   </strong> 
-                                                    <button className={`shipment-status-btn ${getOrderStatusClass(order.shipmentState || "Ready")}`}>
-                                                        {order.shipmentState || "Ready"}
-                                                    </button>
-                                                    </p>
-                                                    <p className="paid-status">Paid</p>
-                                                </div>
-                                                    
-                                                </div>
-                                                    </>
+                                                </>
                                             );
                                         })
                                     ) : (
