@@ -11,7 +11,8 @@ import {
 } from "react-instantsearch";
 import "../styles/productList.css";
 import { useNavigate } from "react-router-dom";
-import { RangeSlider } from './RangeSlider';
+// import { RangeSlider } from "./RangeSlider";
+import RangeSlider from "./RangeSlider";
 import LocaleContext from "./localeContextProvider";
 import { useContext } from "react";
 
@@ -39,16 +40,16 @@ function Hit({ hit,locale }) {
     navigate(`/product`, { state: { hit } });
   };
 
-  return (<>
-
-    <article className="search-panel_item" onClick={handleClick}>
-      <img src={hit.images} alt="images" />
-      <span className="heading-secondary">{hit.productType}</span>
-      <h3>{truncatedName}</h3>
-      <p>{truncatedDescription}</p>
-      <h3>₹ {hit.prices['INR'].max}</h3>
-    </article>
-  </>
+  return (
+    <>
+      <article className="search-panel_item" onClick={handleClick}>
+        <img src={hit.images} alt="images" />
+        <span className="heading-secondary">{hit.productType}</span>
+        <h3>{truncatedName}</h3>
+        <p>{truncatedDescription}</p>
+        <h3>₹ {hit.prices["INR"].max}</h3>
+      </article>
+    </>
   );
 }
 
@@ -80,21 +81,30 @@ function ProductListPage() {
 
               <div className="filter_container">
                 <h4>CATEGORY</h4>
-                <RefinementList attribute="categories.en-US.lvl0" showMore
+                <RefinementList
+                  attribute="categories.en-US.lvl0"
+                  showMore
                   limit={5}
-                  showMoreLimit={10} />
-                  <hr />
-                  <br /><br />
+                  showMoreLimit={10}
+                />
+                <hr />
+                <br />
+                <br />
                 <h4>Product Type</h4>
-                <RefinementList attribute="productType" showMore
+                <RefinementList
+                  attribute="productType"
+                  showMore
                   limit={5}
-                  showMoreLimit={10} />
-                   <hr />
-                  <br /><br />
+                  showMoreLimit={10}
+                />
+                <hr />
+                <br />
+                <br />
 
                 <h4>Price</h4>
-                <RangeSlider attribute="prices.INR.priceValues.value" 
-                />
+                <RangeSlider attribute="prices.INR.priceValues.value"/>
+                {/* <RangeSlider attribute="prices.INR.priceValues.value" 
+                /> */}
               </div>
             </div>
 

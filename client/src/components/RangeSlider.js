@@ -1,36 +1,48 @@
-import { useEffect, useState } from 'react';
-import { useRange } from 'react-instantsearch';
-import { RangeSlider as SpectrumRangeSlider } from '@adobe/react-spectrum';
-import "../styles/productList.css";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Slider from "@mui/material/Slider";
+import { useRange } from "react-instantsearch";
+import { useEffect, useState } from "react";
 
-
-export function RangeSlider(props) {
-    // console.log("props",props)
+export default function RangeSlider(props) {
   const { start, range, canRefine, refine } = useRange(props);
-//   console.log("props",props)
-//   console.log("start",start)
-//   console.log("range",range)
-//   console.log("canRefine",canRefine)
 
   const { min, max } = range;
-  const [value, setValue] = useState({ start: min, end: max });
+  const [value, setValue] = useState([min, max]);
 
   const from = Math.max(min, Number.isFinite(start[0]) ? start[0] : min);
   const to = Math.min(max, Number.isFinite(start[1]) ? start[1] : max);
 
   useEffect(() => {
-    setValue({ start: from, end: to });
+    setValue([from, to]);
   }, [from, to]);
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleChangeCommitted = (event, newValue) => {
+    refine(newValue);
+  };
+
   return (
-    <SpectrumRangeSlider
-      label="Price range"
-      minValue={min}
-      maxValue={max}
-      value={value}
-      onChange={setValue}
-      onChangeEnd={({ start, end }) => refine([start, end])}
-      isDisabled={!canRefine}
-    />
+    <Box sx={{ width: "100%", textAlign: 'center' }}>
+      <div>
+        <span>Min: {min}</span> | <span>Max: {max}</span>
+      </div>
+      <Slider
+        getAriaLabel={() => "Range"}
+        min={min}
+        max={max}
+        value={value}
+        onChange={handleChange}
+        valueLabelDisplay="auto"
+        onChangeCommitted={handleChangeCommitted}
+        disabled={!canRefine}
+      />
+      <div>
+        <span>Selected Range: {value[0]} - {value[1]}</span>
+      </div>
+    </Box>
   );
 }
