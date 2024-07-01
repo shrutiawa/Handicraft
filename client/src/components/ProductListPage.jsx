@@ -101,7 +101,7 @@ function ProductListPage() {
                 <br />
 
                 <h4>Price</h4>
-                <RangeSlider attribute="prices.INR.priceValues.value"/>
+                <RangeSlider attribute="prices.INR.priceValues.value" />
                 {/* <RangeSlider attribute="prices.INR.priceValues.value" 
                 /> */}
               </div>

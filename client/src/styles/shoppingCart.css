@@ -1,14 +1,15 @@
 .cartMainContainer {
   width: 1200px;
   min-height: calc(100vh - 70px - 50px);
-  /* display: flex;
+  display: flex;
   justify-content: center;
-  align-items: center; */
+  align-items: center;
   margin: auto;
-
+  /* border: 1px solid red; */
 }
 
 .cartMainContainer .emptyCartContainer {
+  margin: auto;
   width: 60%;
   height: 200px;
   display: flex;
@@ -45,6 +46,10 @@
 .cartMainContainer .emptyCartContainer button:hover {
   cursor: pointer;
   background-color: #d8af86;
+}
+
+.cartContent {
+  width: 100%;
 }
 
 .shipping-address {
@@ -122,6 +127,7 @@
   width: 25%;
   padding: 0px 30px 10px;
   margin: 5px;
+  margin-top: 55px;
   /* background: rgb(209, 205, 205); */
 }
 
@@ -146,6 +152,7 @@
   padding-bottom: 10px;
   border-bottom: 1px solid;
 }
+
 .product-image img {
   width: 100px;
   height: 100px;
@@ -163,17 +170,18 @@
 
 .remove-product {
   position: absolute;
-  bottom: 0;
-  right: 0;
   border: 0;
   padding: 4px 8px;
   background-color: #c66;
   color: #fff;
   font-size: 12px;
   border-radius: 3px;
+  top: 100px;
+  right: 23px;
 }
 
 .remove-product:hover {
+  cursor: pointer;
   background-color: #a44;
 }
 /* Totals section */

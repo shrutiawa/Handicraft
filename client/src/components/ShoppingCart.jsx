@@ -1,22 +1,30 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/shoppingCart.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAngleDown,
-  faArrowLeft,
-
-} from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import ShippingAddressForm from "./ShippingAddressForm";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LocaleContext from "./localeContextProvider";
-import { useContext } from "react";
+import { useQuery, gql, ApolloProvider } from "@apollo/client";
+import client from "./apolloClient";
 
-function ShoppingCart() {
-  const { locale } = useContext(LocaleContext);
+const GET_CONTENT = gql`
+  query GetShoppingCartContent($locale: String!) {
+    shoppingCartCollection(locale: $locale) {
+      items {
+        emptyCartContent
+      }
+    }
+  }
+`;
 
+function ShoppingCartContent({ locale }) {
+  const { loading, error, data } = useQuery(GET_CONTENT, {
+    variables: { locale },
+  });
   const navigate = useNavigate();
 
   const customerId = localStorage.getItem("customer");
@@ -26,8 +34,6 @@ function ShoppingCart() {
   const shippingAddressRef = useRef(null);
 
   useEffect(() => {
-
-
     const getAllEntries = async () => {
       try {
         const response = await axios.get(
@@ -87,9 +93,6 @@ function ShoppingCart() {
     }
   }, [products]);
 
-
-
-
   const calculateSubtotal = () => {
     return products.reduce(
       (sum, product) => sum + product.price * product.quantity,
@@ -98,16 +101,13 @@ function ShoppingCart() {
   };
 
   const toggleShippingAddress = () => {
-
-
     setShowShippingAddress((prev) => !prev);
-
   };
   const handleCheckout = () => {
-    console.log("checkout click", showShippingAddress)
+    console.log("checkout click", showShippingAddress);
     if (!showShippingAddress) {
       setShowShippingAddress(true);
-      console.log("after change", showShippingAddress)
+      console.log("after change", showShippingAddress);
       setTimeout(() => {
         shippingAddressRef.current.scrollIntoView({
           behavior: "smooth",
@@ -117,28 +117,40 @@ function ShoppingCart() {
     }
   };
   const handleRemoveItem = (id) => {
-    console.log(id)
+    console.log(id);
     try {
-      const response = axios.post(
-        `http://localhost:5000/removecart`, {
+      const response = axios.post(`http://localhost:5000/removecart`, {
         id,
-        customerId
-      }
-      );
-      console.log("frontend", response)
-
+        customerId,
+      });
+      console.log("frontend", response);
     } catch (error) {
       console.error("Error fetching entries:", error);
-
     }
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  if (
+    !data ||
+    !data.shoppingCartCollection ||
+    !data.shoppingCartCollection.items.length
+  ) {
+    return <p>No data available</p>;
   }
+
+  const { emptyCartContent } = data.shoppingCartCollection.items[0];
+  const { emptyCartHeading, emptyCartButton } = emptyCartContent;
   return (
-    <div className="cartMainContainer">
-      <div className="shopping-cart-title"></div>
+    <div className="cartContent">
+      {/* <div className="shopping-cart-title"></div> */}
       {products.length === 0 ? (
         <div className="emptyCartContainer">
-          <p>Your shopping cart is empty. Add some item and visit us back.</p>
-          <button onClick={() => navigate("/product-list")}>Shop Now &rarr;</button>
+          <p>{emptyCartHeading}</p>
+          <button onClick={() => navigate("/product-list")}>
+            {emptyCartButton} &rarr;
+          </button>
         </div>
       ) : (
         <>
@@ -170,11 +182,15 @@ function ShoppingCart() {
                   </div>
                   <div className="product-line-price">
                     {(product.price * product.quantity).toFixed(2)}
-                  <button className="remove-product" onClick={() => handleRemoveItem(product.lineItemId)}>
+                  <button
+                    className="remove-product"
+                    onClick={() => handleRemoveItem(product.lineItemId)}
+                  >
                     Remove
                   </button>
                   </div>
-                </div>
+                  </div>
+                
               ))}
             </section>
 
@@ -226,5 +242,16 @@ function ShoppingCart() {
     </div>
   );
 }
+
+const ShoppingCart = () => {
+  const { locale } = useContext(LocaleContext);
+  return (
+    <ApolloProvider client={client}>
+      <div className="cartMainContainer">
+        <ShoppingCartContent locale={locale} />
+      </div>
+    </ApolloProvider>
+  );
+};
 
 export default ShoppingCart;
