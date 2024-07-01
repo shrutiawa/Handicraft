@@ -11,8 +11,12 @@ import {
 import ShippingAddressForm from "./ShippingAddressForm";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LocaleContext from "./localeContextProvider";
+import { useContext } from "react";
 
 function ShoppingCart() {
+  const { locale } = useContext(LocaleContext);
+
   const navigate = useNavigate();
 
   const customerId = localStorage.getItem("customer");
@@ -33,7 +37,7 @@ function ShoppingCart() {
         const updatedProducts = productsInCart.map((item) => {
           const lineItemId = item.id;
           const productId = item.productId;
-          const productName = item.name["en-US"];
+          const productName = item.name[locale];
           const productPrice = item.price.value.centAmount;
           const productImage = item.variant.images[0]?.url;
           const quantity = item.quantity;
@@ -41,7 +45,7 @@ function ShoppingCart() {
           // Extracting attributes
           const attributes = {};
           item.variant.attributes.forEach((attr) => {
-            attributes[attr.name] = attr.value["en-US"];
+            attributes[attr.name] = attr.value[locale];
           });
 
           const {
@@ -166,10 +170,10 @@ function ShoppingCart() {
                   </div>
                   <div className="product-line-price">
                     {(product.price * product.quantity).toFixed(2)}
-                  </div>
                   <button className="remove-product" onClick={() => handleRemoveItem(product.lineItemId)}>
                     Remove
                   </button>
+                  </div>
                 </div>
               ))}
             </section>

@@ -7,13 +7,14 @@ import {
   RefinementList,
   Stats,
   SortBy,
-  
-  RangeInput,
   ClearRefinements,
 } from "react-instantsearch";
 import "../styles/productList.css";
 import { useNavigate } from "react-router-dom";
 import { RangeSlider } from './RangeSlider';
+import LocaleContext from "./localeContextProvider";
+import { useContext } from "react";
+
 
 const searchClient = algoliasearch(
   "LQ3AGF58XX",
@@ -21,6 +22,7 @@ const searchClient = algoliasearch(
 );
 
 function truncateText(text, limit) {
+  if (typeof text !== 'string') return ''; // Ensure text is a string
   const words = text.split(" ");
   if (words.length > limit) {
     return words.slice(0, limit).join(" ") + "...";
@@ -28,11 +30,11 @@ function truncateText(text, limit) {
   return text;
 }
 
-function Hit({ hit }) {
-  // console.log("hit", hit)
+function Hit({ hit,locale }) {
+  console.log("hit", locale)
   const navigate = useNavigate();
-  const truncatedName = truncateText(hit.name["en-US"], 3);
-  const truncatedDescription = truncateText(hit.description["en-US"], 7);
+  const truncatedName = truncateText(hit.name[locale], 3);
+  const truncatedDescription = truncateText(hit.description[locale], 7);
   const handleClick = () => {
     navigate(`/product`, { state: { hit } });
   };
@@ -51,6 +53,8 @@ function Hit({ hit }) {
 }
 
 function ProductListPage() {
+  const { locale } = useContext(LocaleContext);
+  console.log("locale",locale)
   return (
     <>
       <div className="container">
@@ -115,7 +119,7 @@ function ProductListPage() {
               </div>
 
               <div className="product-list-box">
-                <Hits hitComponent={Hit} />
+              <Hits hitComponent={(props) => <Hit {...props} locale={locale} />} />
               </div>
 
               <div className="pagination">

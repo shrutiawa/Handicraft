@@ -1,5 +1,6 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import LocaleContext from "./localeContextProvider";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/productDetail.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,11 +8,12 @@ import { faArrowLeft, faCartShopping, faMinus, faPlus } from '@fortawesome/free-
 
 function ProductDetailPage() {
   const location = useLocation();
-  const { hit } = location.state || {};
+  const { hit  } = location.state || {};
+  const { locale } = useContext(LocaleContext);
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
 
-  console.log("hello",location.state)
+  console.log("hello",locale)
   const handleIncrease = () => {
     if (quantity < 5) {
       setQuantity(quantity + 1);
@@ -63,21 +65,21 @@ function ProductDetailPage() {
           </div>
           <div className="right-text">
             <span className="heading-secondary">{hit.productType}</span>
-            <h1 className="heading-primary">{hit.name["en-US"]}</h1>
-            <p>{hit.description["en-US"]}</p>
+            <h1 className="heading-primary">{hit.name[locale]}</h1>
+            <p>{hit.description[locale]}</p>
             <hr />
             <div className="product-specification">
               <div>
                 <h4>Color : </h4>
-                <p> {hit.attributes.Color["en-US"]}</p>
+                <p> {hit.attributes.Color[locale]}</p>
               </div>
               <div>
                 <h4>Size :</h4>
-                <p> {hit.attributes.Size["en-US"]}</p>
+                <p> {hit.attributes.Size[locale]}</p>
               </div>
               <div>
                 <h4>Material Used :</h4>
-                <p> {hit.attributes.Material["en-US"]}</p>
+                <p> {hit.attributes.Material[locale]}</p>
               </div>
             </div>
             <hr />

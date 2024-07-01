@@ -5,12 +5,12 @@ import "../styles/productList.css";
 
 
 export function RangeSlider(props) {
-    console.log("props",props)
+    // console.log("props",props)
   const { start, range, canRefine, refine } = useRange(props);
-  console.log("props",props)
-  console.log("start",start)
-  console.log("range",range)
-  console.log("canRefine",canRefine)
+//   console.log("props",props)
+//   console.log("start",start)
+//   console.log("range",range)
+//   console.log("canRefine",canRefine)
 
   const { min, max } = range;
   const [value, setValue] = useState({ start: min, end: max });

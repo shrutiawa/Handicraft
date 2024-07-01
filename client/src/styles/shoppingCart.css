@@ -1,10 +1,11 @@
 .cartMainContainer {
   width: 1200px;
   min-height: calc(100vh - 70px - 50px);
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
   margin: auto;
+
 }
 
 .cartMainContainer .emptyCartContainer {
@@ -139,6 +140,7 @@
 
 /* Product entries */
 .product {
+  position: relative;
   height: 150px;
   margin-bottom: 20px;
   padding-bottom: 10px;
@@ -160,11 +162,13 @@
 }
 
 .remove-product {
+  position: absolute;
+  bottom: 0;
+  right: 0;
   border: 0;
   padding: 4px 8px;
   background-color: #c66;
   color: #fff;
-  /* font-family: $font-bold; */
   font-size: 12px;
   border-radius: 3px;
 }
@@ -172,7 +176,6 @@
 .remove-product:hover {
   background-color: #a44;
 }
-
 /* Totals section */
 .totals .totals-item {
   float: right;
