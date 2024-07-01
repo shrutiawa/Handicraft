@@ -1,16 +1,30 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/orderConfirmation.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
+import { useQuery, gql, ApolloProvider } from "@apollo/client";
+import client from "./apolloClient";
+import LocaleContext from "./localeContextProvider";
 
-const OrderConfirmation = () => {
+const GET_CONTENT = gql`
+  query GetOrderConfirmationContent($locale: String!) {
+    orderConfirmationCollection(locale: $locale) {
+      items {
+        heading
+        subTexts
+        buttons
+      }
+    }
+  }
+`;
+
+const OrderConfirmationContent = ({ locale }) => {
+  const { loading, error, data } = useQuery(GET_CONTENT, {
+    variables: { locale },
+  });
   const navigate = useNavigate();
-
-  const handleGoToHomePage = () => {
-    navigate("/");
-  };
 
   const fetchCartDetails = async () => {
     try {
@@ -81,36 +95,56 @@ const OrderConfirmation = () => {
     processOrder();
   }, []);
 
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  if (
+    !data ||
+    !data.orderConfirmationCollection ||
+    !data.orderConfirmationCollection.items.length
+  ) {
+    return <p>No data available</p>;
+  }
+
+  const { heading, subTexts, buttons } =
+    data.orderConfirmationCollection.items[0];
+
   return (
     <>
       <div className="orderConfirmationContainer">
         <div className="orderConfirmationContent">
           <span>
             <FontAwesomeIcon className="fa-icon" icon={faCheckCircle} />
-            <h1>Order Confirmed!</h1>
+            <h1>{heading}</h1>
           </span>
 
           <div className="orderContent">
             <div className="confirmationHeading">
-              <h2>Thank you for placing order with us.</h2>
+              <h2>{subTexts.subtext1}</h2>
             </div>
 
-            <p className="updateTextMessage">
-              You will receive order and shipping updates via email on your
-              registered mail account.
-            </p>
+            <p className="updateTextMessage">{subTexts.subtext2}</p>
             <div className="orderButtons">
               <button onClick={() => navigate("/order-history")}>
-                Order History
+                {buttons.order}
               </button>
               <button onClick={() => navigate("/product-list")}>
-                Continue Shopping
+                {buttons.shop}
               </button>
             </div>
           </div>
         </div>
       </div>
     </>
+  );
+};
+
+const OrderConfirmation = () => {
+  const { locale } = useContext(LocaleContext);
+  return (
+    <ApolloProvider client={client}>
+      <OrderConfirmationContent locale={locale} />
+    </ApolloProvider>
   );
 };
 
