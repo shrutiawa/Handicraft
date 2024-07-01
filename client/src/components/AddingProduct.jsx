@@ -132,6 +132,21 @@ const AddingProduct = () => {
     }
   };
 
+  const handleCancel = async (e) => {
+    e.preventDefault();
+
+      setSelectedCategory('');
+      setSelectedProductType('');
+      setProductName('');
+      setPrice('');
+      setColor('');
+      setSize('');
+      setMaterial('');
+      setImageUrl('');
+      setDescription('');
+   
+  };
+
 
   return (
     <div className='add-product-container'>
@@ -194,6 +209,24 @@ const AddingProduct = () => {
               />
             </div>
             <div className='product-general-detail'>
+              <h3>Pricing</h3>
+              <label htmlFor="price">Price (₹)</label>
+              <div className="price-input-container">
+                <input
+                  type="text"
+                  id="price"
+                  name="price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  placeholder="Enter price (₹)"
+                />
+              </div>
+            </div>
+          </div>
+          
+
+          <div className='add-product-image'>
+          <div className='product-general-detail'>
               <h3>Category</h3>
               <label htmlFor="category">Product Category</label>
               <select
@@ -224,25 +257,8 @@ const AddingProduct = () => {
                 ))}
               </select>
             </div>
-          </div>
-          
 
-          <div className='add-product-image'>
-
-            <div className='product-general-detail'>
-              <h3>Pricing</h3>
-              <label htmlFor="price">Price (₹)</label>
-              <div className="price-input-container">
-                <input
-                  type="text"
-                  id="price"
-                  name="price"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  placeholder="Enter price (₹)"
-                />
-              </div>
-            </div>
+           
             
             <div className='product-general-detail'>
               <h3>Product Media</h3>
@@ -281,7 +297,10 @@ const AddingProduct = () => {
               </div>
             </div>
         </form>
+        <div className='btn-container'>
         <button className="btn-submit" onClick={handleSubmit} type="submit">Submit</button>
+        <button className="btn-submit" onClick={handleCancel} type="submit">Cancel</button>
+        </div>
       </div>
     </div>
 
