@@ -15,7 +15,10 @@ const GET_CONTENT = gql`
   query GetShoppingCartContent($locale: String!) {
     shoppingCartCollection(locale: $locale) {
       items {
+        title
         emptyCartContent
+        cartDetails
+        orderSummary
       }
     }
   }
@@ -31,6 +34,7 @@ function ShoppingCartContent({ locale }) {
   const [products, setProducts] = useState([]);
   const [showShippingAddress, setShowShippingAddress] = useState(false);
   const [totalItems, setTotalItems] = useState(0);
+  const [refresh, setRefresh] = useState("false");
   const shippingAddressRef = useRef(null);
 
   useEffect(() => {
@@ -91,7 +95,7 @@ function ShoppingCartContent({ locale }) {
     if (customerId) {
       getAllEntries();
     }
-  }, [products]);
+  }, [customerId, locale, refresh]);
 
   const calculateSubtotal = () => {
     return products.reduce(
@@ -103,6 +107,7 @@ function ShoppingCartContent({ locale }) {
   const toggleShippingAddress = () => {
     setShowShippingAddress((prev) => !prev);
   };
+
   const handleCheckout = () => {
     console.log("checkout click", showShippingAddress);
     if (!showShippingAddress) {
@@ -116,16 +121,17 @@ function ShoppingCartContent({ locale }) {
       }, 100);
     }
   };
-  const handleRemoveItem = (id) => {
-    console.log(id);
+
+    const handleRemoveItem = async (id) => {
     try {
-      const response = axios.post(`http://localhost:5000/removecart`, {
+      const response = await axios.post(`http://localhost:5000/removecart`, {
         id,
         customerId,
       });
       console.log("frontend", response);
+      setRefresh((prev) => !prev);
     } catch (error) {
-      console.error("Error fetching entries:", error);
+      console.error("Error removing item:", error);
     }
   };
 
@@ -140,8 +146,12 @@ function ShoppingCartContent({ locale }) {
     return <p>No data available</p>;
   }
 
-  const { emptyCartContent } = data.shoppingCartCollection.items[0];
+  const { title, emptyCartContent, cartDetails, orderSummary } = data.shoppingCartCollection.items[0];
   const { emptyCartHeading, emptyCartButton } = emptyCartContent;
+  
+  console.log( cartDetails);
+  console.log("product data",products)
+  
   return (
     <div className="cartContent">
       {/* <div className="shopping-cart-title"></div> */}
@@ -156,13 +166,13 @@ function ShoppingCartContent({ locale }) {
         <>
           <div className="shopping-cart">
             <section className="itemsInCart">
-              <h1>Shopping Cart</h1>
+              <h1>{title}</h1>
               <div className="column-labels">
-                <label className="product-image">Image</label>
-                <label className="product-details">Product</label>
-                <label className="product-price">Price</label>
-                <label className="product-quantity">Quantity</label>
-                <label className="product-line-price">Total</label>
+                <label className="product-image">{cartDetails.imageLabel}</label>
+                <label className="product-details">{cartDetails.productLabel}</label>
+                <label className="product-price">{cartDetails.priceLabel}</label>
+                <label className="product-quantity">{cartDetails.quantityLabel}</label>
+                <label className="product-line-price">{cartDetails.totalLabel}</label>
               </div>
 
               {products.map((product) => (
@@ -172,9 +182,9 @@ function ShoppingCartContent({ locale }) {
                   </div>
                   <div className="product-details">
                     <h4>{product.name}</h4>
-                    <p>Color: {product.color}</p>
-                    <p>Size: {product.size}</p>
-                    <p>Material: {product.material}</p>
+                    <p>{cartDetails.productColor}: {product.color}</p>
+                    <p>{cartDetails.productSize}: {product.size}</p>
+                    <p>{cartDetails.productMaterial}: {product.material}</p>
                   </div>
                   <div className="product-price">{product.price}</div>
                   <div className="product-quantity">
@@ -186,7 +196,7 @@ function ShoppingCartContent({ locale }) {
                     className="remove-product"
                     onClick={() => handleRemoveItem(product.lineItemId)}
                   >
-                    Remove
+                    {cartDetails.removeBtn}
                   </button>
                   </div>
                   </div>
@@ -195,46 +205,47 @@ function ShoppingCartContent({ locale }) {
             </section>
 
             <section className="summary">
-              <h1>Order Summary</h1>
+              <h1>{orderSummary.summaryHeading}</h1>
               <div className="totals">
                 <div className="totals-item">
-                  <label>Total Items</label>
+                  <label>{orderSummary.totalItems}</label>
                   <div className="totals-item-value">{totalItems}</div>
                 </div>
                 <div className="totals-item">
-                  <label>Subtotal</label>
+                  <label>{orderSummary.subTotal}</label>
                   <div className="totals-value">{calculateSubtotal()}</div>
                 </div>
                 <div className="totals-item">
-                  <label>Tax (0%)</label>
+                  <label>{orderSummary.tax}</label>
                   <div className="totals-value">0</div>
                 </div>
                 <div className="totals-item">
-                  <label>Shipping</label>
+                  <label>{orderSummary.shipping}</label>
                   <div className="totals-value">0</div>
                 </div>
                 <div className="totals-item totals-item-total">
-                  <label>Grand Total</label>
+                  <label>{orderSummary.grandTotal}</label>
                   <div className="totals-value">{calculateSubtotal()}</div>
                 </div>
               </div>
               <button className="checkout" onClick={handleCheckout}>
-                Proceed to Checkout
+                {orderSummary.checkout}
               </button>
               <button
                 className=" backButton"
                 onClick={() => navigate("/product-list")}
               >
-                <FontAwesomeIcon icon={faArrowLeft} /> Continue Shopping
+                <FontAwesomeIcon icon={faArrowLeft} /> {orderSummary.continueShop}
               </button>
             </section>
           </div>
+
           <div className="shipping-address" ref={shippingAddressRef}>
             <button className="toggle-address" onClick={toggleShippingAddress}>
-              Shipping Address <FontAwesomeIcon icon={faAngleDown} />
+              {orderSummary.shippingAddress} <FontAwesomeIcon icon={faAngleDown} />
             </button>
 
-            {showShippingAddress && <ShippingAddressForm products={products} />}
+            {showShippingAddress && <ShippingAddressForm products={products} locale={locale}/>}
           </div>
         </>
       )}
