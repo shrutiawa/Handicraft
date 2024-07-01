@@ -85,7 +85,6 @@
   float: left;
   width: 15%;
   text-align: right;
-  position: relative;
 }
 
 /* This is used as the traditional .clearfix class */
@@ -147,12 +146,11 @@
 
 /* Product entries */
 .product {
+  position: relative;
   height: 150px;
   margin-bottom: 20px;
   padding-bottom: 10px;
   border-bottom: 1px solid;
-  /* border: 1px solid red; */
-  position: relative;
 }
 
 .product-image img {
@@ -171,23 +169,21 @@
 }
 
 .remove-product {
+  position: absolute;
   border: 0;
   padding: 4px 8px;
   background-color: #c66;
   color: #fff;
-  /* font-family: $font-bold; */
   font-size: 12px;
   border-radius: 3px;
-  position: absolute;
   top: 100px;
-  right: 25px;
+  right: 23px;
 }
 
 .remove-product:hover {
   cursor: pointer;
   background-color: #a44;
 }
-
 /* Totals section */
 .totals .totals-item {
   float: right;

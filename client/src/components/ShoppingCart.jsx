@@ -43,7 +43,7 @@ function ShoppingCartContent({ locale }) {
         const updatedProducts = productsInCart.map((item) => {
           const lineItemId = item.id;
           const productId = item.productId;
-          const productName = item.name["en-US"];
+          const productName = item.name[locale];
           const productPrice = item.price.value.centAmount;
           const productImage = item.variant.images[0]?.url;
           const quantity = item.quantity;
@@ -51,7 +51,7 @@ function ShoppingCartContent({ locale }) {
           // Extracting attributes
           const attributes = {};
           item.variant.attributes.forEach((attr) => {
-            attributes[attr.name] = attr.value["en-US"];
+            attributes[attr.name] = attr.value[locale];
           });
 
           const {
@@ -144,7 +144,7 @@ function ShoppingCartContent({ locale }) {
   const { emptyCartHeading, emptyCartButton } = emptyCartContent;
   return (
     <div className="cartContent">
-      <div className="shopping-cart-title"></div>
+      {/* <div className="shopping-cart-title"></div> */}
       {products.length === 0 ? (
         <div className="emptyCartContainer">
           <p>{emptyCartHeading}</p>
@@ -182,14 +182,15 @@ function ShoppingCartContent({ locale }) {
                   </div>
                   <div className="product-line-price">
                     {(product.price * product.quantity).toFixed(2)}
-                  </div>
                   <button
                     className="remove-product"
                     onClick={() => handleRemoveItem(product.lineItemId)}
                   >
                     Remove
                   </button>
-                </div>
+                  </div>
+                  </div>
+                
               ))}
             </section>
 
