@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -40,6 +40,7 @@ const AddingProductContent = ({ locale }) => {
   const [size, setSize] = useState("");
   const [material, setMaterial] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [previewUrl, setPreviewUrl] = useState("");
   const [description, setDescription] = useState("");
 
   const imgbbAPIKey = "61661e84f61a7128cb6ab2b7700043cb";
@@ -99,6 +100,7 @@ const AddingProductContent = ({ locale }) => {
         const base64String = reader.result.split(",")[1];
         const uploadedImageUrl = await uploadImageToImgBB(base64String);
         setImageUrl(uploadedImageUrl);
+        setPreviewUrl(reader.result); // Set the preview URL to display the image
       };
       reader.readAsDataURL(file);
     }
@@ -107,6 +109,7 @@ const AddingProductContent = ({ locale }) => {
   const handleImageUrlChange = (e) => {
     console.log("image url", e.target.value);
     setImageUrl(e.target.value);
+    setPreviewUrl(e.target.value); // Set the preview URL to display the image
   };
 
   const stripHtmlTags = (html) => {
@@ -152,6 +155,7 @@ const AddingProductContent = ({ locale }) => {
       setSize("");
       setMaterial("");
       setImageUrl("");
+      setPreviewUrl("");
       setDescription("");
     } catch (error) {
       console.error("Error adding product:", error);
@@ -161,16 +165,16 @@ const AddingProductContent = ({ locale }) => {
   const handleCancel = async (e) => {
     e.preventDefault();
 
-      setSelectedCategory('');
-      setSelectedProductType('');
-      setProductName('');
-      setPrice('');
-      setColor('');
-      setSize('');
-      setMaterial('');
-      setImageUrl('');
-      setDescription('');
-   
+    setSelectedCategory('');
+    setSelectedProductType('');
+    setProductName('');
+    setPrice('');
+    setColor('');
+    setSize('');
+    setMaterial('');
+    setImageUrl('');
+    setPreviewUrl('');
+    setDescription('');
   };
 
   if (loading) return <p>Loading...</p>;
@@ -180,10 +184,8 @@ const AddingProductContent = ({ locale }) => {
     return <p>No data available</p>;
   }
 
-  // console.log("Add Product Content: ", data.addProductCollection.items);
-
-  const {heading, generalInfo, productAttributes, category, pricing, productMedia, buttons} = data.addProductCollection.items[0];
-  console.log( productMedia, buttons);
+  const { heading, generalInfo, productAttributes, category, pricing, productMedia, buttons } = data.addProductCollection.items[0];
+  console.log(productMedia, buttons);
 
   return (
     <div className="add-product-container">
@@ -298,23 +300,28 @@ const AddingProductContent = ({ locale }) => {
             <div className="product-general-detail">
               <h3>{productMedia.productMedia}</h3>
               <div className="product-media">
-                <label className="custom-file-upload" htmlFor="imageUrl">
-                  <div className="icon">
-                    <FontAwesomeIcon icon={faFileUpload} />
-                  </div>
-                  <div className="text">
-                    <span>{productMedia.clickToAdd}</span>
-                  </div>
-
-                  <input
-                    type="file"
-                    id="imageUrl"
-                    name="imageUrl"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                  />
-                </label>
-                <div>{productMedia.or}</div>
+                {previewUrl ? (
+                  <img src={previewUrl} alt="Product Preview" className="image-preview" />
+                ) : (
+                  <>
+                    <label className="custom-file-upload" htmlFor="imageUrl">
+                      <div className="icon">
+                        <FontAwesomeIcon icon={faFileUpload} />
+                      </div>
+                      <div className="text">
+                        <span>{productMedia.clickToAdd}</span>
+                      </div>
+                      <input
+                        type="file"
+                        id="imageUrl"
+                        name="imageUrl"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                      />
+                    </label>
+                    <div>{productMedia.or}</div>
+                  </>
+                )}
                 <div className="url-input">
                   <label htmlFor="imageUrl">{productMedia.ImageURL}</label>
                   <input

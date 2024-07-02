@@ -53,7 +53,12 @@
   .add-product-image select {
     height: 40px;
   }
-  
+  .image-preview {
+    
+    object-fit: cover;
+    display: block;
+    margin: auto;
+  }
   .product-general-detail {
     border: 1px solid rgb(234, 232, 232);
     padding: 10px 20px;
@@ -129,7 +134,7 @@
  .product-media> div:nth-child(2){
     font-weight: 700;
     margin: 10px 10px 0px;
-    align-self: center;
+    /* align-self: center; */
  }
   .custom-file-upload {
     height: 150px;
