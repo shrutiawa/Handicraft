@@ -341,7 +341,7 @@ const AddingProductContent = ({ locale }) => {
         <button className="btn-submit" onClick={handleSubmit} type="submit">
           {buttons.submitBtn}
         </button>
-        <button className="btn-submit" onClick={handleCancel} type="submit">Cancel</button>
+        <button className="btn-submit" onClick={handleCancel} type="submit">{buttons.cancelBtn}</button>
         </div>
       </div>
     </div>

@@ -3,8 +3,27 @@ import "../styles/shippingAddressForm.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { loadStripe } from "@stripe/stripe-js";
+import { ApolloProvider, gql, useQuery } from "@apollo/client";
+import client from "./apolloClient";
 
-function ShippingAddressForm({ products }) {
+const GET_CONTENT = gql`
+  query GetAddressContent($locale: String!) {
+    shippingAddressCollection(locale: $locale) {
+      items {
+        addressHeading
+        nameDetails
+        addressDetails
+        deliveryDetails
+      }
+    }
+  }
+`;
+
+function ShippingAddressFormContent({ products, locale }) {
+  const { loading, error, data } = useQuery(GET_CONTENT, {
+    variables: { locale },
+  });
+
   const [formData, setFormData] = useState({
     title: "",
     firstName: "",
@@ -56,6 +75,7 @@ function ShippingAddressForm({ products }) {
         },
         body: JSON.stringify(formData),
       });
+
       const result = await response.json();
       console.log("Address submitted:", result);
 
@@ -81,6 +101,7 @@ function ShippingAddressForm({ products }) {
       toast.error("An error occurred. Please try again.");
     }
   };
+
   const handlePayment = async () => {
     if (selectedPaymentMethod === "cod") {
       toast.success("Order placed successfully!");
@@ -120,17 +141,34 @@ function ShippingAddressForm({ products }) {
     }
   };
 
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  if (
+    !data ||
+    !data.shippingAddressCollection ||
+    !data.shippingAddressCollection.items.length
+  ) {
+    return <p>No data available</p>;
+  }
+
+  // console.log(data.shippingAddressCollection.items[0]);
+
+  const { addressHeading, addressDetails, deliveryDetails, nameDetails } =
+  data.shippingAddressCollection.items[0];
+  console.log(deliveryDetails);
+
   return (
     <>
       {step === 0 && (
         <div className="address-container">
-          <p>Please enter your shipping details.</p>
+          <p>{addressHeading}</p>
           <hr />
           <div className="form">
             <div className="fields fields--2">
               <label className="field">
                 <p className="field__label" htmlFor="title">
-                  Salutation
+                  {nameDetails.salutation}
                 </p>
                 <select
                   className="field__input"
@@ -139,15 +177,15 @@ function ShippingAddressForm({ products }) {
                   onChange={handleChange}
                   required
                 >
-                  <option value="">Select</option>
-                  <option value="Mr">Mr.</option>
-                  <option value="Mrs">Mrs.</option>
-                  <option value="Ms">Ms.</option>
+                  <option value="">{nameDetails.choose}</option>
+                  <option value="Mr">{nameDetails.mr}</option>
+                  <option value="Mrs">{nameDetails.mrs}</option>
+                  <option value="Ms">{nameDetails.ms}</option>
                 </select>
               </label>
               <label className="field">
                 <p className="field__label" htmlFor="firstName">
-                  First name
+                  {nameDetails.firstName}
                 </p>
                 <input
                   className="field__input"
@@ -156,11 +194,12 @@ function ShippingAddressForm({ products }) {
                   value={formData.firstName}
                   onChange={handleChange}
                   required
+                  placeholder={nameDetails.firstNamePlaceholder}
                 />
               </label>
               <label className="field">
                 <p className="field__label" htmlFor="lastName">
-                  Last name
+                  {nameDetails.lastName}
                 </p>
                 <input
                   className="field__input"
@@ -169,12 +208,13 @@ function ShippingAddressForm({ products }) {
                   value={formData.lastName}
                   onChange={handleChange}
                   required
+                  placeholder={nameDetails.lastNamePlaceholder}
                 />
               </label>
             </div>
             <label className="field">
               <p className="field__label" htmlFor="address">
-                Address
+                {addressDetails.address}
               </p>
               <input
                 className="field__input"
@@ -183,11 +223,12 @@ function ShippingAddressForm({ products }) {
                 value={formData.address}
                 onChange={handleChange}
                 required
+                placeholder={addressDetails.addressPlaceHolder}
               />
             </label>
             <label className="field">
               <p className="field__label" htmlFor="country">
-                Country
+                {addressDetails.country}
               </p>
               <select
                 className="field__input"
@@ -196,14 +237,14 @@ function ShippingAddressForm({ products }) {
                 onChange={handleChange}
                 required
               >
-                <option value="">Select</option>
-                <option value="IN">India</option>
+                <option value="">{addressDetails.chooseCountry}</option>
+                <option value="IN">{addressDetails.india}</option>
               </select>
             </label>
             <div className="fields fields--3">
               <label className="field">
                 <p className="field__label" htmlFor="city">
-                  City
+                  {addressDetails.city}
                 </p>
                 <input
                   className="field__input"
@@ -212,11 +253,12 @@ function ShippingAddressForm({ products }) {
                   value={formData.city}
                   onChange={handleChange}
                   required
+                  placeholder={addressDetails.cityPlaceHolder}
                 />
               </label>
               <label className="field">
                 <p className="field__label" htmlFor="state">
-                  State
+                  {addressDetails.state}
                 </p>
                 <select
                   className="field__input"
@@ -225,13 +267,13 @@ function ShippingAddressForm({ products }) {
                   onChange={handleChange}
                   required
                 >
-                  <option value="">Select</option>
-                  <option value="karnataka">Karnataka</option>
+                  <option value="">{addressDetails.chooseState}</option>
+                  <option value="karnataka">{addressDetails.karnataka}</option>
                 </select>
               </label>
               <label className="field">
                 <p className="field__label" htmlFor="zipcode">
-                  Zip code
+                  {addressDetails.zipCode}
                 </p>
                 <input
                   className="field__input"
@@ -240,11 +282,12 @@ function ShippingAddressForm({ products }) {
                   value={formData.zipcode}
                   onChange={handleChange}
                   required
+                  placeholder={addressDetails.zipCodePlaceHolder}
                 />
               </label>
             </div>
             <button className="button" onClick={submitForm}>
-              Continue
+              {addressDetails.continueBtn}
             </button>
           </div>
         </div>
@@ -254,7 +297,7 @@ function ShippingAddressForm({ products }) {
       {step === 1 && (
         <div className="payment-container">
           <div className="submitted-address">
-            <h3>Delivery Address</h3>
+            <h3>{deliveryDetails.deliveryDetail}</h3>
             <h2>
               {submittedAddress.title} {submittedAddress.firstName}{" "}
               {submittedAddress.lastName}
@@ -264,11 +307,11 @@ function ShippingAddressForm({ products }) {
               {submittedAddress.city}, {submittedAddress.state} --{" "}
               {submittedAddress.zipcode}
             </p>
-            <p>INDIA</p>
-            <li>Pay on delivery available</li>
+            <p>{deliveryDetails.countryName}</p>
+            <li>{deliveryDetails.paymentText}</li>
           </div>
           <div className="payment-methods">
-            <h3>Payment Methods</h3>
+            <h3>{deliveryDetails.paymentMethods}</h3>
             <label>
               <input
                 type="radio"
@@ -276,7 +319,7 @@ function ShippingAddressForm({ products }) {
                 value="cod"
                 onChange={handlePaymentMethodChange}
               />
-              &nbsp;Cash on Delivery (COD)
+              &nbsp;{deliveryDetails.codPayment}
             </label>
             <label>
               <input
@@ -286,11 +329,11 @@ function ShippingAddressForm({ products }) {
                 onChange={handlePaymentMethodChange}
                 defaultChecked
               />
-              &nbsp;Card
+              &nbsp;{deliveryDetails.cardPayment}
               <img src="card.png" alt="Visa" className="card-logo" />
             </label>
             <button className="btn" onClick={handlePayment}>
-              {selectedPaymentMethod === "cod" ? "Place Order" : "Pay Now"}
+              {selectedPaymentMethod === "cod" ? deliveryDetails.placeOrder : deliveryDetails.payNow}
             </button>
           </div>
         </div>
@@ -298,5 +341,13 @@ function ShippingAddressForm({ products }) {
     </>
   );
 }
+
+const ShippingAddressForm = ({ locale, products }) => {
+  return (
+    <ApolloProvider client={client}>
+      <ShippingAddressFormContent products={products} locale={locale} />
+    </ApolloProvider>
+  );
+};
 
 export default ShippingAddressForm;

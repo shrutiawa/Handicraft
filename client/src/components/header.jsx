@@ -4,9 +4,7 @@ import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faMoon,
   faShoppingCart,
-  faSun,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -92,7 +90,7 @@ const HeaderContent = ({ locale, setLocale, loggedIn }) => {
           >
             {blogs}
           </li>
-          <li className="navLinkBar" onClick={() => navigate("/")}>
+          <li className="navLinkBar" onClick={() => navigate("/add-product")}>
             {becomeSeller}
           </li>
         </ul>

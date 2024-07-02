@@ -169,6 +169,7 @@
 }
 
 .remove-product {
+  width: 70px;
   position: absolute;
   border: 0;
   padding: 4px 8px;
