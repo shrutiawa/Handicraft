@@ -15,6 +15,7 @@ import AboutUs from "./components/aboutusPage";
 import { LocaleProvider } from "./components/localeContextProvider";
 import OrderConfirmation from "./components/orderConfirmation";
 import OrderHistoryPage from "./components/OrderHistory";
+import HomePage from "./components/HomePage";
 
 function App() {
   return (
@@ -26,7 +27,8 @@ function App() {
             <Route path="/product-list" element={<ProductListPage />} />
             <Route path="/product" element={<ProductDetailPage />} />
             <Route path="/cart" element={<ShoppingCart />} />
-            <Route path="/" element={<SigninPage />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/signin" element={<SigninPage />} />
             <Route path="/delivery-address" element={<ShippingAddressForm />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/header" element={<Header />} />
