@@ -19,7 +19,7 @@ const GET_CONTENT = gql`
   }
 `;
 
-function ShippingAddressFormContent({ products, locale }) {
+function ShippingAddressFormContent({ products, locale ,customerId,coupon}) {
   const { loading, error, data } = useQuery(GET_CONTENT, {
     variables: { locale },
   });
@@ -118,6 +118,8 @@ function ShippingAddressFormContent({ products, locale }) {
     );
     const body = {
       carts: products,
+      coupon,
+      customerId,
     };
     const headers = {
       "Content-Type": "application/json",

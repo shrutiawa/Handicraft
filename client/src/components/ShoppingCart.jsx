@@ -30,6 +30,35 @@ function ShoppingCartContent({ locale }) {
   });
   const navigate = useNavigate();
 
+
+
+
+  const [coupon, setCoupon] = useState("");
+  const [couponResponseData, setCouponResponseData] = useState("");
+  const [couponError, setCouponError] = useState('')
+
+  const handleCouponChange = (e) => {
+    setCoupon(e.target.value);
+  };
+  const handleCouponSubmit = async (e) => {
+    const grandTotal = calculateSubtotal();
+    e.preventDefault();
+    setCouponError('')
+    setCouponResponseData('')
+    try {
+      const res = await axios.post("http://localhost:5000/api/coupon", {
+        coupon,
+        customerId,
+        grandTotal,
+      });
+      setCouponResponseData(res.data);
+      console.log(res.data);
+    } catch (error) {
+      // console.error("Error submitting input:", error);
+      setCouponError("Invalid Coupon")
+    }
+  };
+
   const customerId = localStorage.getItem("customer");
   const [products, setProducts] = useState([]);
   const [showShippingAddress, setShowShippingAddress] = useState(false);
@@ -109,10 +138,10 @@ function ShoppingCartContent({ locale }) {
   };
 
   const handleCheckout = () => {
-    
+
     if (!showShippingAddress) {
       setShowShippingAddress(true);
-     
+
       setTimeout(() => {
         shippingAddressRef.current.scrollIntoView({
           behavior: "smooth",
@@ -122,7 +151,7 @@ function ShoppingCartContent({ locale }) {
     }
   };
 
-    const handleRemoveItem = async (id) => {
+  const handleRemoveItem = async (id) => {
     try {
       const response = await axios.post(`http://localhost:5000/removecart`, {
         id,
@@ -148,10 +177,10 @@ function ShoppingCartContent({ locale }) {
 
   const { title, emptyCartContent, cartDetails, orderSummary } = data.shoppingCartCollection.items[0];
   const { emptyCartHeading, emptyCartButton } = emptyCartContent;
-  
-  console.log( cartDetails);
-  console.log("product data",products)
-  
+
+  console.log(cartDetails);
+  console.log("product data", products)
+
   return (
     <div className="cartContent">
       {/* <div className="shopping-cart-title"></div> */}
@@ -192,15 +221,15 @@ function ShoppingCartContent({ locale }) {
                   </div>
                   <div className="product-line-price">
                     {(product.price * product.quantity).toFixed(2)}
-                  <button
-                    className="remove-product"
-                    onClick={() => handleRemoveItem(product.lineItemId)}
-                  >
-                    {cartDetails.removeBtn}
-                  </button>
+                    <button
+                      className="remove-product"
+                      onClick={() => handleRemoveItem(product.lineItemId)}
+                    >
+                      {cartDetails.removeBtn}
+                    </button>
                   </div>
-                  </div>
-                
+                </div>
+
               ))}
             </section>
 
@@ -228,6 +257,38 @@ function ShoppingCartContent({ locale }) {
                   <div className="totals-value">{calculateSubtotal()}</div>
                 </div>
               </div>
+              <section>
+                <form className="couponForm" onSubmit={handleCouponSubmit}>
+                  <input
+                    type="text"
+                    name="coupon"
+                    id="coupon"
+                    placeholder="Enter Coupon Code"
+                    value={coupon}
+                    onChange={handleCouponChange}
+                  />
+                  <button type="submit">Apply</button>
+                </form>
+                {couponError ? <>
+                  <h3 style={{ color: "red" }}>{couponError}</h3>
+                </> : ''}
+              </section>
+              {couponResponseData ?
+                <>
+                  <div className="totals-item discountAmount">
+                    <label>Discounted Amount</label>
+                    <div className="totals-value">
+                      {couponResponseData.discountedAmount}
+                    </div>
+                  </div>
+                  <div className="totals-item totalAmount ">
+                    <label>Total Amount</label>
+                    <div className="totals-value">
+                      {couponResponseData.totalAmountToBePaid}
+                    </div>
+                  </div>
+                </>
+                : ' '}
               <button className="checkout" onClick={handleCheckout}>
                 {orderSummary.checkout}
               </button>
@@ -245,7 +306,7 @@ function ShoppingCartContent({ locale }) {
               {orderSummary.shippingAddress} <FontAwesomeIcon icon={faAngleDown} />
             </button>
 
-            {showShippingAddress && <ShippingAddressForm products={products} locale={locale}/>}
+            {showShippingAddress && <ShippingAddressForm products={products} customer={customerId} coupon={coupon} locale={locale} />}
           </div>
         </>
       )}

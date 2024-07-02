@@ -60,6 +60,11 @@ app.post("/carts", cartController.updateCartDetails);
 // Remove line items from cart
 app.post("/removecart", cartController.removeLineItem)
 
+
+// Coupon
+app.post("/api/coupon", cartController.checkCoupon);
+
+
 // Route to stripe payment
 app.post( "/api/create-checkout-session", paymentController.createCheckoutSession);
 
