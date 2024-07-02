@@ -333,7 +333,7 @@ function ShippingAddressFormContent({ products, locale }) {
               <img src="card.png" alt="Visa" className="card-logo" />
             </label>
             <button className="btn" onClick={handlePayment}>
-              {selectedPaymentMethod === "cod" ? "Place Order" : "Pay Now"}
+              {selectedPaymentMethod === "cod" ? deliveryDetails.placeOrder : deliveryDetails.payNow}
             </button>
           </div>
         </div>
