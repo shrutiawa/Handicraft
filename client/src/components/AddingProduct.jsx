@@ -4,10 +4,12 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "../styles/addProductPage.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileUpload } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faCircleCheck, faClose, faFaceSmile, faFileUpload, faHandHoldingHeart } from "@fortawesome/free-solid-svg-icons";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import LocaleContext from "./localeContextProvider";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const GET_CONTENT = gql`
   query AddProductContent($locale: String!) {
@@ -42,6 +44,7 @@ const AddingProductContent = ({ locale }) => {
   const [imageUrl, setImageUrl] = useState("");
   const [previewUrl, setPreviewUrl] = useState("");
   const [description, setDescription] = useState("");
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const imgbbAPIKey = "61661e84f61a7128cb6ab2b7700043cb";
 
@@ -125,6 +128,22 @@ const AddingProductContent = ({ locale }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validation logic
+    if (
+      !selectedCategory ||
+      !selectedProductType ||
+      !productName ||
+      !price ||
+      !color ||
+      !size ||
+      !material ||
+      !imageUrl ||
+      !description
+    ) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
     try {
       let imageUploadUrl = imageUrl;
       if (imageUrl.startsWith("data:")) {
@@ -144,7 +163,11 @@ const AddingProductContent = ({ locale }) => {
       };
       console.log("product", productData);
 
-      await axios.post("http://localhost:5000/products", productData);
+      const response = await axios.post("http://localhost:5000/products", productData);
+      console.log("response of product", response.data.message);
+      if (response.data.message === "Product added successfully!") {
+        setShowSuccessPopup(true);
+      }
 
       // Reset form after successful submission
       setSelectedCategory("");
@@ -165,16 +188,16 @@ const AddingProductContent = ({ locale }) => {
   const handleCancel = async (e) => {
     e.preventDefault();
 
-    setSelectedCategory('');
-    setSelectedProductType('');
-    setProductName('');
-    setPrice('');
-    setColor('');
-    setSize('');
-    setMaterial('');
-    setImageUrl('');
-    setPreviewUrl('');
-    setDescription('');
+    setSelectedCategory("");
+    setSelectedProductType("");
+    setProductName("");
+    setPrice("");
+    setColor("");
+    setSize("");
+    setMaterial("");
+    setImageUrl("");
+    setPreviewUrl("");
+    setDescription("");
   };
 
   if (loading) return <p>Loading...</p>;
@@ -184,167 +207,193 @@ const AddingProductContent = ({ locale }) => {
     return <p>No data available</p>;
   }
 
-  const { heading, generalInfo, productAttributes, category, pricing, productMedia, buttons } = data.addProductCollection.items[0];
+  const handleClosePopup = () => {
+    setShowSuccessPopup(false);
+  };
+
+  const { heading, generalInfo, productAttributes, category, pricing, productMedia, buttons } =
+    data.addProductCollection.items[0];
   console.log(productMedia, buttons);
 
   return (
-    <div className="add-product-container">
-      <h1>{heading}</h1>
-      <div>
-        <form className="add-product-form">
-          <div className="add-product-detail">
-            <div className="product-general-detail">
-              <h3>{generalInfo.generalInfo}</h3>
-              <label htmlFor="productName">{generalInfo.productName}</label>
-              <input
-                type="text"
-                id="productName"
-                name="productName"
-                value={productName}
-                onChange={(e) => setProductName(e.target.value)}
-                placeholder={generalInfo.productNamePlaceholder}
-              />
-              <label htmlFor="description">{generalInfo.productDescription}</label>
-              <ReactQuill
-                value={description}
-                onChange={handleDescriptionChange}
-                placeholder={generalInfo.productDescriptionPlaceholder}
-              />
-            </div>
-
-            <div className="product-general-detail ">
-              <h3>{productAttributes.productAttributes}</h3>
-              <div className="details">
-                <div className="input-container">
-                  <label htmlFor="color">{productAttributes.productColor}</label>
-                  <input
-                    type="text"
-                    id="color"
-                    name="color"
-                    value={color}
-                    onChange={(e) => setColor(e.target.value)}
-                    placeholder={productAttributes.productColorPlaceholder}
-                  />
-                </div>
-                <div className="input-container">
-                  <label htmlFor="size">{productAttributes.productSize}</label>
-                  <input
-                    type="text"
-                    id="size"
-                    name="size"
-                    value={size}
-                    onChange={(e) => setSize(e.target.value)}
-                    placeholder={productAttributes.productSizePlaceholder}
-                  />
-                </div>
-              </div>
-              <label htmlFor="material">{productAttributes.materialUsed}</label>
-              <input
-                type="text"
-                id="material"
-                name="material"
-                value={material}
-                onChange={(e) => setMaterial(e.target.value)}
-                placeholder={productAttributes.materialUsedPlaceholder}
-              />
-            </div>
-            <div className="product-general-detail">
-              <h3>{category.category}</h3>
-              <label htmlFor="category">{category.productCategory}</label>
-              <select
-                id="category"
-                name="category"
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              >
-                <option value="">{category.productCategoryPlaceholder}</option>
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-              <label htmlFor="productType">{category.productType}</label>
-              <select
-                id="productType"
-                name="productType"
-                value={selectedProductType}
-                onChange={(e) => setSelectedProductType(e.target.value)}
-              >
-                <option value="">{category.productTypePlaceholder}</option>
-                {productTypes.map((productType) => (
-                  <option key={productType.id} value={productType.id}>
-                    {productType.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="add-product-image">
-            <div className="product-general-detail">
-              <h3>{pricing.pricing}</h3>
-              <label htmlFor="price">{pricing.price}</label>
-              <div className="price-input-container">
+    <>
+      <div className="add-product-container">
+        <h1>{heading}</h1>
+        <div>
+          <form className="add-product-form">
+            <div className="add-product-detail">
+              <div className="product-general-detail">
+                <h3>{generalInfo.generalInfo}</h3>
+                <label htmlFor="productName">{generalInfo.productName}</label>
                 <input
                   type="text"
-                  id="price"
-                  name="price"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  placeholder={pricing.pricePlaceholder}
+                  id="productName"
+                  name="productName"
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
+                  placeholder={generalInfo.productNamePlaceholder}
+                />
+                <label htmlFor="description">{generalInfo.productDescription}</label>
+                <ReactQuill
+                  value={description}
+                  onChange={handleDescriptionChange}
+                  placeholder={generalInfo.productDescriptionPlaceholder}
                 />
               </div>
-            </div>
 
-            <div className="product-general-detail">
-              <h3>{productMedia.productMedia}</h3>
-              <div className="product-media">
-                {previewUrl ? (
-                  <img src={previewUrl} alt="Product Preview" className="image-preview" />
-                ) : (
-                  <>
-                    <label className="custom-file-upload" htmlFor="imageUrl">
-                      <div className="icon">
-                        <FontAwesomeIcon icon={faFileUpload} />
-                      </div>
-                      <div className="text">
-                        <span>{productMedia.clickToAdd}</span>
-                      </div>
-                      <input
-                        type="file"
-                        id="imageUrl"
-                        name="imageUrl"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                      />
-                    </label>
-                    <div>{productMedia.or}</div>
-                  </>
-                )}
-                <div className="url-input">
-                  <label htmlFor="imageUrl">{productMedia.ImageURL}</label>
+              <div className="product-general-detail ">
+                <h3>{productAttributes.productAttributes}</h3>
+                <div className="details">
+                  <div className="input-container">
+                    <label htmlFor="color">{productAttributes.productColor}</label>
+                    <input
+                      type="text"
+                      id="color"
+                      name="color"
+                      value={color}
+                      onChange={(e) => setColor(e.target.value)}
+                      placeholder={productAttributes.productColorPlaceholder}
+                    />
+                  </div>
+                  <div className="input-container">
+                    <label htmlFor="size">{productAttributes.productSize}</label>
+                    <input
+                      type="text"
+                      id="size"
+                      name="size"
+                      value={size}
+                      onChange={(e) => setSize(e.target.value)}
+                      placeholder={productAttributes.productSizePlaceholder}
+                    />
+                  </div>
+                </div>
+                <label htmlFor="material">{productAttributes.materialUsed}</label>
+                <input
+                  type="text"
+                  id="material"
+                  name="material"
+                  value={material}
+                  onChange={(e) => setMaterial(e.target.value)}
+                  placeholder={productAttributes.materialUsedPlaceholder}
+                />
+              </div>
+              <div className="product-general-detail">
+                <h3>{pricing.pricing}</h3>
+                <label htmlFor="price">{pricing.price}</label>
+                <div className="price-input-container">
                   <input
                     type="text"
-                    id="imageUrl"
-                    name="imageUrl"
-                    value={imageUrl}
-                    onChange={handleImageUrlChange}
-                    placeholder={productMedia.ImageURLPlaceholder}
+                    id="price"
+                    name="price"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    placeholder={pricing.pricePlaceholder}
                   />
                 </div>
               </div>
+            
             </div>
+
+            <div className="add-product-image">
+            <div className="product-general-detail">
+                <h3>{category.category}</h3>
+                <label htmlFor="category">{category.productCategory}</label>
+                <select
+                  id="category"
+                  name="category"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                  <option value="">{category.productCategoryPlaceholder}</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+                <label htmlFor="productType">{category.productType}</label>
+                <select
+                  id="productType"
+                  name="productType"
+                  value={selectedProductType}
+                  onChange={(e) => setSelectedProductType(e.target.value)}
+                >
+                  <option value="">{category.productTypePlaceholder}</option>
+                  {productTypes.map((productType) => (
+                    <option key={productType.id} value={productType.id}>
+                      {productType.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="product-general-detail">
+                <h3>{productMedia.productMedia}</h3>
+                <div className="product-media">
+                  {previewUrl ? (
+                    <img src={previewUrl} alt="Product Preview" className="image-preview" />
+                  ) : (
+                    <>
+                      <label className="custom-file-upload" htmlFor="imageUrl">
+                        <div className="icon">
+                          <FontAwesomeIcon icon={faFileUpload} />
+                        </div>
+                        <div className="text">
+                          <span>{productMedia.clickToAdd}</span>
+                        </div>
+                        <input
+                          type="file"
+                          id="imageUrl"
+                          name="imageUrl"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                        />
+                      </label>
+                      <div>{productMedia.or}</div>
+                    </>
+                  )}
+                  <div className="url-input">
+                    <label htmlFor="imageUrl">{productMedia.ImageURL}</label>
+                    <input
+                      type="text"
+                      id="imageUrl"
+                      name="imageUrl"
+                      value={imageUrl}
+                      onChange={handleImageUrlChange}
+                      placeholder={productMedia.ImageURLPlaceholder}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div className="btn-container">
+            <button className="btn-submit" onClick={handleSubmit} type="submit">
+              {buttons.submitBtn}
+            </button>
+            <button className="btn-submit" onClick={handleCancel} type="submit">
+              {buttons.cancelBtn}
+            </button>
           </div>
-        </form>
-        <div className='btn-container'>
-        <button className="btn-submit" onClick={handleSubmit} type="submit">
-          {buttons.submitBtn}
-        </button>
-        <button className="btn-submit" onClick={handleCancel} type="submit">{buttons.cancelBtn}</button>
         </div>
       </div>
-    </div>
+      {showSuccessPopup && (
+        <div className="success-popup">
+          <div className="success-modal">
+            <div className="close-success" onClick={handleClosePopup}>
+              <FontAwesomeIcon icon={faClose} />
+            </div>
+            <div className="popup-text">
+            <FontAwesomeIcon size="2x" icon={faCircleCheck} style={{marginBottom:15}}/>
+              <p>Your product has been added. Successfully!!</p>
+              <div> Please wait for admin approval. <FontAwesomeIcon icon={faFaceSmile} /></div>
+             
+              <div>After approval, you will find your product on the product list page.</div>
+            </div>
+          </div>
+        </div>
+      )}
+      <ToastContainer />
+    </>
   );
 };
 

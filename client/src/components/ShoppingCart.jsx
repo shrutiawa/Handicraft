@@ -109,10 +109,10 @@ function ShoppingCartContent({ locale }) {
   };
 
   const handleCheckout = () => {
-    console.log("checkout click", showShippingAddress);
+    
     if (!showShippingAddress) {
       setShowShippingAddress(true);
-      console.log("after change", showShippingAddress);
+     
       setTimeout(() => {
         shippingAddressRef.current.scrollIntoView({
           behavior: "smooth",
