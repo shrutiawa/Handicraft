@@ -30,7 +30,7 @@ function truncateText(text, limit) {
   return text;
 }
 
-function Hit({ hit,locale }) {
+function Hit({ hit, locale }) {
   console.log("hit", locale)
   const navigate = useNavigate();
   const truncatedName = truncateText(hit.name[locale], 3);
@@ -54,7 +54,7 @@ function Hit({ hit,locale }) {
 
 function ProductListPage() {
   const { locale } = useContext(LocaleContext);
-  console.log("locale",locale)
+  console.log("locale", locale)
   return (
     <>
       <div className="container">
@@ -89,7 +89,7 @@ function ProductListPage() {
                 <hr />
                 <br />
                 <br />
-                <h4>Product Type</h4>
+                <h4>PRODUCT TYPE</h4>
                 <RefinementList
                   attribute="productType"
                   showMore
@@ -98,12 +98,7 @@ function ProductListPage() {
                 />
                 <hr />
                 <br />
-                <br />
-
-                <h4>Price</h4>
-                <RangeSlider attribute="prices.INR.priceValues.value" />
-                {/* <RangeSlider attribute="prices.INR.priceValues.value" 
-                /> */}
+                  <RangeSlider attribute="prices.INR.priceValues.value" />
               </div>
             </div>
 
@@ -128,7 +123,7 @@ function ProductListPage() {
               </div>
 
               <div className="product-list-box">
-              <Hits hitComponent={(props) => <Hit {...props} locale={locale} />} />
+                <Hits hitComponent={(props) => <Hit {...props} locale={locale} />} />
               </div>
 
               <div className="pagination">

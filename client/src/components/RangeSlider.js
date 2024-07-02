@@ -26,10 +26,10 @@ export default function RangeSlider(props) {
   };
 
   return (
-    <Box sx={{ width: "100%", textAlign: 'center' }}>
-      <div>
-        <span>Min: {min}</span> | <span>Max: {max}</span>
-      </div>
+    <Box sx={{ width: "100%"}}>
+
+        <h4 style={{display:"flex",justifyContent:"space-between"}}>PRICE RANGE  <span> {value[0]} - {value[1]}</span></h4>
+      
       <Slider
         getAriaLabel={() => "Range"}
         min={min}
@@ -40,9 +40,7 @@ export default function RangeSlider(props) {
         onChangeCommitted={handleChangeCommitted}
         disabled={!canRefine}
       />
-      <div>
-        <span>Selected Range: {value[0]} - {value[1]}</span>
-      </div>
+     
     </Box>
   );
 }

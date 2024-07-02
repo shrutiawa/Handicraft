@@ -37,7 +37,7 @@ function ShippingAddressFormContent({ products, locale }) {
 
   const [submittedAddress, setSubmittedAddress] = useState(null);
   const [step, setStep] = useState(0);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("card");
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -318,6 +318,7 @@ function ShippingAddressFormContent({ products, locale }) {
                 name="paymentMethod"
                 value="cod"
                 onChange={handlePaymentMethodChange}
+                checked={selectedPaymentMethod === "cod"}
               />
               &nbsp;{deliveryDetails.codPayment}
             </label>
@@ -327,7 +328,7 @@ function ShippingAddressFormContent({ products, locale }) {
                 name="paymentMethod"
                 value="card"
                 onChange={handlePaymentMethodChange}
-                defaultChecked
+                checked={selectedPaymentMethod === "card"}
               />
               &nbsp;{deliveryDetails.cardPayment}
               <img src="card.png" alt="Visa" className="card-logo" />
