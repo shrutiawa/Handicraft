@@ -18,12 +18,13 @@ import { LocaleProvider } from "./components/localeContextProvider";
 import OrderConfirmation from "./components/orderConfirmation";
 import OrderHistoryPage from "./components/OrderHistory";
 import HomePage from "./components/HomePage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <>
       <LocaleProvider>
-        <ApolloProvider client={client}> {/* Wrap ApolloProvider around BrowserRouter */}
+        <ApolloProvider client={client}>
           <BrowserRouter>
             <Header />
             <Routes>
@@ -32,7 +33,10 @@ function App() {
               <Route path="/cart" element={<ShoppingCart />} />
               <Route path="/" element={<HomePage />} />
               <Route path="/signin" element={<SigninPage />} />
-              <Route path="/delivery-address" element={<ShippingAddressForm />} />
+              <Route
+                path="/delivery-address"
+                element={<ShippingAddressForm />}
+              />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/header" element={<Header />} />
               <Route path="/order-confirm" element={<OrderConfirmation />} />
@@ -42,7 +46,14 @@ function App() {
               <Route path="/blogcontent" element={<FullBlogPost />} />
               <Route path="/add-product" element={<AddingProduct />} />
               <Route path="/aboutus" element={<AboutUs />} />
-              <Route path="/order-history" element={<OrderHistoryPage />} />
+              <Route
+                path="/order-history"
+                element={
+                  <ProtectedRoute>
+                    <OrderHistoryPage />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
             <Footer />
           </BrowserRouter>
