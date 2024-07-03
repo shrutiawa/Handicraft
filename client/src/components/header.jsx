@@ -168,7 +168,7 @@ const HeaderContent = ({ locale, setLocale, loggedIn }) => {
                     <>
                       <div
                         className="dropdownItem"
-                        onClick={() => navigate("/")}
+                        onClick={() => navigate("/signin")}
                       >
                         {signIn}
                       </div>

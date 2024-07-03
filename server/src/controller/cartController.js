@@ -1,5 +1,6 @@
 const cartService = require("../services/cartService");
 const { deleteCart } = require("../services/cartService");
+const { voucherifyClient } = require("../middleware/voucherifySetup");
 
 
 let storedCartId;
@@ -85,6 +86,29 @@ const removeLineItem = async (req,res) => {
 }
 
 
+
+// Check coupon code
+async function checkCoupon(req, res) {
+  const { coupon: couponCode, customerId, grandTotal: total } = req.body;
+
+  try {
+    // const voucher = await voucherifyClient.vouchers.get(couponCode);
+    const response = await voucherifyClient.redemptions.redeem(couponCode, {
+      customer: { id: customerId },
+      order: { amount: parseInt(total) * 100 }, //converting into cents
+    });
+    const orderData = response.order;
+    // const { total_applied_discount_amount: discountedAmount, total_amount: totalAmountToBePaid } = orderData;
+    const discountedAmount = response.order.total_applied_discount_amount / 100; // Convert from cents to dollars
+    const totalAmountToBePaid = response.order.total_amount / 100;
+    res.json({ discountedAmount, totalAmountToBePaid });
+  } catch (error) {
+    res.status(500).json(error);
+    console.log(error);
+  }
+}
+
+
 // delete the cart
 const deleteCartController = async (req, res) => {
   try {
@@ -133,5 +157,6 @@ module.exports = {
   deleteCartController,
   shippingAddressController,
   orderController,
-  removeLineItem
+  removeLineItem,
+  checkCoupon
 };
