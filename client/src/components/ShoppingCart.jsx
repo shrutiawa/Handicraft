@@ -30,21 +30,21 @@ function ShoppingCartContent({ locale }) {
   });
   const navigate = useNavigate();
 
-
-
-
   const [coupon, setCoupon] = useState("");
   const [couponResponseData, setCouponResponseData] = useState("");
-  const [couponError, setCouponError] = useState('')
-
+  const [couponError, setCouponError] = useState('');
+  const [couponId, setCouponId] = useState('');
+  const discountedAmount = couponResponseData.discountedAmount;
+  console.log("hii",discountedAmount)
   const handleCouponChange = (e) => {
     setCoupon(e.target.value);
   };
+
   const handleCouponSubmit = async (e) => {
     const grandTotal = calculateSubtotal();
     e.preventDefault();
-    setCouponError('')
-    setCouponResponseData('')
+    setCouponError('');
+    setCouponResponseData('');
     try {
       const res = await axios.post("http://localhost:5000/api/coupon", {
         coupon,
@@ -52,10 +52,19 @@ function ShoppingCartContent({ locale }) {
         grandTotal,
       });
       setCouponResponseData(res.data);
-      console.log(res.data);
+
+
+      //  if(discountedAmount){
+      const response = await axios.post("http://localhost:5000/create-coupon", {
+        coupon,
+        discountedAmount,
+      });
+      console.log("response", response.data.couponId);
+      setCouponId( response.data.couponId)
+    // }
+    
     } catch (error) {
-      // console.error("Error submitting input:", error);
-      setCouponError("Invalid Coupon")
+      setCouponError("Invalid Coupon");
     }
   };
 
@@ -138,7 +147,6 @@ function ShoppingCartContent({ locale }) {
   };
 
   const handleCheckout = () => {
-
     if (!showShippingAddress) {
       setShowShippingAddress(true);
 
@@ -178,12 +186,8 @@ function ShoppingCartContent({ locale }) {
   const { title, emptyCartContent, cartDetails, orderSummary } = data.shoppingCartCollection.items[0];
   const { emptyCartHeading, emptyCartButton } = emptyCartContent;
 
-  console.log(cartDetails);
-  console.log("product data", products)
-
   return (
     <div className="cartContent">
-      {/* <div className="shopping-cart-title"></div> */}
       {products.length === 0 ? (
         <div className="emptyCartContainer">
           <p>{emptyCartHeading}</p>
@@ -278,7 +282,7 @@ function ShoppingCartContent({ locale }) {
                   <div className="totals-item discountAmount">
                     <label>Discounted Amount</label>
                     <div className="totals-value">
-                      {couponResponseData.discountedAmount}
+                      {discountedAmount}
                     </div>
                   </div>
                   <div className="totals-item totalAmount ">
@@ -293,7 +297,7 @@ function ShoppingCartContent({ locale }) {
                 {orderSummary.checkout}
               </button>
               <button
-                className=" backButton"
+                className="backButton"
                 onClick={() => navigate("/product-list")}
               >
                 <FontAwesomeIcon icon={faArrowLeft} /> {orderSummary.continueShop}
@@ -306,11 +310,20 @@ function ShoppingCartContent({ locale }) {
               {orderSummary.shippingAddress} <FontAwesomeIcon icon={faAngleDown} />
             </button>
 
-            {showShippingAddress && <ShippingAddressForm products={products} customer={customerId} coupon={coupon} locale={locale} />}
+            {showShippingAddress && (
+              <ShippingAddressForm 
+                products={products} 
+                customerId={customerId} 
+                coupon={coupon} 
+                locale={locale} 
+                discountedAmount={discountedAmount}
+                couponId = {couponId}
+              />
+            )}
           </div>
         </>
       )}
-      <ToastContainer />
+      <ToastContainer position="top-center"/>
     </div>
   );
 }

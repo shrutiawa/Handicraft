@@ -19,10 +19,12 @@ const GET_CONTENT = gql`
   }
 `;
 
-function ShippingAddressFormContent({ products, locale ,customerId,coupon}) {
+function ShippingAddressFormContent({ products, locale ,customerId,coupon,discountedAmount,couponId}) {
   const { loading, error, data } = useQuery(GET_CONTENT, {
     variables: { locale },
   });
+
+  console.log("data",customerId,products,discountedAmount,coupon,locale,couponId);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -118,8 +120,7 @@ function ShippingAddressFormContent({ products, locale ,customerId,coupon}) {
     );
     const body = {
       carts: products,
-      coupon,
-      customerId,
+      couponId
     };
     const headers = {
       "Content-Type": "application/json",
@@ -294,7 +295,7 @@ function ShippingAddressFormContent({ products, locale ,customerId,coupon}) {
           </div>
         </div>
       )}
-      <ToastContainer />
+      <ToastContainer  position="top-center"/>
 
       {step === 1 && (
         <div className="payment-container">
@@ -345,10 +346,17 @@ function ShippingAddressFormContent({ products, locale ,customerId,coupon}) {
   );
 }
 
-const ShippingAddressForm = ({ locale, products }) => {
+const ShippingAddressForm = ({locale, products, customerId, coupon, discountedAmount,couponId}) => {
   return (
     <ApolloProvider client={client}>
-      <ShippingAddressFormContent products={products} locale={locale} />
+      <ShippingAddressFormContent 
+        products={products} 
+        locale={locale} 
+        customerId={customerId} 
+        coupon={coupon} 
+        discountedAmount={discountedAmount} 
+        couponId = {couponId}
+      />
     </ApolloProvider>
   );
 };

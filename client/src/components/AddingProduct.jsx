@@ -392,7 +392,7 @@ const AddingProductContent = ({ locale }) => {
           </div>
         </div>
       )}
-      <ToastContainer />
+      <ToastContainer  position="top-center" />
     </>
   );
 };

@@ -5,15 +5,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/productDetail.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faCartShopping, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { ToastContainer, toast } from "react-toastify";
 
 function ProductDetailPage() {
   const location = useLocation();
-  const { hit  } = location.state || {};
+  const { hit } = location.state || {};
   const { locale } = useContext(LocaleContext);
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
 
-  console.log("hello",locale)
+  console.log("hello", locale)
   const handleIncrease = () => {
     if (quantity < 5) {
       setQuantity(quantity + 1);
@@ -35,7 +36,10 @@ function ProductDetailPage() {
     const customerId = localStorage.getItem("customer");
 
     if (!customerId) {
-      alert("Customer not found. Please log in.");
+      toast.error('Customer not found. Please sign in first.', {
+        onClose: () => navigate('/signin'),
+        autoClose: 2000, 
+      });
       return;
     }
 
@@ -55,9 +59,13 @@ function ProductDetailPage() {
 
   return (
     <>
+      <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        pauseOnHover />
       <div className="pdp-container">
         <button className="back-button" onClick={() => navigate("/product-list")}>
-          <FontAwesomeIcon icon={faArrowLeft} /> 
+          <FontAwesomeIcon icon={faArrowLeft} />
         </button>
         <div className="card">
           <div className="left-imgs">
@@ -89,8 +97,8 @@ function ProductDetailPage() {
               <div className="buttons">
                 <div className="quantity-button-container">
                   <button className="quantity-button minus" onClick={handleDecrease}
-                   disabled={quantity <=1}
-                   style={{ color: quantity <=1 ? "#6f6b6b" : "" }}>
+                    disabled={quantity <= 1}
+                    style={{ color: quantity <= 1 ? "#6f6b6b" : "" }}>
                     <FontAwesomeIcon icon={faMinus} />
                   </button>
                   <span className="quantity-display">{quantity}</span>

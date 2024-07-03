@@ -16,6 +16,7 @@ import { LocaleProvider } from "./components/localeContextProvider";
 import OrderConfirmation from "./components/orderConfirmation";
 import OrderHistoryPage from "./components/OrderHistory";
 import HomePage from "./components/HomePage";
+import ProtectedRoute from "./components/ProtectedRoute"; // Import the ProtectedRoute component
 
 function App() {
   return (
@@ -32,14 +33,35 @@ function App() {
             <Route path="/delivery-address" element={<ShippingAddressForm />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/header" element={<Header />} />
-            <Route path="/order-confirm" element={<OrderConfirmation />} />
             <Route path="/footer" element={<Footer />} />
             <Route path="/tutorials" element={<TutorialsPage />} />
             <Route path="/blogs" element={<BlogPage />} />
             <Route path="/blogcontent" element={<FullBlogPost />} />
-            <Route path="/add-product" element={<AddingProduct />} />
             <Route path="/aboutus" element={<AboutUs />} />
-            <Route path="/order-history" element={<OrderHistoryPage />} />
+            <Route
+              path="/order-history"
+              element={
+                <ProtectedRoute>
+                  <OrderHistoryPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/add-product"
+              element={
+                <ProtectedRoute>
+                  <AddingProduct />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/order-confirm"
+              element={
+                <ProtectedRoute>
+                  <OrderConfirmation />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
           <Footer />
         </BrowserRouter>
