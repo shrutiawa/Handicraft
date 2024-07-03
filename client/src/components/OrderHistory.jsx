@@ -38,6 +38,8 @@ const OrderHistoryPageContent = ({ locale }) => {
       .get(`http://localhost:5000/orders/${customerId}`)
       .then((response) => {
         const orderData = response.data.order;
+        // Sort orders by creation date in descending order
+        orderData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setOrderHistory(orderData);
       })
       .catch((error) => {
