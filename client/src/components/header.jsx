@@ -3,10 +3,7 @@ import "../styles/header.css";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faShoppingCart,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import LocaleContext from "./localeContextProvider";
 
@@ -98,7 +95,11 @@ const HeaderContent = ({ locale, setLocale, loggedIn }) => {
       <div className="section3">
         <div className="button-container">
           <label className="switch">
-            <input type="checkbox" onChange={switchLang} checked={locale === "hi-IN"}/>
+            <input
+              type="checkbox"
+              onChange={switchLang}
+              checked={locale === "hi-IN"}
+            />
             <span className="slider"></span>
 
             {/* <FontAwesomeIcon
@@ -120,7 +121,11 @@ const HeaderContent = ({ locale, setLocale, loggedIn }) => {
           </label>
         </div>
 
-        <FontAwesomeIcon className="cartIcon" icon={faShoppingCart} onClick={() => navigate("/cart")}/>
+        <FontAwesomeIcon
+          className="cartIcon"
+          icon={faShoppingCart}
+          onClick={() => navigate("/cart")}
+        />
 
         <div
           className="userIconContainer"
@@ -130,8 +135,16 @@ const HeaderContent = ({ locale, setLocale, loggedIn }) => {
           <FontAwesomeIcon className="userIcon" icon={faUser} />
           {showDropdown && (
             <>
-              <div className="caret-up"></div>
-              <div className="userDropdown">
+              <div
+                className="caret-up"
+                // onMouseEnter={() => setShowDropdown(true)}
+                // onMouseLeave={() => setShowDropdown(false)}
+              ></div>
+              <div
+                className="userDropdown"
+                // onMouseEnter={() => setShowDropdown(true)}
+                // onMouseLeave={() => setShowDropdown(false)}
+              >
                 <div className="dropdownContent">
                   {loggedIn === "true" ? (
                     <>
