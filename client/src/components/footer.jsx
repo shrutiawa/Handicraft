@@ -56,7 +56,7 @@ const Footer = () => {
   const { locale } = useContext(LocaleContext);
 
   return (
-    <ApolloProvider client={client}>
+    // <ApolloProvider client={client}>
       <div className="footerMainContainer">
         <FooterContent locale={locale} />
         {/* <div className="languageSwitcher">
@@ -70,7 +70,7 @@ const Footer = () => {
           </select>
         </div> */}
       </div>
-    </ApolloProvider>
+    // </ApolloProvider>
   );
 };
 

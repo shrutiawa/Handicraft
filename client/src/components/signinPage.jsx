@@ -21,7 +21,8 @@ const GET_CONTENT = gql`
   }
 `;
 
-const SigninContent = ({ locale }) => {
+const SigninContent = () => {
+  const { locale, handleAuthChange } = useContext(LocaleContext);
   const { loading, error, data } = useQuery(GET_CONTENT, {
     variables: { locale },
   });
@@ -80,6 +81,7 @@ const SigninContent = ({ locale }) => {
       localStorage.setItem("customer", data.customerId);
       if (data.message === "Login success") {
         localStorage.setItem("loggedIn", "true");
+        handleAuthChange();
         navigate("/product-list");
       }
     } catch (error) {
@@ -155,14 +157,12 @@ const SigninContent = ({ locale }) => {
 };
 
 const SigninPage = () => {
-  const { locale } = useContext(LocaleContext);
-
   return (
-    <ApolloProvider client={client}>
+    // <ApolloProvider client={client}>
       <div className="loginMainContainer">
-        <SigninContent locale={locale} />
+        <SigninContent />
       </div>
-    </ApolloProvider>
+    // </ApolloProvider>
   );
 };
 

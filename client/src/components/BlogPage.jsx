@@ -98,9 +98,9 @@ const BlogPage = () => {
   const { locale } = useContext(LocaleContext);
 
   return (
-    <ApolloProvider client={client}>
+    // <ApolloProvider client={client}>
       <BlogPageContent locale={locale} />
-    </ApolloProvider>
+    // </ApolloProvider>
   );
 };
 

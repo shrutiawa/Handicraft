@@ -142,7 +142,8 @@ const SignupContent = ({ locale }) => {
         formData
       );
       console.log(response);
-      alert("Success");
+      // alert("Success");
+      navigate("/signin")
     } catch (error) {
       console.error("Registration process failed");
       console.error(error);
@@ -216,7 +217,7 @@ const SignupContent = ({ locale }) => {
           <div className="signupScreenButtons">
             <button
               className="alreadyregisteredBtn"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/singin")}
             >
               {signUpData.alreadyHaveAccount}
             </button>
@@ -237,11 +238,11 @@ const SignupPage = () => {
   const { locale } = useContext(LocaleContext);
 
   return (
-    <ApolloProvider client={client}>
+    // <ApolloProvider client={client}>
       <div className="signupMainContainer">
         <SignupContent locale={locale} />
       </div>
-    </ApolloProvider>
+    // </ApolloProvider>
   );
 };
 

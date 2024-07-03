@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import "../styles/header.css";
 import { useQuery, gql, ApolloProvider } from "@apollo/client";
 import client from "./apolloClient";
@@ -18,7 +18,9 @@ const GET_CONTENT = gql`
   }
 `;
 
-const HeaderContent = ({ locale, setLocale, loggedIn }) => {
+const HeaderContent = () => {
+  const { locale, setLocale, loggedIn, handleAuthChange } =
+    useContext(LocaleContext);
   const { loading, error, data } = useQuery(GET_CONTENT, {
     variables: { locale },
   });
@@ -43,7 +45,6 @@ const HeaderContent = ({ locale, setLocale, loggedIn }) => {
   };
 
   const { logo, links } = data.headerCollection.items[0];
-  // console.log("links: ", links);
   const {
     aboutUs,
     buyProduct,
@@ -101,23 +102,8 @@ const HeaderContent = ({ locale, setLocale, loggedIn }) => {
               checked={locale === "hi-IN"}
             />
             <span className="slider"></span>
-
-            {/* <FontAwesomeIcon
-              id="sun-icon"
-              icon={faSun}
-              // style={{
-              //   color: theme == "dark" ? "#000" : "#fff",
-              // }}
-            /> */}
             <span id="hi-icon">अ</span>
             <span id="eng-icon">A</span>
-            {/* <FontAwesomeIcon
-              id="moon-icon"
-              icon={faMoon}
-              // style={{
-              //   color: theme == "light" ? "#000" : "#fff",
-              // }}
-            /> */}
           </label>
         </div>
 
@@ -135,29 +121,26 @@ const HeaderContent = ({ locale, setLocale, loggedIn }) => {
           <FontAwesomeIcon className="userIcon" icon={faUser} />
           {showDropdown && (
             <>
-              <div
-                className="caret-up"
-                // onMouseEnter={() => setShowDropdown(true)}
-                // onMouseLeave={() => setShowDropdown(false)}
-              ></div>
-              <div
-                className="userDropdown"
-                // onMouseEnter={() => setShowDropdown(true)}
-                // onMouseLeave={() => setShowDropdown(false)}
-              >
+              <div className="caret-up"></div>
+              <div className="userDropdown">
                 <div className="dropdownContent">
-                  {loggedIn === "true" ? (
+                  {loggedIn ? (
                     <>
                       <div
                         className="dropdownItem"
-                        onClick={() => navigate("/order-history")}
+                        onClick={() => {
+                          setShowDropdown(false);
+                          navigate("/order-history");
+                        }}
                       >
                         {orderHistory}
                       </div>
                       <div
                         className="dropdownItem"
                         onClick={() => {
-                          localStorage.clear();
+                          setShowDropdown(false);
+                          localStorage.setItem("loggedIn", "false");
+                          handleAuthChange();
                           navigate("/");
                         }}
                       >
@@ -168,13 +151,19 @@ const HeaderContent = ({ locale, setLocale, loggedIn }) => {
                     <>
                       <div
                         className="dropdownItem"
-                        onClick={() => navigate("/signin")}
+                        onClick={() => {
+                          setShowDropdown(false);
+                          navigate("/signin");
+                        }}
                       >
                         {signIn}
                       </div>
                       <div
                         className="dropdownItem"
-                        onClick={() => navigate("/signup")}
+                        onClick={() => {
+                          setShowDropdown(false);
+                          navigate("/signup");
+                        }}
                       >
                         {signUp}
                       </div>
@@ -191,22 +180,12 @@ const HeaderContent = ({ locale, setLocale, loggedIn }) => {
 };
 
 const Header = () => {
-  const { locale, setLocale } = useContext(LocaleContext);
-  const [loggedIn, setLoggedIn] = useState("false");
-  useEffect(() => {
-    const isLoggedIn = localStorage.getItem("loggedIn");
-    setLoggedIn(isLoggedIn);
-  });
   return (
-    <ApolloProvider client={client}>
-      <div className="headerMainContainer">
-        <HeaderContent
-          locale={locale}
-          setLocale={setLocale}
-          loggedIn={loggedIn}
-        />
-      </div>
-    </ApolloProvider>
+    // <ApolloProvider client={client}>
+    <div className="headerMainContainer">
+      <HeaderContent />
+    </div>
+    // </ApolloProvider>
   );
 };
 

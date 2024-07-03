@@ -38,16 +38,19 @@
 .signupPage .sections .section1 img {
   width: 250px;
   height: 100px;
+  object-fit: cover;
 }
 
 .signupPage .sections .section1 h3 {
   font-size: 30px;
   font-weight: 400;
+  margin: 20px 0 0 20px;
 }
 
 .signupPage .sections .section1 p {
-  font-size: 20px;
   color: rgb(82, 82, 82);
+  font-size: 16px;
+  margin: 0 0 0 20px;
 }
 
 .signupPage .sections .section2 .fullNameContainer {

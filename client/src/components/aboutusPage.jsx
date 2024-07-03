@@ -99,11 +99,11 @@ const AboutUs = () => {
   const { locale } = useContext(LocaleContext);
 
   return (
-    <ApolloProvider client={client}>
+    // <ApolloProvider client={client}>
       <div className="aboutusMainContainer">
         <AboutUsContent locale={locale} />
       </div>
-    </ApolloProvider>
+    // </ApolloProvider>
   );
 };
 

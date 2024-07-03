@@ -98,9 +98,9 @@ const FullBlogPost = () => {
   const { locale } = useContext(LocaleContext);
 
   return (
-    <ApolloProvider client={client}>
+    // <ApolloProvider client={client}>
       <FullBlogContent locale={locale} />
-    </ApolloProvider>
+    // </ApolloProvider>
   );
 };
 

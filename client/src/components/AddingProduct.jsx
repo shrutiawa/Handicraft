@@ -400,9 +400,9 @@ const AddingProductContent = ({ locale }) => {
 const AddingProduct = () => {
   const { locale } = useContext(LocaleContext);
   return (
-    <ApolloProvider client={client}>
+    // <ApolloProvider client={client}>
       <AddingProductContent locale={locale} />
-    </ApolloProvider>
+    // </ApolloProvider>
   );
 };
 

@@ -19,7 +19,7 @@ const GET_CONTENT = gql`
   }
 `;
 
-function ShippingAddressFormContent({ products, locale ,customerId,coupon}) {
+function ShippingAddressFormContent({ products, locale, customerId, coupon }) {
   const { loading, error, data } = useQuery(GET_CONTENT, {
     variables: { locale },
   });
@@ -157,7 +157,7 @@ function ShippingAddressFormContent({ products, locale ,customerId,coupon}) {
   // console.log(data.shippingAddressCollection.items[0]);
 
   const { addressHeading, addressDetails, deliveryDetails, nameDetails } =
-  data.shippingAddressCollection.items[0];
+    data.shippingAddressCollection.items[0];
   console.log(deliveryDetails);
 
   return (
@@ -336,7 +336,9 @@ function ShippingAddressFormContent({ products, locale ,customerId,coupon}) {
               <img src="card.png" alt="Visa" className="card-logo" />
             </label>
             <button className="btn" onClick={handlePayment}>
-              {selectedPaymentMethod === "cod" ? deliveryDetails.placeOrder : deliveryDetails.payNow}
+              {selectedPaymentMethod === "cod"
+                ? deliveryDetails.placeOrder
+                : deliveryDetails.payNow}
             </button>
           </div>
         </div>
@@ -347,9 +349,9 @@ function ShippingAddressFormContent({ products, locale ,customerId,coupon}) {
 
 const ShippingAddressForm = ({ locale, products }) => {
   return (
-    <ApolloProvider client={client}>
-      <ShippingAddressFormContent products={products} locale={locale} />
-    </ApolloProvider>
+    // <ApolloProvider client={client}>
+    <ShippingAddressFormContent products={products} locale={locale} />
+    // </ApolloProvider>
   );
 };
 

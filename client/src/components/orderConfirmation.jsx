@@ -142,9 +142,9 @@ const OrderConfirmationContent = ({ locale }) => {
 const OrderConfirmation = () => {
   const { locale } = useContext(LocaleContext);
   return (
-    <ApolloProvider client={client}>
+    // <ApolloProvider client={client}>
       <OrderConfirmationContent locale={locale} />
-    </ApolloProvider>
+    // </ApolloProvider>
   );
 };
 

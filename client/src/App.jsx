@@ -1,4 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ApolloProvider } from "@apollo/client";
+import client from "./components/apolloClient"; // Import your Apollo Client instance here
 import ProductListPage from "./components/ProductListPage";
 import ProductDetailPage from "./components/ProductDetailPage";
 import ShoppingCart from "./components/ShoppingCart";
@@ -21,28 +23,30 @@ function App() {
   return (
     <>
       <LocaleProvider>
-        <BrowserRouter>
-          <Header />
-          <Routes>
-            <Route path="/product-list" element={<ProductListPage />} />
-            <Route path="/product" element={<ProductDetailPage />} />
-            <Route path="/cart" element={<ShoppingCart />} />
-            <Route path="/" element={<HomePage />} />
-            <Route path="/signin" element={<SigninPage />} />
-            <Route path="/delivery-address" element={<ShippingAddressForm />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/header" element={<Header />} />
-            <Route path="/order-confirm" element={<OrderConfirmation />} />
-            <Route path="/footer" element={<Footer />} />
-            <Route path="/tutorials" element={<TutorialsPage />} />
-            <Route path="/blogs" element={<BlogPage />} />
-            <Route path="/blogcontent" element={<FullBlogPost />} />
-            <Route path="/add-product" element={<AddingProduct />} />
-            <Route path="/aboutus" element={<AboutUs />} />
-            <Route path="/order-history" element={<OrderHistoryPage />} />
-          </Routes>
-          <Footer />
-        </BrowserRouter>
+        <ApolloProvider client={client}> {/* Wrap ApolloProvider around BrowserRouter */}
+          <BrowserRouter>
+            <Header />
+            <Routes>
+              <Route path="/product-list" element={<ProductListPage />} />
+              <Route path="/product" element={<ProductDetailPage />} />
+              <Route path="/cart" element={<ShoppingCart />} />
+              <Route path="/" element={<HomePage />} />
+              <Route path="/signin" element={<SigninPage />} />
+              <Route path="/delivery-address" element={<ShippingAddressForm />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/header" element={<Header />} />
+              <Route path="/order-confirm" element={<OrderConfirmation />} />
+              <Route path="/footer" element={<Footer />} />
+              <Route path="/tutorials" element={<TutorialsPage />} />
+              <Route path="/blogs" element={<BlogPage />} />
+              <Route path="/blogcontent" element={<FullBlogPost />} />
+              <Route path="/add-product" element={<AddingProduct />} />
+              <Route path="/aboutus" element={<AboutUs />} />
+              <Route path="/order-history" element={<OrderHistoryPage />} />
+            </Routes>
+            <Footer />
+          </BrowserRouter>
+        </ApolloProvider>
       </LocaleProvider>
     </>
   );

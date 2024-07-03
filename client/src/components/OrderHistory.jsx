@@ -171,11 +171,11 @@ const OrderHistoryPage = () => {
   const { locale } = useContext(LocaleContext);
 
   return (
-    <ApolloProvider client={client}>
-      <div className="orderHistoryMainContainer" locale={locale}>
-        <OrderHistoryPageContent locale={locale} />
-      </div>
-    </ApolloProvider>
+    // <ApolloProvider client={client}>
+    <div className="orderHistoryMainContainer">
+      <OrderHistoryPageContent locale={locale} />
+    </div>
+    // </ApolloProvider>
   );
 };
 

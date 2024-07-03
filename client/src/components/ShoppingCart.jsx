@@ -30,12 +30,9 @@ function ShoppingCartContent({ locale }) {
   });
   const navigate = useNavigate();
 
-
-
-
   const [coupon, setCoupon] = useState("");
   const [couponResponseData, setCouponResponseData] = useState("");
-  const [couponError, setCouponError] = useState('')
+  const [couponError, setCouponError] = useState("");
 
   const handleCouponChange = (e) => {
     setCoupon(e.target.value);
@@ -43,8 +40,8 @@ function ShoppingCartContent({ locale }) {
   const handleCouponSubmit = async (e) => {
     const grandTotal = calculateSubtotal();
     e.preventDefault();
-    setCouponError('')
-    setCouponResponseData('')
+    setCouponError("");
+    setCouponResponseData("");
     try {
       const res = await axios.post("http://localhost:5000/api/coupon", {
         coupon,
@@ -55,7 +52,7 @@ function ShoppingCartContent({ locale }) {
       console.log(res.data);
     } catch (error) {
       // console.error("Error submitting input:", error);
-      setCouponError("Invalid Coupon")
+      setCouponError("Invalid Coupon");
     }
   };
 
@@ -138,7 +135,6 @@ function ShoppingCartContent({ locale }) {
   };
 
   const handleCheckout = () => {
-
     if (!showShippingAddress) {
       setShowShippingAddress(true);
 
@@ -175,11 +171,12 @@ function ShoppingCartContent({ locale }) {
     return <p>No data available</p>;
   }
 
-  const { title, emptyCartContent, cartDetails, orderSummary } = data.shoppingCartCollection.items[0];
+  const { title, emptyCartContent, cartDetails, orderSummary } =
+    data.shoppingCartCollection.items[0];
   const { emptyCartHeading, emptyCartButton } = emptyCartContent;
 
   console.log(cartDetails);
-  console.log("product data", products)
+  console.log("product data", products);
 
   return (
     <div className="cartContent">
@@ -197,11 +194,21 @@ function ShoppingCartContent({ locale }) {
             <section className="itemsInCart">
               <h1>{title}</h1>
               <div className="column-labels">
-                <label className="product-image">{cartDetails.imageLabel}</label>
-                <label className="product-details">{cartDetails.productLabel}</label>
-                <label className="product-price">{cartDetails.priceLabel}</label>
-                <label className="product-quantity">{cartDetails.quantityLabel}</label>
-                <label className="product-line-price">{cartDetails.totalLabel}</label>
+                <label className="product-image">
+                  {cartDetails.imageLabel}
+                </label>
+                <label className="product-details">
+                  {cartDetails.productLabel}
+                </label>
+                <label className="product-price">
+                  {cartDetails.priceLabel}
+                </label>
+                <label className="product-quantity">
+                  {cartDetails.quantityLabel}
+                </label>
+                <label className="product-line-price">
+                  {cartDetails.totalLabel}
+                </label>
               </div>
 
               {products.map((product) => (
@@ -211,9 +218,15 @@ function ShoppingCartContent({ locale }) {
                   </div>
                   <div className="product-details">
                     <h4>{product.name}</h4>
-                    <p>{cartDetails.productColor}: {product.color}</p>
-                    <p>{cartDetails.productSize}: {product.size}</p>
-                    <p>{cartDetails.productMaterial}: {product.material}</p>
+                    <p>
+                      {cartDetails.productColor}: {product.color}
+                    </p>
+                    <p>
+                      {cartDetails.productSize}: {product.size}
+                    </p>
+                    <p>
+                      {cartDetails.productMaterial}: {product.material}
+                    </p>
                   </div>
                   <div className="product-price">{product.price}</div>
                   <div className="product-quantity">
@@ -229,7 +242,6 @@ function ShoppingCartContent({ locale }) {
                     </button>
                   </div>
                 </div>
-
               ))}
             </section>
 
@@ -269,11 +281,15 @@ function ShoppingCartContent({ locale }) {
                   />
                   <button type="submit">Apply</button>
                 </form>
-                {couponError ? <>
-                  <h3 style={{ color: "red" }}>{couponError}</h3>
-                </> : ''}
+                {couponError ? (
+                  <>
+                    <h3 style={{ color: "red" }}>{couponError}</h3>
+                  </>
+                ) : (
+                  ""
+                )}
               </section>
-              {couponResponseData ?
+              {couponResponseData ? (
                 <>
                   <div className="totals-item discountAmount">
                     <label>Discounted Amount</label>
@@ -288,7 +304,9 @@ function ShoppingCartContent({ locale }) {
                     </div>
                   </div>
                 </>
-                : ' '}
+              ) : (
+                " "
+              )}
               <button className="checkout" onClick={handleCheckout}>
                 {orderSummary.checkout}
               </button>
@@ -296,17 +314,26 @@ function ShoppingCartContent({ locale }) {
                 className=" backButton"
                 onClick={() => navigate("/product-list")}
               >
-                <FontAwesomeIcon icon={faArrowLeft} /> {orderSummary.continueShop}
+                <FontAwesomeIcon icon={faArrowLeft} />{" "}
+                {orderSummary.continueShop}
               </button>
             </section>
           </div>
 
           <div className="shipping-address" ref={shippingAddressRef}>
             <button className="toggle-address" onClick={toggleShippingAddress}>
-              {orderSummary.shippingAddress} <FontAwesomeIcon icon={faAngleDown} />
+              {orderSummary.shippingAddress}{" "}
+              <FontAwesomeIcon icon={faAngleDown} />
             </button>
 
-            {showShippingAddress && <ShippingAddressForm products={products} customer={customerId} coupon={coupon} locale={locale} />}
+            {showShippingAddress && (
+              <ShippingAddressForm
+                products={products}
+                customer={customerId}
+                coupon={coupon}
+                locale={locale}
+              />
+            )}
           </div>
         </>
       )}
@@ -318,11 +345,11 @@ function ShoppingCartContent({ locale }) {
 const ShoppingCart = () => {
   const { locale } = useContext(LocaleContext);
   return (
-    <ApolloProvider client={client}>
-      <div className="cartMainContainer">
-        <ShoppingCartContent locale={locale} />
-      </div>
-    </ApolloProvider>
+    // <ApolloProvider client={client}>
+    <div className="cartMainContainer">
+      <ShoppingCartContent locale={locale} />
+    </div>
+    // </ApolloProvider>
   );
 };
 

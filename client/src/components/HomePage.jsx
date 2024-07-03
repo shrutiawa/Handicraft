@@ -90,9 +90,9 @@ const HomePageContent = ({ locale }) => {
     blogButton,
     blogHeading,
     blogDescription,
-    stepsToSellTitle,
+    stepsToSell,
   } = data.heroBannerCollection.items[0];
-
+  console.log(stepsToSell);
   return (
     <>
       <div
@@ -139,7 +139,7 @@ const HomePageContent = ({ locale }) => {
       </div>
 
       <div className="steps-to-sell-section">
-        <h1 className="steps-to-sell-heading">{stepsToSellTitle}</h1>
+        <h1 className="steps-to-sell-heading">{stepsToSell}</h1>
         <div className="steps-to-sell-content">
           {sortedStepsToSell.map((step, index) => (
             <div key={index} className="step-card">
