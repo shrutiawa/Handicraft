@@ -49,6 +49,16 @@ const HomePageContent = ({ locale }) => {
   const { loading, error, data } = useQuery(GET_CONTENT, {
     variables: { locale },
   });
+  const [sortedStepsToSell, setSortedStepsToSell] = useState([]);
+
+  useEffect(() => {
+    if (data && data.stepsForSellCollection) {
+      const sortedSteps = [...data.stepsForSellCollection.items].sort(
+        (a, b) => a.order - b.order
+      );
+      setSortedStepsToSell(sortedSteps);
+    }
+  }, [data]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -131,7 +141,7 @@ const HomePageContent = ({ locale }) => {
       <div className="steps-to-sell-section">
         <h1 className="steps-to-sell-heading">{stepsToSellTitle}</h1>
         <div className="steps-to-sell-content">
-          {data.stepsForSellCollection.items.map((step, index) => (
+          {sortedStepsToSell.map((step, index) => (
             <div key={index} className="step-card">
               {step.icon && step.icon.length > 0 && (
                 <img src={step.icon[0].url} alt={step.text} />
