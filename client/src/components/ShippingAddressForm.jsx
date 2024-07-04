@@ -120,7 +120,9 @@ function ShippingAddressFormContent({ products, locale ,customerId,coupon,discou
     );
     const body = {
       carts: products,
-      couponId
+      couponId,
+      coupon,
+      discountedAmount,
     };
     const headers = {
       "Content-Type": "application/json",
