@@ -37,6 +37,12 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Credentials", "true");
   next();
 });
+
+// Demo Purpose
+app.get("/", (req, res) => {
+  res.json("Hello World");
+});
+
 // route handler for login - authenticate customer
 app.post("/login", loginController.authenticateUser);
 
