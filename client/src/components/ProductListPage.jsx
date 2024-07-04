@@ -64,7 +64,7 @@ function ProductListPage() {
           insights
         >
           <div className="search-bar-container">
-            <SearchBox placeholder="Search" />
+            <SearchBox placeholder="Search here..." />
           </div>
 
           <div className="output-result-and-filters">

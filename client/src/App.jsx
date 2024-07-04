@@ -33,10 +33,7 @@ function App() {
               <Route path="/cart" element={<ShoppingCart />} />
               <Route path="/" element={<HomePage />} />
               <Route path="/signin" element={<SigninPage />} />
-              <Route
-                path="/delivery-address"
-                element={<ShippingAddressForm />}
-              />
+              <Route path="/delivery-address" element={<ShippingAddressForm />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/header" element={<Header />} />
               <Route path="/order-confirm" element={<OrderConfirmation />} />

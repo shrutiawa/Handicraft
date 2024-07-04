@@ -53,15 +53,6 @@ function ShoppingCartContent({ locale }) {
       });
       setCouponResponseData(res.data);
 
-
-      //  if(discountedAmount){
-      const response = await axios.post("http://localhost:5000/create-coupon", {
-        coupon,
-        discountedAmount,
-      });
-      console.log("response", response.data.couponId);
-      setCouponId( response.data.couponId)
-    // }
     
     } catch (error) {
       setCouponError("Invalid Coupon");
