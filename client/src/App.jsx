@@ -39,21 +39,35 @@ function App() {
               />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/header" element={<Header />} />
-              <Route path="/order-confirm" element={<OrderConfirmation />} />
               <Route path="/footer" element={<Footer />} />
               <Route path="/tutorials" element={<TutorialsPage />} />
               <Route path="/blogs" element={<BlogPage />} />
               <Route path="/blogcontent" element={<FullBlogPost />} />
-              <Route path="/add-product" element={<AddingProduct />} />
               <Route path="/aboutus" element={<AboutUs />} />
               <Route
-                path="/order-history"
-                element={
-                  <ProtectedRoute>
-                    <OrderHistoryPage />
-                  </ProtectedRoute>
-                }
-              />
+              path="/order-history"
+              element={
+                <ProtectedRoute>
+                  <OrderHistoryPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/add-product"
+              element={
+                <ProtectedRoute>
+                  <AddingProduct />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/order-confirm"
+              element={
+                <ProtectedRoute>
+                  <OrderConfirmation />
+                </ProtectedRoute>
+              }
+            />
             </Routes>
             <Footer />
           </BrowserRouter>

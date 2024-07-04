@@ -31,46 +31,10 @@ const SigninContent = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
-  const [errors, setErrors] = useState({ email: false, password: false });
+  const [errors, setErrors] = useState("");
   const navigate = useNavigate();
 
-  const isValidEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
-  };
-
-  const handleBlur = (field, value) => {
-    let errorData = { ...errors };
-
-    switch (field) {
-      case "email":
-        errorData.email = !isValidEmail(value);
-        break;
-      case "password":
-        errorData.password = !value;
-        break;
-      default:
-        break;
-    }
-    setErrors(errorData);
-  };
-
-  const handleSignInClick = () => {
-    const errorData = {
-      email: !isValidEmail(email),
-      password: !password,
-    };
-
-    setErrors(errorData);
-
-    if (Object.values(errorData).some((error) => error)) {
-      return;
-    }
-
-    handleSubmit();
-  };
-
-  const handleSubmit = async () => {
+  const handleSignInClick = async () => {
     try {
       const response = await axios.post("http://localhost:5000/login", {
         email,
@@ -85,10 +49,8 @@ const SigninContent = () => {
         navigate("/product-list");
       }
     } catch (error) {
-      if (error.response.data.error == "Login failed - Invalid Credentials") {
-        setMessage("Login failed. Please try again.");
-      }
-      console.error("hello error", error);
+      console.log(error.response.data.error);
+      setErrors(error.response.data.error);
     }
   };
 
@@ -111,24 +73,23 @@ const SigninContent = () => {
           <p>{signInDescription}</p>
         </div>
         <div className="section2">
+          <p className="signInError">{errors}</p>
           <input
-            className={`emailInput ${errors.email ? "inputError" : ""}`}
+            className={`emailInput ${errors ? "inputError" : ""}`}
             name="email"
             type="email"
             placeholder={loginData.emailPlaceholder}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            onBlur={() => handleBlur("email", email)}
           />
           <div className="passwordInputContainer">
             <input
-              className={`passwordInput ${errors.password ? "inputError" : ""}`}
+              className={`passwordInput ${errors ? "inputError" : ""}`}
               name="password"
               type={showPassword ? "text" : "password"}
               placeholder={loginData.passwordPlaceholder}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              onBlur={() => handleBlur("password", password)}
             />
             <FontAwesomeIcon
               icon={showPassword ? faEye : faEyeSlash}
@@ -159,9 +120,9 @@ const SigninContent = () => {
 const SigninPage = () => {
   return (
     // <ApolloProvider client={client}>
-      <div className="loginMainContainer">
-        <SigninContent />
-      </div>
+    <div className="loginMainContainer">
+      <SigninContent />
+    </div>
     // </ApolloProvider>
   );
 };

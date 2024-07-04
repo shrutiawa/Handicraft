@@ -217,7 +217,7 @@ const SignupContent = ({ locale }) => {
           <div className="signupScreenButtons">
             <button
               className="alreadyregisteredBtn"
-              onClick={() => navigate("/singin")}
+              onClick={() => navigate("/signin")}
             >
               {signUpData.alreadyHaveAccount}
             </button>

@@ -139,7 +139,7 @@ const HeaderContent = () => {
                         className="dropdownItem"
                         onClick={() => {
                           setShowDropdown(false);
-                          localStorage.setItem("loggedIn", "false");
+                          localStorage.clear();
                           handleAuthChange();
                           navigate("/");
                         }}

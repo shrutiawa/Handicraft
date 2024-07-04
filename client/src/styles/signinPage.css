@@ -61,10 +61,15 @@
 }
 
 .loginPage .sections .section2 {
+  border: 1px solid red;
   display: flex;
   flex-direction: column;
   justify-content: center;
   /* align-items: center; */
+}
+
+.loginPage .sections .section2 .signInError{
+  height: 20px;
 }
 
 .loginPage .sections .section2 input {
