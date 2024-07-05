@@ -15,6 +15,7 @@
     "@commercetools/sdk-middleware-http": "^7.0.4",
     "@voucherify/sdk": "^2.7.2",
     "axios": "^1.6.8",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "nodemon": "^3.1.0",
