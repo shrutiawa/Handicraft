@@ -41,6 +41,12 @@ app.use(cors());
 //   res.setHeader("Access-Control-Allow-Credentials", "true");
 //   next();
 // });
+
+// Demo Purpose
+app.get("/", (req, res) => {
+  res.json("Welcome to Shilpkar Bhavan");
+});
+
 // route handler for login - authenticate customer
 app.post("/login", loginController.authenticateUser);
 
