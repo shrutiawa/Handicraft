@@ -42,6 +42,7 @@ function ShippingAddressForm({
   const [submittedAddress, setSubmittedAddress] = useState(null);
   const [step, setStep] = useState(0);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("card");
+  const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -72,7 +73,7 @@ function ShippingAddressForm({
 
     try {
       // console.log(formData)
-      const response = await fetch("http://localhost:5000/shipping-address", {
+      const response = await fetch(`${REACT_APP_BACKEND_URL}/shipping-address`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -130,7 +131,7 @@ function ShippingAddressForm({
       "Content-Type": "application/json",
     };
     const response = await fetch(
-      "http://localhost:5000/api/create-checkout-session",
+      `${REACT_APP_BACKEND_URL}/api/create-checkout-session`,
       {
         method: "POST",
         headers: headers,

@@ -33,6 +33,7 @@ const SignupPage = () => {
     password: "",
     confirmPassword: "",
   });
+  const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -129,7 +130,7 @@ const SignupPage = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/customers",
+        `${REACT_APP_BACKEND_URL}/customers`,
         formData
       );
       console.log(response);

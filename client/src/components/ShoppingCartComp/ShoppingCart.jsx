@@ -36,7 +36,7 @@ const ShoppingCart = () => {
     setCouponError("");
     setCouponResponseData("");
     try {
-      const res = await axios.post("http://localhost:5000/api/coupon", {
+      const res = await axios.post(`${REACT_APP_BACKEND_URL}/api/coupon`, {
         coupon,
         customerId,
         grandTotal,
@@ -53,12 +53,13 @@ const ShoppingCart = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [refresh, setRefresh] = useState("false");
   const shippingAddressRef = useRef(null);
+  const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     const getAllEntries = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/carts?customerId=${customerId}`
+          `${REACT_APP_BACKEND_URL}/carts?customerId=${customerId}`
         );
         const productsInCart = response.data.lineItems;
         const updatedProducts = productsInCart.map((item) => {
@@ -140,7 +141,7 @@ const ShoppingCart = () => {
 
   const handleRemoveItem = async (id) => {
     try {
-      const response = await axios.post(`http://localhost:5000/removecart`, {
+      const response = await axios.post(`${REACT_APP_BACKEND_URL}/removecart`, {
         id,
         customerId,
       });

@@ -20,6 +20,8 @@ const SigninPage = () => {
   // const [message, setMessage] = useState("");
   const [errors, setErrors] = useState("");
   const navigate = useNavigate();
+  const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+  console.log("REACT_APP_BACKEND_URL: ", REACT_APP_BACKEND_URL);
 
   const handleInputChange = (setter) => (e) => {
     setter(e.target.value);
@@ -33,7 +35,7 @@ const SigninPage = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/login", {
+      const response = await axios.post(`${REACT_APP_BACKEND_URL}/login`, {
         email,
         password,
       });

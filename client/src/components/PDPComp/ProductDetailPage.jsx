@@ -18,6 +18,7 @@ function ProductDetailPage() {
   const { locale } = useContext(LocaleContext);
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
+  const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   console.log("hello", locale);
   const handleIncrease = () => {
@@ -50,7 +51,7 @@ function ProductDetailPage() {
 
     try {
       console.log("data", customerId, productId, quantity);
-      const response = await axios.post("http://localhost:5000/carts", {
+      const response = await axios.post(`${REACT_APP_BACKEND_URL}/carts`, {
         customerId,
         productId,
         quantity,

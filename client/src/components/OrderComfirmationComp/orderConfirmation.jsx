@@ -14,12 +14,13 @@ const OrderConfirmation = () => {
     variables: { locale },
   });
   const navigate = useNavigate();
+  const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   const fetchCartDetails = async () => {
     try {
       const customerId = localStorage.getItem("customer");
       const cartResponse = await axios.get(
-        `http://localhost:5000/carts?customerId=${customerId}`
+        `${REACT_APP_BACKEND_URL}/carts?customerId=${customerId}`
       );
 
       if (cartResponse.status !== 200) {
@@ -37,7 +38,7 @@ const OrderConfirmation = () => {
   const placeOrder = async () => {
     try {
       const orderResponse = await axios.post(
-        "http://localhost:5000/create-order"
+        `${REACT_APP_BACKEND_URL}/create-order`
       );
 
       if (orderResponse.status !== 200) {
@@ -53,7 +54,7 @@ const OrderConfirmation = () => {
 
   const deleteCart = async () => {
     try {
-      const response = await fetch("http://localhost:5000/carts", {
+      const response = await fetch(`${REACT_APP_BACKEND_URL}/carts`, {
         method: "DELETE",
       });
 

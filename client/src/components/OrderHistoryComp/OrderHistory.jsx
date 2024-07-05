@@ -15,6 +15,7 @@ const OrderHistoryPage = () => {
   const navigate = useNavigate();
   const [customerId, setCustomerId] = useState("");
   const [orderHistory, setOrderHistory] = useState([]);
+  const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     const storedCustomerId = localStorage.getItem("customer");
@@ -26,7 +27,7 @@ const OrderHistoryPage = () => {
 
   const fetchOrderHistory = (customerId) => {
     axios
-      .get(`http://localhost:5000/orders/${customerId}`)
+      .get(`${REACT_APP_BACKEND_URL}/orders/${customerId}`)
       .then((response) => {
         const orderData = response.data.order;
         // Sort orders by creation date in descending order

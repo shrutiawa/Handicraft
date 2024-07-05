@@ -37,11 +37,12 @@ const AddingProduct = () => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const imgbbAPIKey = "61661e84f61a7128cb6ab2b7700043cb";
+  const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/categories");
+        const response = await axios.get(`${REACT_APP_BACKEND_URL}/categories`);
         setCategories(response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -50,7 +51,7 @@ const AddingProduct = () => {
 
     const fetchProductTypes = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/product-types");
+        const response = await axios.get(`${REACT_APP_BACKEND_URL}/product-types`);
         setProductTypes(response.data);
       } catch (error) {
         console.error("Error fetching product types:", error);
@@ -154,7 +155,7 @@ const AddingProduct = () => {
       console.log("product", productData);
 
       const response = await axios.post(
-        "http://localhost:5000/products",
+        `${REACT_APP_BACKEND_URL}/products`,
         productData
       );
       console.log("response of product", response.data.message);
