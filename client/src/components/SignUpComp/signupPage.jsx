@@ -3,14 +3,13 @@ import "./signupPage.css";
 import { useQuery } from "@apollo/client";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import LocaleContext from "../HelperComp/localeContextProvider";
 import GET_SIGNUP_CONTENT from "./graphql";
 
 const SignupPage = () => {
   const navigate = useNavigate();
-
   const { locale } = useContext(LocaleContext);
   const { loading, error, data } = useQuery(GET_SIGNUP_CONTENT, {
     variables: { locale },
@@ -25,7 +24,7 @@ const SignupPage = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [responeMsg, setResponeMsg] = useState("");
+  const [responseMsg, setResponseMsg] = useState("");
   const [formErrors, setFormErrors] = useState({
     firstName: "",
     lastName: "",
@@ -33,21 +32,13 @@ const SignupPage = () => {
     password: "",
     confirmPassword: "",
   });
+
   const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-    // Clear errors when the user starts typing again
     setFormErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
-
-    // Disable confirm password until password is entered
-    if (name === "password") {
-      setFormErrors((prevErrors) => ({
-        ...prevErrors,
-        confirmPassword: "", // Clear confirm password error when password changes
-      }));
-    }
   };
 
   const isValidEmail = (email) => {
@@ -93,7 +84,9 @@ const SignupPage = () => {
         }
         break;
       case "confirmPassword":
-        if (!formData[field].trim() || formData.password !== formData[field]) {
+        if (!formData.password.trim()) {
+          errors[field] = "";
+        } else if (!formData[field].trim() || formData.password !== formData[field]) {
           errors[field] = "Passwords do not match";
         }
         break;
@@ -107,14 +100,20 @@ const SignupPage = () => {
     const errors = validateField(field);
     setFormErrors((prevErrors) => ({
       ...prevErrors,
-      [field]: errors[field] || "", // Clear the error message if no error
+      [field]: errors[field] || "",
     }));
+
+    if (field === "password" && !formData.password.trim()) {
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        confirmPassword: "",
+      }));
+    }
   };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
 
-    // Validate form before submission
     const errors = {};
     Object.keys(formData).forEach((field) => {
       const fieldErrors = validateField(field);
@@ -125,7 +124,7 @@ const SignupPage = () => {
     setFormErrors(errors);
 
     if (Object.keys(errors).length > 0) {
-      return; // Prevent form submission if there are errors
+      return;
     }
 
     try {
@@ -134,13 +133,11 @@ const SignupPage = () => {
         formData
       );
       console.log(response);
-      // alert("Success");
       navigate("/signin");
     } catch (error) {
       console.error("Registration process failed");
       console.error(error);
-      setResponeMsg(error.response.data.error);
-      // alert("Failed");
+      setResponseMsg(error.response.data.error);
     }
   };
 
@@ -174,9 +171,6 @@ const SignupPage = () => {
                 onChange={handleChange}
                 onBlur={() => handleBlur("firstName")}
               />
-              {/* {formErrors.firstName && (
-              <p className="errorText">{formErrors.firstName}</p>
-            )} */}
               <input
                 className={formErrors.lastName ? "inputError" : ""}
                 name="lastName"
@@ -186,9 +180,6 @@ const SignupPage = () => {
                 onChange={handleChange}
                 onBlur={() => handleBlur("lastName")}
               />
-              {/* {formErrors.lastName && (
-              <p className="errorText">{formErrors.lastName}</p>
-            )} */}
             </div>
             <input
               className={formErrors.email ? "inputError" : ""}
@@ -200,19 +191,35 @@ const SignupPage = () => {
               onChange={handleChange}
               onBlur={() => handleBlur("email")}
             />
-            {/* {formErrors.email && <p className="errorText">{formErrors.email}</p>} */}
-            <input
-              className={formErrors.password ? "inputError" : ""}
-              name="password"
-              type="password"
-              value={formData.password}
-              placeholder={signUpData.passwordPlaceholder}
-              onChange={handleChange}
-              onBlur={() => handleBlur("password")}
-            />
-            {/* {formErrors.password && (
-            <p className="errorText">{formErrors.password}</p>
-          )} */}
+            <div className="passwordDiv">
+              <input
+                className={formErrors.password ? "inputError" : ""}
+                name="password"
+                type="password"
+                value={formData.password}
+                placeholder={signUpData.passwordPlaceholder}
+                onChange={handleChange}
+                onBlur={() => handleBlur("password")}
+              />
+              <span className="passwordHintDiv">
+                <FontAwesomeIcon
+                  icon={faInfoCircle}
+                  className="passwordHintIcon"
+                  color="black"
+                  size="xl"
+                />
+                <span className="passwordHintIconTooltip">
+                  Your password must contain at least:
+                  <ul>
+                    <li>1 lowercase alphabet</li>
+                    <li>1 uppercase alphabet</li>
+                    <li>1 special character</li>
+                    <li>1 number</li>
+                    <li>Minimum 10 characters</li>
+                  </ul>
+                </span>
+              </span>
+            </div>
             <div className="confirmPasswordInputContainer">
               <input
                 className={formErrors.confirmPassword ? "inputError" : ""}
@@ -222,19 +229,17 @@ const SignupPage = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 onBlur={() => handleBlur("confirmPassword")}
-                disabled={!formData.password.trim()} // Disable confirm password if password is not entered
+                disabled={!formData.password.trim()}
               />
               <FontAwesomeIcon
                 icon={showPassword ? faEye : faEyeSlash}
                 className="passwordToggleIcon"
                 onClick={() => setShowPassword(!showPassword)}
               />
-              {
-                <p className="errorText">
-                  {formErrors.confirmPassword}
-                  {responeMsg}
-                </p>
-              }
+              <p className="errorText">
+                {formErrors.confirmPassword}
+                {responseMsg}
+              </p>
             </div>
             <div className="signupScreenButtons">
               <button

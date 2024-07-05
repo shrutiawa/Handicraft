@@ -8,9 +8,8 @@ import ShippingAddressForm from "./ShippingAddressForm";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LocaleContext from "../HelperComp/localeContextProvider";
-import { useQuery} from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import GET_CART_CONTENT from "./graphql-cart";
-
 
 const ShoppingCart = () => {
   const { locale } = useContext(LocaleContext);
@@ -25,19 +24,26 @@ const ShoppingCart = () => {
   const [couponId, setCouponId] = useState("");
   const discountedAmount = couponResponseData.discountedAmount;
   console.log("hii", discountedAmount);
-  
+
   const handleCouponChange = (e) => {
-    setCoupon(e.target.value);
+    const selectedCoupon = e.target.value;
+    setCoupon(selectedCoupon);
+
+    if (selectedCoupon) {
+      handleCouponSubmit(selectedCoupon);
+    } else {
+      setCouponResponseData("");
+      setCouponError("");
+    }
   };
 
-  const handleCouponSubmit = async (e) => {
+  const handleCouponSubmit = async (couponCode) => {
     const grandTotal = calculateSubtotal();
-    e.preventDefault();
     setCouponError("");
     setCouponResponseData("");
     try {
       const res = await axios.post(`${REACT_APP_BACKEND_URL}/api/coupon`, {
-        coupon,
+        coupon: couponCode,
         customerId,
         grandTotal,
       });
@@ -169,115 +175,104 @@ const ShoppingCart = () => {
 
   return (
     <div className="cartMainContainer">
-    <div className="cartContent">
-      {products.length === 0 ? (
-        <div className="emptyCartContainer">
-          <p>{emptyCartHeading}</p>
-          <button onClick={() => navigate("/product-list")}>
-            {emptyCartButton} &rarr;
-          </button>
-        </div>
-      ) : (
-        <>
-          <div className="shopping-cart">
-            <section className="itemsInCart">
-              <h1>{title}</h1>
-              <div className="column-labels">
-                <label className="product-image">
-                  {cartDetails.imageLabel}
-                </label>
-                <label className="product-details">
-                  {cartDetails.productLabel}
-                </label>
-                <label className="product-price">
-                  {cartDetails.priceLabel}
-                </label>
-                <label className="product-quantity">
-                  {cartDetails.quantityLabel}
-                </label>
-                <label className="product-line-price">
-                  {cartDetails.totalLabel}
-                </label>
-              </div>
+      <div className="cartContent">
+        {products.length === 0 ? (
+          <div className="emptyCartContainer">
+            <p>{emptyCartHeading}</p>
+            <button onClick={() => navigate("/product-list")}>
+              {emptyCartButton} &rarr;
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="shopping-cart">
+              <section className="itemsInCart">
+                <h1>{title}</h1>
+                <div className="column-labels">
+                  <label className="product-image">
+                    {cartDetails.imageLabel}
+                  </label>
+                  <label className="product-details">
+                    {cartDetails.productLabel}
+                  </label>
+                  <label className="product-price">
+                    {cartDetails.priceLabel}
+                  </label>
+                  <label className="product-quantity">
+                    {cartDetails.quantityLabel}
+                  </label>
+                  <label className="product-line-price">
+                    {cartDetails.totalLabel}
+                  </label>
+                </div>
 
-              {products.map((product) => (
-                <div className="product" key={product.id}>
-                  <div className="product-image">
-                    <img src={product.imageUrl} alt={product.name} />
+                {products.map((product) => (
+                  <div className="product" key={product.id}>
+                    <div className="product-image">
+                      <img src={product.imageUrl} alt={product.name} />
+                    </div>
+                    <div className="product-details">
+                      <h4>{product.name}</h4>
+                      <p>
+                        {cartDetails.productColor}: {product.color}
+                      </p>
+                      <p>
+                        {cartDetails.productSize}: {product.size}
+                      </p>
+                      <p>
+                        {cartDetails.productMaterial}: {product.material}
+                      </p>
+                    </div>
+                    <div className="product-price">{product.price}</div>
+                    <div className="product-quantity">
+                      <span>{product.quantity}</span>
+                    </div>
+                    <div className="product-line-price">
+                      {(product.price * product.quantity).toFixed(2)}
+                      <button
+                        className="remove-product"
+                        onClick={() => handleRemoveItem(product.lineItemId)}
+                      >
+                        {cartDetails.removeBtn}
+                      </button>
+                    </div>
                   </div>
-                  <div className="product-details">
-                    <h4>{product.name}</h4>
-                    <p>
-                      {cartDetails.productColor}: {product.color}
-                    </p>
-                    <p>
-                      {cartDetails.productSize}: {product.size}
-                    </p>
-                    <p>
-                      {cartDetails.productMaterial}: {product.material}
-                    </p>
-                  </div>
-                  <div className="product-price">{product.price}</div>
-                  <div className="product-quantity">
-                    <span>{product.quantity}</span>
-                  </div>
-                  <div className="product-line-price">
-                    {(product.price * product.quantity).toFixed(2)}
-                    <button
-                      className="remove-product"
-                      onClick={() => handleRemoveItem(product.lineItemId)}
-                    >
-                      {cartDetails.removeBtn}
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </section>
+                ))}
+              </section>
 
-            <section className="summary">
-              <h1>{orderSummary.summaryHeading}</h1>
-              <div className="totals">
-                <div className="totals-item">
-                  <label>{orderSummary.totalItems}</label>
-                  <div className="totals-item-value">{totalItems}</div>
+              <section className="summary">
+                <h1>{orderSummary.summaryHeading}</h1>
+                <div className="totals">
+                  <div className="totals-item">
+                    <label>{orderSummary.totalItems}</label>
+                    <div className="totals-item-value">{totalItems}</div>
+                  </div>
+                  <div className="totals-item">
+                    <label>{orderSummary.subTotal}</label>
+                    <div className="totals-value">{calculateSubtotal()}</div>
+                  </div>
+                  <div className="totals-item">
+                    <label>{orderSummary.tax}</label>
+                    <div className="totals-value">0</div>
+                  </div>
+                  <div className="totals-item">
+                    <label>{orderSummary.shipping}</label>
+                    <div className="totals-value">0</div>
+                  </div>
+                  <div className="totals-item totals-item-total">
+                    <label>{orderSummary.grandTotal}</label>
+                    <div className="totals-value">{calculateSubtotal()}</div>
+                  </div>
                 </div>
-                <div className="totals-item">
-                  <label>{orderSummary.subTotal}</label>
-                  <div className="totals-value">{calculateSubtotal()}</div>
-                </div>
-                <div className="totals-item">
-                  <label>{orderSummary.tax}</label>
-                  <div className="totals-value">0</div>
-                </div>
-                <div className="totals-item">
-                  <label>{orderSummary.shipping}</label>
-                  <div className="totals-value">0</div>
-                </div>
-                <div className="totals-item totals-item-total">
-                  <label>{orderSummary.grandTotal}</label>
-                  <div className="totals-value">{calculateSubtotal()}</div>
-                </div>
-              </div>
-              {/* <section> */}
-                <form className="couponForm" onSubmit={handleCouponSubmit}>
-                  {/* <input
-                    type="text"
-                    name="coupon"
-                    id="coupon"
-                    placeholder="Enter Coupon Code"
-                    value={coupon}
-                    onChange={handleCouponChange}
-                  /> */}
-                  <select
-                    name="coupon"
-                    id="coupon"
-                    value={coupon}
-                    onChange={handleCouponChange}
-                  >
-                    <option value="">Select Coupon</option>
-                  </select>
-                  <button type="submit">Apply Coupon</button>
-                </form>
+                <select
+                  name="coupon"
+                  className="cart-coupon"
+                  value={coupon}
+                  onChange={handleCouponChange}
+                >
+                  <option value="">Select Coupon</option>
+                  <option value="BLCKFRDY">BLCKFRDY</option>
+                </select>
                 {couponError ? (
                   <>
                     <h3 style={{ color: "red" }}>{couponError}</h3>
@@ -285,59 +280,61 @@ const ShoppingCart = () => {
                 ) : (
                   ""
                 )}
-              {/* </section> */}
-              {couponResponseData ? (
-                <>
-                  <div className="totals-item discountAmount">
-                    <label>Discounted Amount</label>
-                    <div className="totals-value">{discountedAmount}</div>
-                  </div>
-                  <div className="totals-item totalAmount ">
-                    <label>Final Amount</label>
-                    <div className="totals-value">
-                      {couponResponseData.totalAmountToBePaid}
+                {couponResponseData ? (
+                  <>
+                    <div className="totals-item discountAmount">
+                      <label>Discounted Amount</label>
+                      <div className="totals-value">{discountedAmount}</div>
                     </div>
-                  </div>
-                </>
-              ) : (
-                " "
-              )}
-              <button className="checkout" onClick={handleCheckout}>
-                {orderSummary.checkout}
-              </button>
+                    <div className="totals-item totalAmount ">
+                      <label>Final Amount</label>
+                      <div className="totals-value">
+                        {couponResponseData.totalAmountToBePaid}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  " "
+                )}
+                <button className="checkout" onClick={handleCheckout}>
+                  {orderSummary.checkout}
+                </button>
+                <button
+                  className="backButton"
+                  onClick={() => navigate("/product-list")}
+                >
+                  <FontAwesomeIcon icon={faArrowLeft} />{" "}
+                  {orderSummary.continueShop}
+                </button>
+              </section>
+            </div>
+
+            <div className="shipping-address" ref={shippingAddressRef}>
               <button
-                className="backButton"
-                onClick={() => navigate("/product-list")}
+                className="toggle-address"
+                onClick={toggleShippingAddress}
               >
-                <FontAwesomeIcon icon={faArrowLeft} />{" "}
-                {orderSummary.continueShop}
+                {orderSummary.shippingAddress}{" "}
+                <FontAwesomeIcon icon={faAngleDown} />
               </button>
-            </section>
-          </div>
 
-          <div className="shipping-address" ref={shippingAddressRef}>
-            <button className="toggle-address" onClick={toggleShippingAddress}>
-              {orderSummary.shippingAddress}{" "}
-              <FontAwesomeIcon icon={faAngleDown} />
-            </button>
-
-            {showShippingAddress && (
-              <ShippingAddressForm
-                products={products}
-                customerId={customerId}
-                coupon={coupon}
-                locale={locale}
-                discountedAmount={discountedAmount}
-                couponId={couponId}
-              />
-            )}
-          </div>
-        </>
-      )}
-      <ToastContainer position="top-center" />
-    </div>
+              {showShippingAddress && (
+                <ShippingAddressForm
+                  products={products}
+                  customerId={customerId}
+                  coupon={coupon}
+                  locale={locale}
+                  discountedAmount={discountedAmount}
+                  couponId={couponId}
+                />
+              )}
+            </div>
+          </>
+        )}
+        <ToastContainer position="top-center" />
+      </div>
     </div>
   );
-}
+};
 
 export default ShoppingCart;

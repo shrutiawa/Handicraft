@@ -142,6 +142,8 @@
 
 .totalAmount {
   border-bottom: 1px solid black;
+  font-weight: 600;
+  color: #494;
 }
 
 /* Product entries */
@@ -202,21 +204,11 @@
   width: 100%;
 }
 
-
-.summary .couponForm select {
-  width: 60%;
+.summary .cart-coupon {
+  width: 100%;
   padding: 5px;
   border: 1px solid rgb(169, 168, 168);
   border-radius: 2px;
-}
-
-.summary .couponForm button {
-  background-color: #6b6;
-  border: none;
-  color: #fff;
-  font-size: 16px;
-  border-radius: 2px;
-  padding: 5px;
 }
 
 .totals-value,
@@ -228,7 +220,8 @@
 
 .discountAmount {
   color: #494;
-  font-weight: bold;
+  font-weight: 400;
+  font-size: 16px;
 }
 
 .checkout {
@@ -244,6 +237,7 @@
 
 .checkout:hover {
   background-color: #494;
+  cursor: pointer;
 }
 
 .toggle-address {

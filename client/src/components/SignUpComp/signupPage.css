@@ -85,6 +85,60 @@
   width: 48%;
 }
 
+.passwordDiv {
+  position: relative;
+}
+
+.passwordHintDiv {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-100%);
+  right: 10px;
+  cursor: pointer;
+}
+
+.paswordHintIcon {
+  display: flex;
+  padding-right: 5px;
+}
+
+.passwordHintIconTooltip {
+  visibility: hidden;
+  width: 200px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.passwordHintIconTooltip ul li {
+  list-style: none;
+}
+
+.passwordHintIconTooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.passwordHintDiv:hover .passwordHintIconTooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
 .signupPage .sections .section2 .confirmPasswordInputContainer {
   position: relative;
 }
