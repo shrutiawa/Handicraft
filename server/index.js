@@ -67,8 +67,16 @@ app.post("/carts", cartController.updateCartDetails);
 // Remove line items from cart
 app.post("/removecart", cartController.removeLineItem)
 
+
+// Coupon
+app.post("/api/coupon", cartController.checkCoupon);
+
+
 // Route to stripe payment
 app.post( "/api/create-checkout-session", paymentController.createCheckoutSession);
+
+// Route to stripe payment
+// app.post( "/create-coupon", paymentController.createCouponStripe);
 
 // delete cart after successful order
 app.delete("/carts", cartController.deleteCartController);
